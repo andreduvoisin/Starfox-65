@@ -42,7 +42,7 @@ namespace itp380.UI
 			base.Draw(fDeltaTime, DrawBatch);
 		}
 
-		public override void KeyboardInput(SortedList<eBindings, BindInfo> binds)
+		public override void GamepadInput(SortedList<eBindings, BindInfo> binds)
 		{
 			GameState g = GameState.Get();
 			if (binds.ContainsKey(eBindings.UI_Exit))
@@ -53,7 +53,7 @@ namespace itp380.UI
 
 			// Handle any input before the gameplay screen can look at it
 
-			base.KeyboardInput(binds);
+			base.GamepadInput(binds);
 		}
 	}
 }

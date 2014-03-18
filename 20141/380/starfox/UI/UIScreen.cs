@@ -92,7 +92,7 @@ namespace itp380.UI
 			DrawBatch.DrawString(font, sText, pos, color);
 		}
 
-		public virtual void KeyboardInput(SortedList<eBindings, BindInfo> binds)
+		public virtual void GamepadInput(SortedList<eBindings, BindInfo> binds)
 		{
 			if (binds.ContainsKey(eBindings.UI_Exit))
 			{
