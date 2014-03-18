@@ -198,7 +198,7 @@ namespace itp380
 		}
 
 		// I'm the last person to get keyboard input, so don't need to remove
-		public void KeyboardInput(SortedList<eBindings, BindInfo> binds, float fDeltaTime)
+		public void GamepadInput(SortedList<eBindings, BindInfo> binds, float fDeltaTime)
 		{
 			if (m_State == eGameState.Gameplay && !IsPaused)
 			{

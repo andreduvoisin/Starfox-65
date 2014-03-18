@@ -26,34 +26,52 @@ namespace itp380
 		Held // Was just pressed OR being held
 	}
 
-	public enum eBindings
-	{
-		UI_Exit = 0,
-		// TODO: Add more bindings to the enum
-		NUM_BINDINGS
-	}
+    public enum eButton
+    {
+        A,
+        B,
+        X,
+        Y,
+        LeftShoulder,
+        RightShoulder,
+        Back,
+        Start,
+        LeftStick,
+        RightStick,
+        DUp,
+        DLeft,
+        DRight,
+        DDown
+    }
+
+    public enum eBindings
+    {
+        UI_Exit = 0,
+        // TODO: Add more bindings to the enum
+        NUM_BINDINGS
+    }
 
 	public class BindInfo
 	{
-		public BindInfo(Keys Key, eBindType Type)
+		public BindInfo(eButton Button, eBindType Type)
 		{
-			m_Key = Key;
+			m_Button = Button;
 			m_Type = Type;
 		}
 
-		public Keys m_Key;
+		public eButton m_Button;
 		public eBindType m_Type;
 	}
 
-	public class InputManager : itp380.Patterns.Singleton<InputManager>
+	public class InputManager
 	{
-		// Keyboard binding map
+		// Gamepad binding map
 		private SortedList<eBindings, BindInfo> m_Bindings;
 		private void InitializeBindings()
 		{
 			m_Bindings = new SortedList<eBindings, BindInfo>();
 			// UI Bindings
-			m_Bindings.Add(eBindings.UI_Exit, new BindInfo(Keys.Escape, eBindType.JustPressed));
+            m_Bindings.Add(eBindings.UI_Exit, new BindInfo(eButton.Start, eBindType.JustPressed));
 			// TODO: Add any additional bindings here
 		}
 
@@ -62,7 +80,6 @@ namespace itp380
 		// Mouse Data
 		private MouseState m_PrevMouse;
 		private MouseState m_CurrMouse;
-
 
 		// The mouse position according to Windows
 		private Point m_DeviceMousePos = Point.Zero;
@@ -76,9 +93,53 @@ namespace itp380
 			get { return m_MousePos; }
 		}
 
-		// Keyboard Data
-		private KeyboardState m_PrevKey;
-		private KeyboardState m_CurrKey;
+        // Gamepad Data
+        private PlayerIndex m_Index;
+        private Dictionary<eButton, Boolean> m_PrevState;
+        private Dictionary<eButton, Boolean> m_CurrState;
+
+        public Vector2 LeftThumbstick
+        {
+            get { return GamePad.GetState(m_Index, GamePadDeadZone.Circular).ThumbSticks.Left; }
+        }
+
+        public Vector2 RightThumbstick
+        {
+            get { return GamePad.GetState(m_Index, GamePadDeadZone.Circular).ThumbSticks.Right; }
+        }
+
+        public float LeftTrigger
+        {
+            get { return GamePad.GetState(m_Index, GamePadDeadZone.Circular).Triggers.Left; }
+        }
+
+        public float RightTrigger
+        {
+            get { return GamePad.GetState(m_Index, GamePadDeadZone.Circular).Triggers.Right; }
+        }
+
+        // Singleton stuff
+        private static Dictionary<PlayerIndex, InputManager> m_Managers = new Dictionary<PlayerIndex,InputManager>();
+
+        public static InputManager Get(PlayerIndex Index)
+        {
+            if (!m_Managers.ContainsKey(Index))
+            {
+                m_Managers[Index] = new InputManager(Index);
+            }
+
+            return m_Managers[Index];
+        }
+
+        public static InputManager Get()
+        {
+            return Get(PlayerIndex.One);
+        }
+
+        private InputManager(PlayerIndex Index)
+        {
+            m_Index = Index;
+        }
 
 		public void Start()
 		{
@@ -94,8 +155,7 @@ namespace itp380
 			m_MousePos = m_ActualMousePos;
 			ClampMouse();
 
-			m_PrevKey = Keyboard.GetState();
-			m_CurrKey = Keyboard.GetState();
+            m_PrevState = m_CurrState = GetGamepadState();
 		}
 
 		private void ClampMouse()
@@ -143,38 +203,38 @@ namespace itp380
 			}
 		}
 
-		public void UpdateKeyboard(float fDeltaTime)
+		public void UpdateGamepad(float fDeltaTime)
 		{
-			m_PrevKey = m_CurrKey;
-			m_CurrKey = Keyboard.GetState();
+			m_PrevState = m_CurrState;
+            m_CurrState = GetGamepadState();
 			m_ActiveBinds.Clear();
 
 			// Build the list of bindings which were triggered this frame
 			foreach (KeyValuePair<eBindings, BindInfo> k in m_Bindings)
 			{
-				Keys Key = k.Value.m_Key;
+                eButton Key = k.Value.m_Button;
 				eBindType Type = k.Value.m_Type;
 				switch (Type)
 				{
 					case (eBindType.Held):
-						if ((m_PrevKey.IsKeyDown(Key) &&
-							m_CurrKey.IsKeyDown(Key)) ||
-							(!m_PrevKey.IsKeyDown(Key) &&
-							m_CurrKey.IsKeyDown(Key)))
+						if ((m_PrevState[Key] &&
+							m_CurrState[Key]) ||
+							(!m_PrevState[Key] &&
+							m_CurrState[Key]))
 						{
 							m_ActiveBinds.Add(k.Key, k.Value);
 						}
 						break;
 					case (eBindType.JustPressed):
-						if (!m_PrevKey.IsKeyDown(Key) &&
-							m_CurrKey.IsKeyDown(Key))
+						if (!m_PrevState[Key] &&
+							m_CurrState[Key])
 						{
 							m_ActiveBinds.Add(k.Key, k.Value);
 						}
 						break;
 					case (eBindType.JustReleased):
-						if (m_PrevKey.IsKeyDown(Key) &&
-							!m_CurrKey.IsKeyDown(Key))
+						if (m_PrevState[Key] &&
+							!m_CurrState[Key])
 						{
 							m_ActiveBinds.Add(k.Key, k.Value);
 						}
@@ -187,17 +247,17 @@ namespace itp380
 				// Send the list to the UI first, then any remnants to the game
 				if (GameState.Get().UICount != 0)
 				{
-					GameState.Get().GetCurrentUI().KeyboardInput(m_ActiveBinds);
+					GameState.Get().GetCurrentUI().GamepadInput(m_ActiveBinds);
 				}
 
-				GameState.Get().KeyboardInput(m_ActiveBinds, fDeltaTime);
+				GameState.Get().GamepadInput(m_ActiveBinds, fDeltaTime);
 			}
 		}
 
 		public void Update(float fDeltaTime)
 		{
 			UpdateMouse(fDeltaTime);
-			UpdateKeyboard(fDeltaTime);
+			UpdateGamepad(fDeltaTime);
 		}
 
 		protected bool JustPressed(ButtonState Previous, ButtonState Current)
@@ -212,23 +272,41 @@ namespace itp380
 				return false;
 			}
 		}
+
+        protected Dictionary<eButton, Boolean> GetGamepadState()
+        {
+            Dictionary<eButton, Boolean> state =
+                new Dictionary<eButton, Boolean>();
+            GamePadState GPState = GamePad.GetState(m_Index);
+            GamePadButtons Buttons = GPState.Buttons;
+            GamePadDPad DPad = GPState.DPad;
+
+            // All the buttons from GamePadButtons. Verbose but there aren't very many better
+            // ways to do it.
+            state[eButton.A]                = Buttons.A.Equals(ButtonState.Pressed);
+            state[eButton.B]                = Buttons.B.Equals(ButtonState.Pressed);
+            state[eButton.X]                = Buttons.X.Equals(ButtonState.Pressed);
+            state[eButton.Y]                = Buttons.Y.Equals(ButtonState.Pressed);
+            state[eButton.LeftShoulder]     = Buttons.LeftShoulder.Equals(ButtonState.Pressed);
+            state[eButton.RightShoulder]    = Buttons.RightShoulder.Equals(ButtonState.Pressed);
+            state[eButton.Back]             = Buttons.Back.Equals(ButtonState.Pressed);
+            state[eButton.Start]            = Buttons.Start.Equals(ButtonState.Pressed);
+            state[eButton.LeftStick]        = Buttons.LeftStick.Equals(ButtonState.Pressed);
+            state[eButton.RightStick]       = Buttons.RightStick.Equals(ButtonState.Pressed);
+
+            state[eButton.DUp]              = DPad.Up.Equals(ButtonState.Pressed);
+            state[eButton.DLeft]            = DPad.Left.Equals(ButtonState.Pressed);
+            state[eButton.DRight]           = DPad.Right.Equals(ButtonState.Pressed);
+            state[eButton.DDown]            = DPad.Down.Equals(ButtonState.Pressed);
+
+            return state;
+        }
 		
 		// Convert key binding to string representing the name
 		// TODO: THIS IS NOT LOCALIZED
-		public string GetBinding(eBindings binding)
-		{
-			Keys k = m_Bindings[binding].m_Key;
-			string name = Enum.GetName(typeof(Keys), k);
-			if (k == Keys.OemPlus)
-			{
-				name = "+";
-			}
-			else if (k == Keys.OemMinus)
-			{
-				name = "-";
-			}
-
-			return name;
-		}
+        public string GetBinding(eBindings binding)
+        {
+            return m_Bindings[binding].m_Button.ToString();
+        }
 	}
 }
