@@ -62,6 +62,9 @@ namespace itp380
 		Utils.Timer m_Timer = new Utils.Timer();
 
 		UI.UIGameplay m_UIGameplay;
+
+        //Player ships
+        Objects.Ship ship_P1;
 		
 		public void Start(Game game)
 		{
@@ -122,7 +125,8 @@ namespace itp380
 			m_Timer.RemoveAll();
 					
 			// TODO: Add any gameplay setup here
-		}
+            ship_P1 = new Objects.Ship(m_Game);
+        }
 
 		public void Update(float fDeltaTime)
 		{
@@ -168,6 +172,8 @@ namespace itp380
 				m_Timer.Update(fDeltaTime);
 
 				// TODO: Any update code not for a specific game object should go here
+                ship_P1.Position += ship_P1.shipVelocity;
+                ship_P1.shipVelocity *= .95f;
 			}
 		}
 
