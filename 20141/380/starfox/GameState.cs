@@ -45,6 +45,7 @@ namespace itp380
 
 		// Keeps track of all active game objects
 		LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
+        List<Objects.Asteroid> m_Asteroids = new List<Objects.Asteroid>(); // Asteroid Belt
 
 		// Camera Information
 		Camera m_Camera;
@@ -127,6 +128,9 @@ namespace itp380
 			// TODO: Add any gameplay setup here
             ship_P1 = new Objects.Ship(m_Game);
             SpawnGameObject(ship_P1);
+
+            //JEAN Spawn Asteroid Belt
+            SpawnAsteroidBelt();
         }
 
 		public void Update(float fDeltaTime)
@@ -175,6 +179,8 @@ namespace itp380
 				// TODO: Any update code not for a specific game object should go here
                 ship_P1.Position += ship_P1.shipVelocity;
                 ship_P1.shipVelocity *= .95f;
+
+                //[JEAN] Spawn Asteroid Belt
 			}
 		}
 
@@ -256,5 +262,33 @@ namespace itp380
 			IsPaused = true;
 			m_UIStack.Push(new UI.UIGameOver(m_Game.Content, victorious));
 		}
+
+        //JEAN code
+        public void SpawnAsteroid(float x, float y, float z)
+        {
+            Random m_Random = new Random();
+
+            //Create Asteroid
+            Objects.Asteroid obj_Asteroid; obj_Asteroid = new Objects.Asteroid(m_Game);
+            //Add Asteroid to m_Asteroids
+            m_Asteroids.Add(obj_Asteroid);
+            //Set random rotation
+            float asteroid_angle = (float)m_Random.Next(0, 628) / 100;
+            //Set position and rotation of Asteroid
+            obj_Asteroid.Position = new Vector3(x, y, z - 10 + (float)m_Random.Next(-10, 10));
+            obj_Asteroid.Angle = asteroid_angle;
+            SpawnGameObject(obj_Asteroid);
+        }
+
+        //Jean Code
+        void SpawnAsteroidBelt()
+        {
+            Random m_Random = new Random();
+            bool reverse = false;
+            for (int i = -10; i < 30; i++)
+            {
+                SpawnAsteroid((float)m_Random.Next(-10, 10), (float)m_Random.Next(-10, 10), (float)m_Random.Next(-10, 10));
+            }
+        }
 	}
 }
