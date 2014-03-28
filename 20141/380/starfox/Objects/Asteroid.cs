@@ -12,7 +12,7 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "Asteroid";
-            Scale = 0.5f;
+            Scale = 0.75f;
         }
 
 

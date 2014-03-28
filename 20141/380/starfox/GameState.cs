@@ -290,11 +290,11 @@ namespace itp380
         //Jean Code
         void SpawnAsteroidBelt()
         {
-            for (int i = -10; i < 30; i++)
+            for (int i = -100; i < 300; i++)
             {
                 SpawnAsteroid(i, i, i);
             }
-            for (int i = 30; i < 60; i++)
+            for (int i = 300; i < 600; i++)
             {
                 SpawnAsteroid(-i, -i, -i);
             }
