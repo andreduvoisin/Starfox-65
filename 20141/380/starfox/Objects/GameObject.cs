@@ -57,6 +57,15 @@ namespace itp380
 			set { m_fScale = value; m_bTransformDirty = true; }
 		}
 
+        public Vector3 Forward
+        {
+            get
+            {
+                return Vector3.Transform(Vector3.UnitY,
+                Matrix.CreateRotationZ(Angle));
+            }
+        } 
+
 		public void RebuildWorldTransform()
 		{
 			m_bTransformDirty = false;
