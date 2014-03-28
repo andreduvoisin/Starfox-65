@@ -43,6 +43,13 @@ namespace itp380
 			set { m_fAngle = value; m_bTransformDirty = true; }
 		}
 
+        Quaternion m_Rotation = Quaternion.Identity;
+        public Quaternion Rotation
+        {
+            get { return m_Rotation; }
+            set { m_Rotation = value; m_bTransformDirty = true; }
+        }
+
 		Vector3 m_vPos = Vector3.Zero;
 		public Vector3 Position
 		{
@@ -72,7 +79,7 @@ namespace itp380
 			m_bTransformDirty = false;
 			// Scale, rotation, translation
 			m_WorldTransform = Matrix.CreateScale(m_fScale) *
-				Matrix.CreateRotationZ(m_fAngle) * Matrix.CreateTranslation(m_vPos);
+				Matrix.CreateFromQuaternion(m_Rotation) * Matrix.CreateTranslation(m_vPos);
 		}
 
 		public bool m_bEnabled = true;
