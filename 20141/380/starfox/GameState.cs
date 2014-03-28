@@ -29,6 +29,7 @@ namespace itp380
 	{
 		Game m_Game;
 		eGameState m_State;
+        Random m_Random = new Random();
 		public eGameState State
 		{
 			get { return m_State; }
@@ -266,7 +267,7 @@ namespace itp380
         //JEAN code
         public void SpawnAsteroid(float x, float y, float z)
         {
-            Random m_Random = new Random();
+            
 
             //Create Asteroid
             Objects.Asteroid obj_Asteroid; obj_Asteroid = new Objects.Asteroid(m_Game);
@@ -275,7 +276,7 @@ namespace itp380
             //Set random rotation
             float asteroid_angle = (float)m_Random.Next(0, 628) / 100;
             //Set position and rotation of Asteroid
-            obj_Asteroid.Position = new Vector3(x, y, z - 10 + (float)m_Random.Next(-10, 10));
+            obj_Asteroid.Position = new Vector3(x, y + (float)m_Random.Next(-100, 100) , z - 10 + (float)m_Random.Next(-100, 100));
             obj_Asteroid.Angle = asteroid_angle;
             SpawnGameObject(obj_Asteroid);
         }
@@ -283,11 +284,13 @@ namespace itp380
         //Jean Code
         void SpawnAsteroidBelt()
         {
-            Random m_Random = new Random();
-            bool reverse = false;
             for (int i = -10; i < 30; i++)
             {
-                SpawnAsteroid((float)m_Random.Next(-10, 10), (float)m_Random.Next(-10, 10), (float)m_Random.Next(-10, 10));
+                SpawnAsteroid(i, i, i);
+            }
+            for (int i = 30; i < 60; i++)
+            {
+                SpawnAsteroid(-i, -i, -i);
             }
         }
 	}
