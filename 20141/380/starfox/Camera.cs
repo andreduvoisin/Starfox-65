@@ -18,8 +18,20 @@ namespace itp380
 	public class Camera
 	{
 		Game m_Game;
+
 		Vector3 m_vEye = new Vector3(0, 0, 10);
+        public Vector3 CameraEye
+        {
+            get { return m_vEye; }
+            set { m_vEye = value; }
+        }
+
 		Vector3 m_vTarget = Vector3.Zero;
+        public Vector3 CameraTarget
+        {
+            get { return m_vTarget; }
+            set { m_vTarget = value; }
+        }
 		
 		Matrix m_Camera;
 		public Matrix CameraMatrix

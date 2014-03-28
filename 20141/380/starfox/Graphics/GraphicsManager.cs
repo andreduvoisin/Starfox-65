@@ -129,7 +129,8 @@ namespace itp380
 
 		public void SetProjection(float fAspectRatio)
 		{
-			Projection = Matrix.CreateOrthographic(m_fZoom, m_fZoom / fAspectRatio, 0.1f, 100.0f);
+            Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, fAspectRatio, 0.1f, 100.0f);
+			//Projection = Matrix.CreateOrthographic(m_fZoom, m_fZoom / fAspectRatio, 0.1f, 100.0f);
 		}
 
 		public void ResetProjection()

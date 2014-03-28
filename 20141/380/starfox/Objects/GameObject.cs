@@ -64,7 +64,8 @@ namespace itp380
                 return Vector3.Transform(Vector3.UnitY,
                 Matrix.CreateRotationZ(Angle));
             }
-        } 
+        } 
+
 
 		public void RebuildWorldTransform()
 		{
