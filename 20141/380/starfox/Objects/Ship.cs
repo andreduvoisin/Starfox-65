@@ -51,9 +51,9 @@ namespace itp380.Objects
         public override void Update(float fDeltaTime)
         {
             base.Update(fDeltaTime);
-            Rotation -= InputManager.Get().LeftThumbstick.X * .10f;
+            Angle -= InputManager.Get().LeftThumbstick.X * .10f;
 
-            shipVelocity += RotationMatrix.Forward * 1.0f * InputManager.Get().RightTrigger;
+            shipVelocity += Forward * .1f * InputManager.Get().RightTrigger;
         }
 
 

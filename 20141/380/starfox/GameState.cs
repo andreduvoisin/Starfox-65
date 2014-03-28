@@ -126,6 +126,7 @@ namespace itp380
 					
 			// TODO: Add any gameplay setup here
             ship_P1 = new Objects.Ship(m_Game);
+            SpawnGameObject(ship_P1);
         }
 
 		public void Update(float fDeltaTime)
