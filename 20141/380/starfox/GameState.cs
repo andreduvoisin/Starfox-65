@@ -184,7 +184,7 @@ namespace itp380
                 ship_P1.Position += ship_P1.shipVelocity;
                 ship_P1.shipVelocity *= .95f;
 
-                // Camera Follow
+                // Calculate camera matrix to follow the ship.
                 m_Camera.ComputeMatrix();
 
                 //[JEAN] Spawn Asteroid Belt
