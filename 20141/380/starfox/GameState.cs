@@ -130,6 +130,9 @@ namespace itp380
             ship_P1 = new Objects.Ship(m_Game);
             SpawnGameObject(ship_P1);
 
+            m_Camera.CameraShipTarget = ship_P1;
+            m_Camera.ComputeMatrix();
+
             //JEAN Spawn Asteroid Belt
             SpawnAsteroidBelt();
         }
@@ -180,6 +183,9 @@ namespace itp380
 				// TODO: Any update code not for a specific game object should go here
                 ship_P1.Position += ship_P1.shipVelocity;
                 ship_P1.shipVelocity *= .95f;
+
+                // Camera Follow
+                m_Camera.ComputeMatrix();
 
                 //[JEAN] Spawn Asteroid Belt
 			}
