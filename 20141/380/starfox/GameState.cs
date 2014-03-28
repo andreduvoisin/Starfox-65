@@ -35,6 +35,8 @@ namespace itp380
 			get { return m_State; }
 		}
 
+        const float shipSlowConstant = 45f;
+
 		eGameState m_NextState;
 		Stack<UI.UIScreen> m_UIStack;
 		bool m_bPaused = false;
@@ -182,7 +184,7 @@ namespace itp380
 
 				// TODO: Any update code not for a specific game object should go here
                 ship_P1.Position += ship_P1.shipVelocity;
-                ship_P1.shipVelocity *= .95f;
+                ship_P1.shipVelocity -= ((ship_P1.shipVelocity.Length() * ship_P1.shipVelocity) * fDeltaTime) * shipSlowConstant;
 
                 // Calculate camera matrix to follow the ship.
                 m_Camera.ComputeMatrix();

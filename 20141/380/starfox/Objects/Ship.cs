@@ -18,10 +18,10 @@ namespace itp380.Objects
 
         public Matrix RotationMatrix = Matrix.Identity;
 
-        private float rotation;
-        public float Rotation
+        private float rotation1;
+        public float Rotation2
         {
-            get { return rotation; }
+            get { return rotation1; }
             set
             {
                 float val = value;
@@ -33,10 +33,10 @@ namespace itp380.Objects
                 {
                     val += MathHelper.TwoPi;
                 }
-                if (rotation != val)
+                if (rotation1 != val)
                 {
-                    rotation = val;
-                    RotationMatrix = Matrix.CreateRotationY(rotation);
+                    rotation1 = val;
+                    RotationMatrix = Matrix.CreateRotationY(rotation1);
                 }
             }
         }
@@ -51,9 +51,12 @@ namespace itp380.Objects
         public override void Update(float fDeltaTime)
         {
             base.Update(fDeltaTime);
+            Rotation = Quaternion.CreateFromAxisAngle(new Vector3(0,0,1), Angle);
             Angle -= InputManager.Get().LeftThumbstick.X * .10f;
 
             shipVelocity += Forward * .1f * InputManager.Get().RightTrigger;
+            shipVelocity -= Forward * .1f * InputManager.Get().LeftTrigger;
+
         }
 
 
