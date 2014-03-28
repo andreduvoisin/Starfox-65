@@ -44,7 +44,7 @@ namespace itp380.Objects
         public Ship(Game game) :
             base(game)
         {
-            m_ModelName = "ship1";
+            m_ModelName = "Miner/Miner";
             
         }
 
