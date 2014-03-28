@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace itp380.Objects
 {
-    class Ship : GameObject
+    public class Ship : GameObject
     {
         public Matrix[] Transforms;
 

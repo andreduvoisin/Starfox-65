@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using itp380.Objects;
 
 namespace itp380
 {
@@ -20,17 +21,13 @@ namespace itp380
 		Game m_Game;
 
 		Vector3 m_vEye = new Vector3(0, 0, 10);
-        public Vector3 CameraEye
-        {
-            get { return m_vEye; }
-            set { m_vEye = value; }
-        }
-
 		Vector3 m_vTarget = Vector3.Zero;
-        public Vector3 CameraTarget
+
+        Ship m_ShipTarget;
+        public Ship CameraShipTarget
         {
-            get { return m_vTarget; }
-            set { m_vTarget = value; }
+            get { return m_ShipTarget; }
+            set { m_ShipTarget = value; }
         }
 		
 		Matrix m_Camera;
@@ -39,10 +36,13 @@ namespace itp380
 			get { return m_Camera; }
 		}
 
+        float fHDist = 10.0f;
+        float fVDist = 10.0f;
+
 		public Camera(Game game)
 		{
 			m_Game = game;
-			ComputeMatrix();
+			//ComputeMatrix();
 		}
 
 		public void Update(float fDeltaTime)
@@ -50,12 +50,21 @@ namespace itp380
 			// TODO: If we want a moving camera, we need to make changes here
 		}
 
-		void ComputeMatrix()
+		public void ComputeMatrix()
 		{
-			Vector3 vEye = m_vEye;
-			Vector3 vTarget = m_vTarget;
-			Vector3 vUp = Vector3.Cross(Vector3.Zero - vEye, Vector3.Left);
-			m_Camera = Matrix.CreateLookAt(vEye, vTarget, vUp);
+            Vector3 vShipForward = Vector3.Normalize(m_ShipTarget.Forward);
+            Vector3 vShipUp = Vector3.UnitZ;
+            m_vEye = m_ShipTarget.Position - (vShipForward * fHDist) + (vShipUp * fVDist);
+            Vector3 vCameraForward = Vector3.Normalize(m_ShipTarget.Position - m_vEye);
+            Vector3 vCameraLeft = Vector3.Normalize(Vector3.Cross(vShipUp, vCameraForward));
+            Vector3 vCameraUp = Vector3.Normalize(Vector3.Cross(vCameraForward, vCameraLeft));
+
+            m_Camera = Matrix.CreateLookAt(m_vEye, m_ShipTarget.Position, vCameraUp);
+            
+            //Vector3 vEye = m_vEye;
+            //Vector3 vTarget = m_vTarget;
+            //Vector3 vUp = Vector3.Cross(Vector3.Zero - vEye, Vector3.Left);
+            //m_Camera = Matrix.CreateLookAt(vEye, vTarget, vUp);
 		}
 	}
 }
