@@ -45,7 +45,7 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "Miner/Miner";
-            
+            //m_ModelName = "ship1";
         }
 
         public override void Update(float fDeltaTime)
