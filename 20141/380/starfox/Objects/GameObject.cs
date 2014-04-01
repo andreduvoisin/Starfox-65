@@ -137,7 +137,7 @@ namespace itp380
 					effect.Projection = GraphicsManager.Get().Projection;
 					effect.EnableDefaultLighting();
 					effect.AmbientLightColor = new Vector3(1.0f, 1.0f, 1.0f);
-					effect.DirectionalLight0.Enabled = false;
+					effect.DirectionalLight0.Enabled = true;
 					effect.DirectionalLight1.Enabled = false;
 					effect.DirectionalLight2.Enabled = false;
 					effect.PreferPerPixelLighting = true;
