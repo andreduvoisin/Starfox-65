@@ -20,6 +20,7 @@ namespace itp380.UI
 	public class UIScreen
 	{
 		protected LinkedList<Button> m_Buttons = new LinkedList<Button>();
+        protected LinkedListNode<Button> selectedButton = null;
 		protected ContentManager m_Content;
 		protected float m_fLiveTime = 0.0f;
 		// Determines whether or not you can press ESC to leave the screen
@@ -34,19 +35,18 @@ namespace itp380.UI
 		public virtual void Update(float fDeltaTime)
 		{
 			m_fLiveTime += fDeltaTime;
-			foreach (Button b in m_Buttons)
-			{
-				// If the button is enabled, the mouse is pointing to it, and the UI is the top one
-				if (b.Enabled && b.m_Bounds.Contains(InputManager.Get().MousePosition) &&
-					GameState.Get().GetCurrentUI() == this)
-				{
-					b.HasFocus = true;
-				}
-				else
-				{
-					b.HasFocus = false;
-				}
-			}
+
+            IEnumerable<Button> mouseButtons = m_Buttons
+                .Where(b => b.Enabled && b.m_Bounds.Contains(InputManager.Get().MousePosition));
+            if (mouseButtons.Any() && GameState.Get().GetCurrentUI() == this)
+            {
+                foreach (Button b in m_Buttons)
+			    {
+				    // If the button is enabled, the mouse is pointing to it, and the UI is the top one
+                    b.HasFocus = mouseButtons.Contains(b);
+                    selectedButton = m_Buttons.Find(b);
+			    }
+            }
 
 			m_Timer.Update(fDeltaTime);
 		}
@@ -58,18 +58,24 @@ namespace itp380.UI
 
 		public virtual bool MouseClick(Point Position)
 		{
-			bool bReturn = false;
+            bool success = false;
 			foreach (Button b in m_Buttons)
 			{
-				if (b.Enabled && b.m_Bounds.Contains(Position))
-				{
-					b.Click();
-					bReturn = true;
-					break;
-				}
+                if (b.Enabled && b.m_Bounds.Contains(Position))
+                {
+                    b.Click();
+                    b.HasFocus = true;
+                    selectedButton = m_Buttons.Find(b);
+                    success = true;
+                }
+                else
+                {
+                    b.HasFocus = false;
+                    selectedButton = null;
+                }
 			}
 
-			return bReturn;
+			return success;
 		}
 
 		protected void DrawButtons(float fDeltaTime, SpriteBatch DrawBatch)
@@ -103,6 +109,45 @@ namespace itp380.UI
 
 				binds.Remove(eBindings.UI_Exit);
 			}
+
+            if (binds.ContainsKey(eBindings.UI_Okay))
+            {
+                if (selectedButton != null)
+                    selectedButton.Value.Click();
+                binds.Remove(eBindings.UI_Okay);
+            }
+
+            if (binds.ContainsKey(eBindings.UI_Up))
+            {
+                if (selectedButton != null)
+                {
+                    selectedButton.Value.HasFocus = false;
+                    if ((selectedButton = selectedButton.Previous) == null)
+                        selectedButton = m_Buttons.Last;
+                    selectedButton.Value.HasFocus = true;
+                }
+                else
+                {
+                    selectedButton = m_Buttons.Last;
+                }
+                binds.Remove(eBindings.UI_Up);
+            }
+
+            if (binds.ContainsKey(eBindings.UI_Down))
+            {
+                if (selectedButton != null)
+                {
+                    selectedButton.Value.HasFocus = false;
+                    if ((selectedButton = selectedButton.Next) == null)
+                        selectedButton = m_Buttons.First;
+                    selectedButton.Value.HasFocus = true;
+                }
+                else
+                {
+                    selectedButton = m_Buttons.First;
+                }
+                binds.Remove(eBindings.UI_Down);
+            }
 		}
 
 		public virtual void OnExit()
