@@ -46,8 +46,12 @@ namespace itp380
 
     public enum eBindings
     {
+        // UI bindings
         UI_Exit = 0,
-        // TODO: Add more bindings to the enum
+        UI_Okay,
+        UI_Up,
+        UI_Down,
+        // Game bindings
         NUM_BINDINGS
     }
 
@@ -72,6 +76,9 @@ namespace itp380
 			m_Bindings = new SortedList<eBindings, BindInfo>();
 			// UI Bindings
             m_Bindings.Add(eBindings.UI_Exit, new BindInfo(eButton.Start, eBindType.JustPressed));
+            m_Bindings.Add(eBindings.UI_Okay, new BindInfo(eButton.A, eBindType.JustPressed));
+            m_Bindings.Add(eBindings.UI_Up, new BindInfo(eButton.DUp, eBindType.JustPressed));
+            m_Bindings.Add(eBindings.UI_Down, new BindInfo(eButton.DDown, eBindType.JustPressed));
 			// TODO: Add any additional bindings here
 		}
 
