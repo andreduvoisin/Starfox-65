@@ -37,6 +37,7 @@ namespace itp380
 		}
 
         float fHDist = 10.0f;
+        float fVDist = 3.0f;
 
 		public Camera(Game game)
 		{
@@ -53,7 +54,7 @@ namespace itp380
 		{
             Vector3 vShipForward = Vector3.Normalize(m_ShipTarget.Forward);
             Vector3 vShipUp = Vector3.Normalize(m_ShipTarget.Up);
-            m_vEye = m_ShipTarget.Position - (vShipForward * fHDist); // Used to be +(vShipUp * fVDist);
+            m_vEye = m_ShipTarget.Position - (vShipForward * fHDist) + (vShipUp * fVDist);
             Vector3 vCameraForward = Vector3.Normalize(m_ShipTarget.Position - m_vEye);
             Vector3 vCameraLeft = Vector3.Normalize(Vector3.Cross(vShipUp, vCameraForward));
             Vector3 vCameraUp = Vector3.Normalize(Vector3.Cross(vCameraForward, vCameraLeft));

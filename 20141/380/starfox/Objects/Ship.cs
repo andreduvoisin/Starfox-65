@@ -53,12 +53,12 @@ namespace itp380.Objects
         {
             base.Update(fDeltaTime);
 
-            // Roll
-            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, InputManager.Get().LeftThumbstick.X * .10f);
+            // Yaw
+            Rotation *= Quaternion.CreateFromAxisAngle(-Vector3.UnitY, InputManager.Get().LeftThumbstick.X * .10f);
 
             // Pitch
-            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitX, InputManager.Get().LeftThumbstick.Y * .10f);
-
+            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, InputManager.Get().LeftThumbstick.Y * .10f);
+            
             shipVelocity += Forward * .1f * InputManager.Get().RightTrigger;
             shipVelocity -= Forward * .1f * InputManager.Get().LeftTrigger;
         }

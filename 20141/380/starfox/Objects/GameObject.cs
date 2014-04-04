@@ -68,7 +68,7 @@ namespace itp380
         {
             get
             {
-                return Vector3.Transform(Vector3.UnitZ,
+                return Vector3.Transform(Vector3.UnitX,
                     Matrix.CreateFromQuaternion(m_Rotation));
             }
         }
