@@ -52,8 +52,12 @@ namespace itp380.Objects
         public override void Update(float fDeltaTime)
         {
             base.Update(fDeltaTime);
-            Rotation = Quaternion.CreateFromAxisAngle(new Vector3(0,0,1), Angle);
-            Angle -= InputManager.Get().LeftThumbstick.X * .10f;
+
+            // Roll
+            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, InputManager.Get().LeftThumbstick.X * .10f);
+
+            // Pitch
+            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitX, InputManager.Get().LeftThumbstick.Y * .10f);
 
             shipVelocity += Forward * .1f * InputManager.Get().RightTrigger;
             shipVelocity -= Forward * .1f * InputManager.Get().LeftTrigger;
