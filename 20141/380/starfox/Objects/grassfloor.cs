@@ -12,7 +12,7 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "grassy_floor";
-            Scale = 3f;
+            Scale = 30f;
         }
 
 
