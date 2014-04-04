@@ -43,7 +43,7 @@ namespace itp380
 			set { m_fAngle = value; m_bTransformDirty = true; }
 		}
 
-        public Quaternion m_Rotation = Quaternion.Identity;
+        Quaternion m_Rotation = Quaternion.Identity;
         public Quaternion Rotation
         {
             get { return m_Rotation; }
