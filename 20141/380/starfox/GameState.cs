@@ -190,9 +190,10 @@ namespace itp380
                 m_Camera.ComputeMatrix();
 
                 //[JEAN] Spawn Asteroid Belt
-                Objects.grassfloor obj_grassfloor; 
-                obj_grassfloor = new Objects.grassfloor(m_Game);
-                //obj_grassfloor.Position = new Vector3(20, 20, 20);
+               // Objects.grassfloor obj_grassfloor; 
+                //obj_grassfloor = new Objects.grassfloor(m_Game);
+                //obj_grassfloor.Position = new Vector3(300, -20, 20);
+                //obj_grassfloor.Rotation = new Quaternion(0,0,0,0);
                 //SpawnGameObject(obj_grassfloor);
 			}
 		}
@@ -279,7 +280,6 @@ namespace itp380
         //JEAN code
         public void SpawnAsteroid(float x, float y, float z)
         {
-            
 
             //Create Asteroid
             Objects.Asteroid obj_Asteroid; obj_Asteroid = new Objects.Asteroid(m_Game);
