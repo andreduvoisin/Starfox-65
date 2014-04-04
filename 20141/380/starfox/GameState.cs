@@ -69,6 +69,7 @@ namespace itp380
 
         //Player ships
         Objects.Ship ship_P1;
+        List<Objects.Projectile> m_Projectiles_P1 = new List<Objects.Projectile>(); // Asteroid Belt
 		
 		public void Start(Game game)
 		{
@@ -185,6 +186,10 @@ namespace itp380
 				// TODO: Any update code not for a specific game object should go here
                 ship_P1.Position += ship_P1.shipVelocity;
                 ship_P1.shipVelocity -= ((ship_P1.shipVelocity.Length() * ship_P1.shipVelocity) * fDeltaTime) * shipSlowConstant;
+                for (int i = 0; i < m_Projectiles_P1.Count; i++)
+                {
+                    m_Projectiles_P1.ElementAt(i).Position += m_Projectiles_P1.ElementAt(i).projectileVelocity;
+                }
 
                 // Calculate camera matrix to follow the ship.
                 m_Camera.ComputeMatrix();

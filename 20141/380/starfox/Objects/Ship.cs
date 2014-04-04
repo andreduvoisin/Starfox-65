@@ -8,7 +8,6 @@ namespace itp380.Objects
 {
     public class Ship : GameObject
     {
-        public Matrix[] Transforms;
 
         //Ship Velocity
         public Vector3 shipVelocity = Vector3.Zero;
@@ -62,5 +61,12 @@ namespace itp380.Objects
             shipVelocity += Forward * .1f * InputManager.Get().RightTrigger;
             shipVelocity -= Forward * .1f * InputManager.Get().LeftTrigger;
         }
+
+        public void fireProjectile()
+        {
+            
+        }
+
+
     }
 }
