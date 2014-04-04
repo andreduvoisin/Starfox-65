@@ -190,6 +190,10 @@ namespace itp380
                 m_Camera.ComputeMatrix();
 
                 //[JEAN] Spawn Asteroid Belt
+                Objects.grassfloor obj_grassfloor; 
+                obj_grassfloor = new Objects.grassfloor(m_Game);
+                //obj_grassfloor.Position = new Vector3(20, 20, 20);
+                //SpawnGameObject(obj_grassfloor);
 			}
 		}
 
