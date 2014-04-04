@@ -70,7 +70,7 @@ namespace itp380
 		public void Start(Game game)
 		{
 			m_Graphics = new GraphicsDeviceManager(game);
-            m_Graphics.PreferMultiSampling = true;
+            m_Graphics.PreferMultiSampling = false;
 			m_Game = game;
 			IsVSync = GlobalDefines.bVSync;
 			
