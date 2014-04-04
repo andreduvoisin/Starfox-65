@@ -37,7 +37,6 @@ namespace itp380
 		}
 
         float fHDist = 10.0f;
-        float fVDist = 10.0f;
 
 		public Camera(Game game)
 		{
