@@ -68,11 +68,19 @@ namespace itp380
         {
             get
             {
-                return Vector3.Transform(Vector3.UnitY,
-                Matrix.CreateRotationZ(Angle));
+                return Vector3.Transform(Vector3.UnitZ,
+                    Matrix.CreateFromQuaternion(m_Rotation));
             }
-        } 
+        }
 
+        public Vector3 Up
+        {
+            get
+            {
+                return Vector3.Transform(Vector3.UnitY,
+                    Matrix.CreateFromQuaternion(m_Rotation));
+            }
+        }
 
 		public void RebuildWorldTransform()
 		{

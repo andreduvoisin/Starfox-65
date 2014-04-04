@@ -53,8 +53,8 @@ namespace itp380
 		public void ComputeMatrix()
 		{
             Vector3 vShipForward = Vector3.Normalize(m_ShipTarget.Forward);
-            Vector3 vShipUp = Vector3.UnitZ;
-            m_vEye = m_ShipTarget.Position - (vShipForward * fHDist) + (vShipUp * fVDist);
+            Vector3 vShipUp = Vector3.Normalize(m_ShipTarget.Up);
+            m_vEye = m_ShipTarget.Position - (vShipForward * fHDist); // Used to be +(vShipUp * fVDist);
             Vector3 vCameraForward = Vector3.Normalize(m_ShipTarget.Position - m_vEye);
             Vector3 vCameraLeft = Vector3.Normalize(Vector3.Cross(vShipUp, vCameraForward));
             Vector3 vCameraUp = Vector3.Normalize(Vector3.Cross(vCameraForward, vCameraLeft));
