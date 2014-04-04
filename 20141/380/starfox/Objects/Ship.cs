@@ -61,9 +61,6 @@ namespace itp380.Objects
 
             shipVelocity += Forward * .1f * InputManager.Get().RightTrigger;
             shipVelocity -= Forward * .1f * InputManager.Get().LeftTrigger;
-
         }
-
-
     }
 }
