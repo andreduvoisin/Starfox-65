@@ -115,6 +115,7 @@
     <Compile Include="Graphics\GraphicsManager.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Objects\Asteroid.cs" />
+    <Compile Include="Objects\grassfloor.cs" />
     <Compile Include="Objects\Ship.cs" />
     <Compile Include="Objects\GameObject.cs" />
     <Compile Include="Patterns\Singleton.cs" />
