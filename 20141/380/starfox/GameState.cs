@@ -194,12 +194,12 @@ namespace itp380
                 // Calculate camera matrix to follow the ship.
                 m_Camera.ComputeMatrix();
 
-                //[JEAN] Spawn Asteroid Belt
-               // Objects.grassfloor obj_grassfloor; 
-                //obj_grassfloor = new Objects.grassfloor(m_Game);
-                //obj_grassfloor.Position = new Vector3(300, -20, 20);
-                //obj_grassfloor.Rotation = new Quaternion(0,0,0,0);
-                //SpawnGameObject(obj_grassfloor);
+                //[JEAN] Spawn Level
+                Objects.grassfloor obj_grassfloor;
+                obj_grassfloor = new Objects.grassfloor(m_Game);
+                obj_grassfloor.Position = new Vector3(300, -30, 400);
+                obj_grassfloor.Rotation = new Quaternion(0, 0, 0, 0);
+                SpawnGameObject(obj_grassfloor);
 			}
 		}
 
