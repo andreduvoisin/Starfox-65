@@ -49,6 +49,7 @@ namespace itp380
 		// Keeps track of all active game objects
 		LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
         List<Objects.Asteroid> m_Asteroids = new List<Objects.Asteroid>(); // Asteroid Belt
+        Objects.grassfloor m_Terrain;
 
 		// Camera Information
 		Camera m_Camera;
@@ -69,7 +70,7 @@ namespace itp380
 
         //Player ships
         Objects.Ship ship_P1;
-        List<Objects.Projectile> m_Projectiles_P1 = new List<Objects.Projectile>(); // Asteroid Belt
+        //List<Objects.Projectile> m_Projectiles_P1 = new List<Objects.Projectile>(); // Asteroid Belt
 		
 		public void Start(Game game)
 		{
@@ -138,6 +139,12 @@ namespace itp380
 
             //JEAN Spawn Asteroid Belt
             SpawnAsteroidBelt();
+
+            //[JEAN] Spawn Level
+            m_Terrain = new Objects.grassfloor(m_Game);
+            m_Terrain.Position = new Vector3(300, -30, 400);
+            m_Terrain.Rotation = new Quaternion(0, 0, 0, 0);
+            SpawnGameObject(m_Terrain);
         }
 
 		public void Update(float fDeltaTime)
@@ -186,20 +193,13 @@ namespace itp380
 				// TODO: Any update code not for a specific game object should go here
                 ship_P1.Position += ship_P1.shipVelocity;
                 ship_P1.shipVelocity -= ((ship_P1.shipVelocity.Length() * ship_P1.shipVelocity) * fDeltaTime) * shipSlowConstant;
-                for (int i = 0; i < m_Projectiles_P1.Count; i++)
-                {
-                    m_Projectiles_P1.ElementAt(i).Position += m_Projectiles_P1.ElementAt(i).projectileVelocity;
-                }
+                //for (int i = 0; i < m_Projectiles_P1.Count; i++)
+                //{
+                //    m_Projectiles_P1.ElementAt(i).Position += m_Projectiles_P1.ElementAt(i).projectileVelocity;
+                //}
 
                 // Calculate camera matrix to follow the ship.
                 m_Camera.ComputeMatrix();
-
-                //[JEAN] Spawn Level
-                Objects.grassfloor obj_grassfloor;
-                obj_grassfloor = new Objects.grassfloor(m_Game);
-                obj_grassfloor.Position = new Vector3(300, -30, 400);
-                obj_grassfloor.Rotation = new Quaternion(0, 0, 0, 0);
-                SpawnGameObject(obj_grassfloor);
 			}
 		}
 
@@ -285,7 +285,6 @@ namespace itp380
         //JEAN code
         public void SpawnAsteroid(float x, float y, float z)
         {
-
             //Create Asteroid
             Objects.Asteroid obj_Asteroid; obj_Asteroid = new Objects.Asteroid(m_Game);
             //Add Asteroid to m_Asteroids

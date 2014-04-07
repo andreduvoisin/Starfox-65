@@ -70,7 +70,7 @@ namespace itp380
 		public void Start(Game game)
 		{
 			m_Graphics = new GraphicsDeviceManager(game);
-            m_Graphics.PreferMultiSampling = false;
+            m_Graphics.PreferMultiSampling = true;
 			m_Game = game;
 			IsVSync = GlobalDefines.bVSync;
 			
@@ -130,8 +130,7 @@ namespace itp380
 
 		public void SetProjection(float fAspectRatio)
 		{
-            Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, fAspectRatio, 0.1f, 100.0f);
-			//Projection = Matrix.CreateOrthographic(m_fZoom, m_fZoom / fAspectRatio, 0.1f, 100.0f);
+            Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, fAspectRatio, 0.1f, 600.0f);
 		}
 
 		public void ResetProjection()
