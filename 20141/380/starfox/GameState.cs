@@ -46,6 +46,29 @@ namespace itp380
 			set	{ m_bPaused = value; }
 		}
 
+        //All players health
+        int p1_CurrentHealth = 100, p2_CurrentHealth = 100, p3_CurrentHealth = 100, p4_CurrentHealth = 100;
+        public int p1health
+        {
+            get { return p1_CurrentHealth; }
+            set { p1_CurrentHealth = value; }
+        }
+        public int p2health
+        {
+            get { return p2_CurrentHealth; }
+            set { p2_CurrentHealth = value; }
+        }
+        public int p3health
+        {
+            get { return p3_CurrentHealth; }
+            set { p3_CurrentHealth = value; }
+        }
+        public int p4health
+        {
+            get { return p4_CurrentHealth; }
+            set { p4_CurrentHealth = value; }
+        }
+
 		// Keeps track of all active game objects
 		LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
         List<Objects.Asteroid> m_Asteroids = new List<Objects.Asteroid>(); // Asteroid Belt
