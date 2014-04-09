@@ -46,29 +46,6 @@ namespace itp380
 			set	{ m_bPaused = value; }
 		}
 
-        //All players health
-        int p1_CurrentHealth = 100, p2_CurrentHealth = 100, p3_CurrentHealth = 100, p4_CurrentHealth = 100;
-        public int p1health
-        {
-            get { return p1_CurrentHealth; }
-            set { p1_CurrentHealth = value; }
-        }
-        public int p2health
-        {
-            get { return p2_CurrentHealth; }
-            set { p2_CurrentHealth = value; }
-        }
-        public int p3health
-        {
-            get { return p3_CurrentHealth; }
-            set { p3_CurrentHealth = value; }
-        }
-        public int p4health
-        {
-            get { return p4_CurrentHealth; }
-            set { p4_CurrentHealth = value; }
-        }
-
 		// Keeps track of all active game objects
 		LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
         List<Objects.Asteroid> m_Asteroids = new List<Objects.Asteroid>(); // Asteroid Belt
@@ -91,8 +68,12 @@ namespace itp380
 
 		UI.UIGameplay m_UIGameplay;
 
-        //Player ships
-        Objects.Ship ship_P1;
+        //Players
+        Models.Player m_Player;
+        public Models.Player Player
+        {
+            get { return m_Player; }
+        }
         //List<Objects.Projectile> m_Projectiles_P1 = new List<Objects.Projectile>(); // Asteroid Belt
 		
 		public void Start(Game game)
@@ -154,10 +135,9 @@ namespace itp380
 			m_Timer.RemoveAll();
 					
 			// TODO: Add any gameplay setup here
-            ship_P1 = new Objects.Ship(m_Game);
-            SpawnGameObject(ship_P1);
+            m_Player = new Models.Player(m_Game);
 
-            m_Camera.CameraShipTarget = ship_P1;
+            m_Camera.CameraShipTarget = m_Player.Ship;
             m_Camera.ComputeMatrix();
 
             //JEAN Spawn Asteroid Belt
@@ -214,8 +194,8 @@ namespace itp380
 				m_Timer.Update(fDeltaTime);
 
 				// TODO: Any update code not for a specific game object should go here
-                ship_P1.Position += ship_P1.shipVelocity;
-                ship_P1.shipVelocity -= ((ship_P1.shipVelocity.Length() * ship_P1.shipVelocity) * fDeltaTime) * shipSlowConstant;
+                m_Player.Ship.Position += m_Player.Ship.shipVelocity;
+                m_Player.Ship.shipVelocity -= ((m_Player.Ship.shipVelocity.Length() * m_Player.Ship.shipVelocity) * fDeltaTime) * shipSlowConstant;
                 //for (int i = 0; i < m_Projectiles_P1.Count; i++)
                 //{
                 //    m_Projectiles_P1.ElementAt(i).Position += m_Projectiles_P1.ElementAt(i).projectileVelocity;

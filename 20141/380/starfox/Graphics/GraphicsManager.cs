@@ -29,7 +29,6 @@ namespace itp380
 		Game m_Game;
 		SpriteBatch m_SpriteBatch;
 		Texture2D m_Blank;
-        Texture2D m_HealthBar;
 
 		SpriteFont m_FPSFont;
 
@@ -94,9 +93,6 @@ namespace itp380
 						
 			// Load FPS font
 			m_FPSFont = m_Game.Content.Load<SpriteFont>("Fonts/FixedText");
-
-            //Healthbar
-            m_HealthBar = m_Game.Content.Load<Texture2D>("HealthBar_border") as Texture2D;
 
 			// Debug stuff for line drawing
 			m_Blank = new Texture2D(m_Graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
@@ -188,11 +184,6 @@ namespace itp380
 
 			// Draw the UI screens
 			GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch);
-
-            //Draw Healthbar
-            m_SpriteBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Gray);
-            m_SpriteBatch.Draw(m_HealthBar, new Rectangle(20, 30, (int)(m_HealthBar.Width * ((double)GameState.Get().p1health / 100)), 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Red);
-            m_SpriteBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 0, m_HealthBar.Width, 44), Color.White);
 
 			// Draw FPS counter
 			Vector2 vFPSPos = Vector2.Zero;
