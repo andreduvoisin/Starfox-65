@@ -8,6 +8,9 @@ namespace itp380.Objects
 {
     public class Ship : GameObject
     {
+        enum ShipMoveState { NORMAL, BROLL };
+        ShipMoveState m_MoveState;
+
         const float MAX_PITCH = (float)Math.PI * 3f/8f;
         const float PITCH_SPEED = (float).08f;
         const float YAW_SPEED = (float).07f;
@@ -23,6 +26,11 @@ namespace itp380.Objects
         // Yaw and Pitch
         float m_Yaw, m_Pitch;
 
+        // BarrelRoll Side and time
+        enum BarrelRollSide { LEFT, RIGHT };
+        BarrelRollSide m_RollSide;
+        float m_RollTime;
+
         private bool canFire;
         public bool CanFire
         {
@@ -35,12 +43,26 @@ namespace itp380.Objects
             m_ModelName = "ship1";
             Scale = 0.4f;
             canFire = true;
+            m_MoveState = ShipMoveState.NORMAL;
         }
 
         public override void Update(float fDeltaTime)
         {
             base.Update(fDeltaTime);
 
+            switch (m_MoveState)
+            {
+                case ShipMoveState.NORMAL:
+                    UpdateNormal(fDeltaTime);
+                    break;
+                case ShipMoveState.BROLL:
+                    UpdateBarrelRoll(fDeltaTime);
+                    break;
+            }
+        }
+
+        void UpdateNormal(float fDeltaTime)
+        {
             // Yaw
             m_Yaw += -InputManager.Get().LeftThumbstick.X * YAW_SPEED;
 
@@ -52,6 +74,20 @@ namespace itp380.Objects
 
             shipVelocity += Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
             shipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+        }
+
+        void UpdateBarrelRoll(float fDeltaTime)
+        {
+            float RollDirection = (m_RollSide == BarrelRollSide.RIGHT) ? 1f : -1f;
+            m_RollTime += fDeltaTime;
+
+            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitY, RollDirection * m_RollTime * (MathHelper.TwoPi / 2.0f));
+
+            if (m_RollTime >= 2.0f)
+            {
+                m_MoveState = ShipMoveState.NORMAL;
+                Rotation = Quaternion.CreateFromYawPitchRoll(m_Yaw, 0, m_Pitch);
+            }
         }
 
         public void fireCannonProjectile()
