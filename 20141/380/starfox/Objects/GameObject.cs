@@ -36,13 +36,6 @@ namespace itp380
 		// Anything that's timer logic is assumed to be affected by time factor
 		protected Utils.Timer m_Timer = new Utils.Timer();
 
-		float m_fAngle = 0.0f;
-		public float Angle
-		{
-			get { return m_fAngle; }
-			set { m_fAngle = value; m_bTransformDirty = true; }
-		}
-
         Quaternion m_Rotation = Quaternion.Identity;
         public Quaternion Rotation
         {

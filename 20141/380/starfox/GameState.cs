@@ -296,7 +296,6 @@ namespace itp380
             float asteroid_angle = (float)m_Random.Next(0, 628) / 100;
             //Set position and rotation of Asteroid
             obj_Asteroid.Position = new Vector3(x, y + (float)m_Random.Next(-100, 100) , z - 10 + (float)m_Random.Next(-100, 100));
-            obj_Asteroid.Angle = asteroid_angle;
             SpawnGameObject(obj_Asteroid);
         }
 
