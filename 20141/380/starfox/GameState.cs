@@ -46,6 +46,12 @@ namespace itp380
 			set	{ m_bPaused = value; }
 		}
 
+        List<Objects.Projectile> m_Projectiles;
+        public List<Objects.Projectile> Projectiles
+        {
+            get { return m_Projectiles; }
+        }
+
 		// Keeps track of all active game objects
 		LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
         public uint GOC
@@ -141,6 +147,9 @@ namespace itp380
 					
 			// TODO: Add any gameplay setup here
             m_Player = new Models.Player(m_Game);
+            
+            m_Projectiles = new List<Objects.Projectile>();
+            Player.Ship.fireCannonProjectile();
 
             m_Camera.CameraShipTarget = m_Player.Ship;
 
@@ -201,10 +210,9 @@ namespace itp380
                 m_Player.Ship.Position += m_Player.Ship.shipVelocity;
                 m_Player.Ship.shipVelocity -= ((m_Player.Ship.shipVelocity.Length() * m_Player.Ship.shipVelocity) * fDeltaTime) * shipSlowConstant;
 
-                int playerProjectileCount = Player.Projectiles.Count;
-                for (int i = 0; i < playerProjectileCount; i++)
+                foreach(Objects.Projectile projectile in Projectiles)
                 {
-                    Player.Projectiles.ElementAt(i).Position += Player.Projectiles.ElementAt(i).projectileVelocity;
+                    projectile.Position += projectile.projectileVelocity;
                 }
 			}
 		}
@@ -221,14 +229,14 @@ namespace itp380
             //Find player with this ship.  Not necessary yet.
             Objects.Projectile cannonShot = new Objects.Projectile(m_Game, ship);
             cannonShot.Position = ship.Position;
-            Player.Projectiles.Add(cannonShot);
+            Projectiles.Add(cannonShot);
             SpawnGameObject(cannonShot);
         }
 
         public void RemoveProjectile(Objects.Projectile projectile)
         {
             //Find player with this projectile.  Not necessary yet.  Use ship to search(max search of 4).
-            Player.Projectiles.Remove(projectile);
+            Projectiles.Remove(projectile);
             RemoveGameObject(projectile);
         }
 

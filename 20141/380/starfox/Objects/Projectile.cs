@@ -15,9 +15,10 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "ship_bullet";
-            Scale = 0.4f;
+            Scale = 0.7f;
             Rotation = Quaternion.Identity;
             projectileVelocity = projectileOwner.Forward * 10f;
+            m_Timer.AddTimer("BulletDeath", 2f, lifetimeReached, false);
         }
 
          public void lifetimeReached()
