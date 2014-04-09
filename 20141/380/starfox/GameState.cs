@@ -159,7 +159,7 @@ namespace itp380
             //[JEAN] Spawn Level
             m_Terrain = new Objects.grassfloor(m_Game);
             m_Terrain.Position = new Vector3(300, -30, 400);
-            m_Terrain.Rotation = new Quaternion(0, 0, 0, 0);
+            m_Terrain.Rotation = Quaternion.Identity;
             SpawnGameObject(m_Terrain);
         }
 

@@ -111,7 +111,7 @@ namespace itp380
 
         public Vector2 LeftThumbstick
         {
-            get { return GamePad.GetState(m_Index, GamePadDeadZone.Circular).ThumbSticks.Left; }
+            get { return GamePad.GetState(m_Index, GamePadDeadZone.IndependentAxes).ThumbSticks.Left; }
         }
 
         public Vector2 RightThumbstick

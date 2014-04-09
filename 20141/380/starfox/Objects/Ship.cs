@@ -8,6 +8,11 @@ namespace itp380.Objects
 {
     public class Ship : GameObject
     {
+        const float MAX_PITCH = (float)Math.PI * 3f/8f;
+        const float PITCH_SPEED = (float).08f;
+        const float YAW_SPEED = (float).07f;
+
+        const float SHIP_SPEED = (float).2f;
 
         //Ship Velocity
         public Vector3 shipVelocity = Vector3.Zero;
@@ -15,12 +20,14 @@ namespace itp380.Objects
         //Ship Position
         public Vector3 shipPosition = Vector3.Zero;
 
+        // Yaw and Pitch
+        float m_Yaw, m_Pitch;
+
         private bool canFire;
         public bool CanFire
         {
             get { return canFire; }
         }
-
 
         public Ship(Game game) :
             base(game)
@@ -35,13 +42,16 @@ namespace itp380.Objects
             base.Update(fDeltaTime);
 
             // Yaw
-            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitY, -InputManager.Get().LeftThumbstick.X * .10f);
+            m_Yaw += -InputManager.Get().LeftThumbstick.X * YAW_SPEED;
 
             // Pitch
-            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, InputManager.Get().LeftThumbstick.Y * .10f);
-            
-            shipVelocity += Forward * .1f * InputManager.Get().RightTrigger;
-            shipVelocity -= Forward * .1f * InputManager.Get().LeftTrigger;
+            m_Pitch += InputManager.Get().LeftThumbstick.Y * PITCH_SPEED;
+            m_Pitch = MathHelper.Clamp(m_Pitch, -MAX_PITCH * 0.7f, MAX_PITCH);
+
+            Rotation = Quaternion.CreateFromYawPitchRoll(m_Yaw, 0, m_Pitch);
+
+            shipVelocity += Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
+            shipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
         }
 
         public void fireCannonProjectile()
