@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework;
 
 namespace itp380.Objects
 {
-    public class Asteroid : GameObject
+    public class Reticle : GameObject
     {
-        public Asteroid(Game game) :
+        public Reticle(Game game) :
             base(game)
         {
-            m_ModelName = "Asteroid";
+            m_ModelName = "reticle";
             Scale = 0.75f;
         }
     }
