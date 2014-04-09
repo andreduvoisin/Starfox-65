@@ -82,7 +82,7 @@ namespace itp380
             m_Bindings.Add(eBindings.UI_Up, new BindInfo(eButton.DUp, eBindType.JustPressed));
             m_Bindings.Add(eBindings.UI_Down, new BindInfo(eButton.DDown, eBindType.JustPressed));
             // Game Bindings
-            m_Bindings.Add(eBindings.FireCannon, new BindInfo(eButton.RightShoulder, eBindType.JustPressed));
+            m_Bindings.Add(eBindings.FireCannon, new BindInfo(eButton.RightShoulder, eBindType.Held));
 			// TODO: Add any additional bindings here
 		}
 

@@ -269,7 +269,10 @@ namespace itp380
                 if (binds.ContainsKey(eBindings.FireCannon))
                 {
                     //Fire cannon.
-                    Player.Ship.fireCannonProjectile();
+                    if (Player.Ship.CanFire)
+                    {
+                        Player.Ship.fireCannonProjectile();
+                    }
                 }
 			}
 		}

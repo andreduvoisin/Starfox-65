@@ -15,11 +15,19 @@ namespace itp380.Objects
         //Ship Position
         public Vector3 shipPosition = Vector3.Zero;
 
+        private bool canFire;
+        public bool CanFire
+        {
+            get { return canFire; }
+        }
+
+
         public Ship(Game game) :
             base(game)
         {
             m_ModelName = "ship1";
             Scale = 0.4f;
+            canFire = true;
         }
 
         public override void Update(float fDeltaTime)
@@ -39,6 +47,13 @@ namespace itp380.Objects
         public void fireCannonProjectile()
         {
             GameState.Get().SpawnProjectile(this);
+            canFire = false;
+            m_Timer.AddTimer("EnableFire", .5f, enableFire, false);
+        }
+
+        public void enableFire()
+        {
+            canFire = true;
         }
     }
 }
