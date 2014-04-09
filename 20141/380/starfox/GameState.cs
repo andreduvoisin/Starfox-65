@@ -273,6 +273,8 @@ namespace itp380
                     {
                         Player.Ship.fireCannonProjectile();
                     }
+
+                    binds.Remove(eBindings.FireCannon);
                 }
 			}
 		}

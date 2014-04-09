@@ -53,6 +53,8 @@ namespace itp380
         UI_Down,
         // Game bindings
         FireCannon,
+        BRollLeft,
+        BRollRight,
         NUM_BINDINGS
     }
 
@@ -82,7 +84,9 @@ namespace itp380
             m_Bindings.Add(eBindings.UI_Up, new BindInfo(eButton.DUp, eBindType.JustPressed));
             m_Bindings.Add(eBindings.UI_Down, new BindInfo(eButton.DDown, eBindType.JustPressed));
             // Game Bindings
-            m_Bindings.Add(eBindings.FireCannon, new BindInfo(eButton.RightShoulder, eBindType.Held));
+            m_Bindings.Add(eBindings.FireCannon, new BindInfo(eButton.A, eBindType.Held));
+            m_Bindings.Add(eBindings.BRollLeft, new BindInfo(eButton.LeftShoulder, eBindType.JustPressed));
+            m_Bindings.Add(eBindings.BRollRight, new BindInfo(eButton.RightShoulder, eBindType.JustPressed));
 			// TODO: Add any additional bindings here
 		}
 
