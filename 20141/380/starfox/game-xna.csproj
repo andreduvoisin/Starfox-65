@@ -117,6 +117,7 @@
     <Compile Include="Models\Player.cs" />
     <Compile Include="Objects\Asteroid.cs" />
     <Compile Include="Objects\grassfloor.cs" />
+    <Compile Include="Objects\Projectile.cs" />
     <Compile Include="Objects\Ship.cs" />
     <Compile Include="Objects\GameObject.cs" />
     <Compile Include="Patterns\Singleton.cs" />

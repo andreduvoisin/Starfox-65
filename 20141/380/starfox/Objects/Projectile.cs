@@ -6,22 +6,23 @@ using Microsoft.Xna.Framework;
 
 namespace itp380.Objects
 {
-    class Projectile : GameObject
+    public class Projectile : GameObject
     {
         //Projectile Velocity
         public Vector3 projectileVelocity = Vector3.Zero;
 
-
-         public Projectile(Game game) :
+         public Projectile(Game game, Ship projectileOwner) :
             base(game)
         {
             m_ModelName = "ship_bullet";
             Scale = 0.4f;
-            projectileVelocity = Forward * 10f;
+            Angle = 0f;
+            projectileVelocity = projectileOwner.Forward * 10f;
         }
 
-
-
-
+         public void lifetimeReached()
+         {
+             GameState.Get().RemoveProjectile(this);
+         }
     }
 }

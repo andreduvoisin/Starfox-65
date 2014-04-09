@@ -36,9 +36,9 @@ namespace itp380.Objects
             shipVelocity -= Forward * .1f * InputManager.Get().LeftTrigger;
         }
 
-        public void fireProjectile()
+        public void fireCannonProjectile()
         {
-            
+            GameState.Get().SpawnProjectile(this);
         }
     }
 }
