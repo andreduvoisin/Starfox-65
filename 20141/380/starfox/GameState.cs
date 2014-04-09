@@ -48,6 +48,11 @@ namespace itp380
 
 		// Keeps track of all active game objects
 		LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
+        public uint GOC
+        {
+            get { return (uint)m_GameObjects.Count; }
+        }
+
         List<Objects.Asteroid> m_Asteroids = new List<Objects.Asteroid>(); // Asteroid Belt
         Objects.grassfloor m_Terrain;
 

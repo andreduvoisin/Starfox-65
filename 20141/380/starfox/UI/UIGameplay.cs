@@ -50,6 +50,10 @@ namespace itp380.UI
             DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Gray);
             DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, (int)(m_HealthBar.Width * ((double)GameState.Get().Player.Health / 100)), 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Red);
             DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 0, m_HealthBar.Width, 44), Color.White);
+
+            // Draw GOC (Game Object Count)
+            string GOC = String.Format("GOC: {0}", GameState.Get().GOC);
+            DrawBatch.DrawString(m_FixedFont, GOC, new Vector2(0, 50), Color.White);
 		}
 
 		public override void GamepadInput(SortedList<eBindings, BindInfo> binds)
