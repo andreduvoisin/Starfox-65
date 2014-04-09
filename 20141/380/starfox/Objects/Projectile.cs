@@ -16,7 +16,7 @@ namespace itp380.Objects
         {
             m_ModelName = "ship_bullet";
             Scale = 0.4f;
-            Angle = 0f;
+            Rotation = Quaternion.Identity;
             projectileVelocity = projectileOwner.Forward * 10f;
         }
 
