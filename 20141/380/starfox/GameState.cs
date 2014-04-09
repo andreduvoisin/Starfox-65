@@ -196,10 +196,12 @@ namespace itp380
 				// TODO: Any update code not for a specific game object should go here
                 m_Player.Ship.Position += m_Player.Ship.shipVelocity;
                 m_Player.Ship.shipVelocity -= ((m_Player.Ship.shipVelocity.Length() * m_Player.Ship.shipVelocity) * fDeltaTime) * shipSlowConstant;
-                //for (int i = 0; i < m_Projectiles_P1.Count; i++)
-                //{
-                //    m_Projectiles_P1.ElementAt(i).Position += m_Projectiles_P1.ElementAt(i).projectileVelocity;
-                //}
+
+                int playerProjectileCount = Player.Projectiles.Count;
+                for (int i = 0; i < playerProjectileCount; i++)
+                {
+                    Player.Projectiles.ElementAt(i).Position += Player.Projectiles.ElementAt(i).projectileVelocity;
+                }
 
                 // Calculate camera matrix to follow the ship.
                 m_Camera.ComputeMatrix();
@@ -212,6 +214,24 @@ namespace itp380
 			m_GameObjects.AddLast(o);
 			GraphicsManager.Get().AddGameObject(o);
 		}
+
+        public void SpawnProjectile(Objects.Ship ship)
+        {
+            //Find player with this ship.  Not necessary yet.
+            Objects.Projectile cannonShot = new Objects.Projectile(m_Game, ship);
+            cannonShot.Position = ship.Position;
+            Player.Projectiles.Add(cannonShot);
+            SpawnGameObject(cannonShot);
+        }
+
+        public void RemoveProjectile(Objects.Projectile projectile)
+        {
+            //Find player with this projectile.  Not necessary yet.  Use ship to search(max search of 4).
+            Player.Projectiles.Remove(projectile);
+            RemoveGameObject(projectile);
+        }
+
+
 
 		public void RemoveGameObject(GameObject o, bool bRemoveFromList = true)
 		{
@@ -237,7 +257,11 @@ namespace itp380
 		{
 			if (m_State == eGameState.Gameplay && !IsPaused)
 			{
-				// TODO: Add keyboard input handling for Gameplay
+                if (binds.ContainsKey(eBindings.FireCannon))
+                {
+                    //Fire cannon.
+                    Player.Ship.fireCannonProjectile();
+                }
 			}
 		}
 
