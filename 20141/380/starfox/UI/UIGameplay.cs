@@ -24,12 +24,17 @@ namespace itp380.UI
 		SpriteFont m_FixedSmall;
 		SpriteFont m_StatusFont;
 
+        Texture2D m_HealthBar;
+
 		public UIGameplay(ContentManager Content) :
 			base(Content)
 		{
 			m_FixedFont = Content.Load<SpriteFont>("Fonts/FixedText");
 			m_FixedSmall = Content.Load<SpriteFont>("Fonts/FixedSmall");
 			m_StatusFont = Content.Load<SpriteFont>("Fonts/FixedTitle");
+
+            //Healthbar
+            m_HealthBar = Content.Load<Texture2D>("HealthBar_border") as Texture2D;
 		}
 
 		public override void Update(float fDeltaTime)
@@ -40,6 +45,11 @@ namespace itp380.UI
 		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch)
 		{	
 			base.Draw(fDeltaTime, DrawBatch);
+
+            //Draw Healthbar
+            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Gray);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, (int)(m_HealthBar.Width * ((double)GameState.Get().Player.Health / 100)), 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Red);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 0, m_HealthBar.Width, 44), Color.White);
 		}
 
 		public override void GamepadInput(SortedList<eBindings, BindInfo> binds)
