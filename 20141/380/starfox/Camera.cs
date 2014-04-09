@@ -20,7 +20,7 @@ namespace itp380
 	{
 		Game m_Game;
 
-		Vector3 m_vEye = new Vector3(0, 0, 10);
+		Vector3 m_vCameraPosition = new Vector3(0, 0, 10);
 		Vector3 m_vTarget = Vector3.Zero;
 
         Ship m_ShipTarget;
@@ -38,33 +38,40 @@ namespace itp380
 
         float fHDist = 10.0f;
         float fVDist = 3.0f;
+        float fSpringConstant;
+        float fDampConstant;
+        Vector3 vCameraVelocity = Vector3.Zero;
 
 		public Camera(Game game)
 		{
 			m_Game = game;
-			//ComputeMatrix();
+
+            fSpringConstant = 256.0f;
+            fDampConstant = 2.0f * (float)Math.Sqrt(fSpringConstant);
 		}
 
 		public void Update(float fDeltaTime)
 		{
 			// TODO: If we want a moving camera, we need to make changes here
+            ComputeMatrix(fDeltaTime);
 		}
 
-		public void ComputeMatrix()
-		{
+		public void ComputeMatrix(float fDeltaTime)
+        {
             Vector3 vShipForward = Vector3.Normalize(m_ShipTarget.Forward);
             Vector3 vShipUp = Vector3.Normalize(m_ShipTarget.Up);
-            m_vEye = m_ShipTarget.Position - (vShipForward * fHDist) + (vShipUp * fVDist);
-            Vector3 vCameraForward = Vector3.Normalize(m_ShipTarget.Position - m_vEye);
+            Vector3 vIdealPosition = m_ShipTarget.Position - (vShipForward * fHDist) + (vShipUp * fVDist);
+            
+            Vector3 vDisplacement = m_vCameraPosition - vIdealPosition;
+            Vector3 vSpringAccel = (-fSpringConstant * vDisplacement) - (fDampConstant * vCameraVelocity);
+            vCameraVelocity += vSpringAccel * fDeltaTime;
+            m_vCameraPosition += vCameraVelocity * fDeltaTime;
+
+            Vector3 vCameraForward = Vector3.Normalize(m_ShipTarget.Position - m_vCameraPosition);
             Vector3 vCameraLeft = Vector3.Normalize(Vector3.Cross(vShipUp, vCameraForward));
             Vector3 vCameraUp = Vector3.Normalize(Vector3.Cross(vCameraForward, vCameraLeft));
 
-            m_Camera = Matrix.CreateLookAt(m_vEye, m_ShipTarget.Position, vCameraUp);
-            
-            //Vector3 vEye = m_vEye;
-            //Vector3 vTarget = m_vTarget;
-            //Vector3 vUp = Vector3.Cross(Vector3.Zero - vEye, Vector3.Left);
-            //m_Camera = Matrix.CreateLookAt(vEye, vTarget, vUp);
+            m_Camera = Matrix.CreateLookAt(m_vCameraPosition, m_ShipTarget.Position, vCameraUp);
 		}
 	}
 }

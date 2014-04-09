@@ -143,7 +143,6 @@ namespace itp380
             m_Player = new Models.Player(m_Game);
 
             m_Camera.CameraShipTarget = m_Player.Ship;
-            m_Camera.ComputeMatrix();
 
             //JEAN Spawn Asteroid Belt
             SpawnAsteroidBelt();
@@ -207,9 +206,6 @@ namespace itp380
                 {
                     Player.Projectiles.ElementAt(i).Position += Player.Projectiles.ElementAt(i).projectileVelocity;
                 }
-
-                // Calculate camera matrix to follow the ship.
-                m_Camera.ComputeMatrix();
 			}
 		}
 
