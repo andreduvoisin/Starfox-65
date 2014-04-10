@@ -10,13 +10,15 @@ namespace itp380.Objects
     {
         //Projectile Velocity
         public Vector3 projectileVelocity = Vector3.Zero;
+        public Ship projectileOwner;
 
          public Projectile(Game game, Ship projectileOwner) :
             base(game)
         {
             m_ModelName = "ship_bullet";
             Scale = 0.7f;
-            Rotation = Quaternion.Identity;
+            Rotation = projectileOwner.Rotation;
+            this.projectileOwner = projectileOwner;
             projectileVelocity = projectileOwner.Forward * 8f;
             m_Timer.AddTimer("BulletDeath", 2f, lifetimeReached, false);
         }

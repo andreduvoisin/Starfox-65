@@ -29,7 +29,7 @@ namespace itp380
 		// Load the SFX
 		public void LoadContent(ContentManager Content)
 		{
-			m_Sounds.Add("Shoot", Content.Load<SoundEffect>("Sounds/Shoot"));
+			m_Sounds.Add("Shoot", Content.Load<SoundEffect>("Sounds/arwing_shot"));
 			m_Sounds.Add("MenuClick", Content.Load<SoundEffect>("Sounds/MenuClick"));
 			m_Sounds.Add("Build", Content.Load<SoundEffect>("Sounds/Build"));
 			m_Sounds.Add("GameOver", Content.Load<SoundEffect>("Sounds/GameOver"));
