@@ -15,6 +15,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace itp380
 {
@@ -27,6 +29,11 @@ namespace itp380
 
 	public class GameState : itp380.Patterns.Singleton<GameState>
 	{
+        
+        SoundEffect soundEngine;
+        SoundEffectInstance soundEngineInstance;
+        
+
 		Game m_Game;
 		eGameState m_State;
         Random m_Random = new Random();
@@ -140,11 +147,14 @@ namespace itp380
 			m_UIGameplay = new UI.UIGameplay(m_Game.Content);
 			m_UIStack.Push(m_UIGameplay);
 
+            IServiceProvider services;
 			m_bPaused = false;
 			GraphicsManager.Get().ResetProjection();
 			
 			m_Timer.RemoveAll();
-					
+
+            soundEngine = m_Game.Content.Load<SoundEffect>(".\\Sounds\\engine_flying");
+            soundEngineInstance = soundEngine.CreateInstance();
 			// TODO: Add any gameplay setup here
             m_Player = new Models.Player(m_Game);
             
@@ -209,6 +219,7 @@ namespace itp380
 				// TODO: Any update code not for a specific game object should go here
                 m_Player.Ship.Position += m_Player.Ship.shipVelocity;
                 m_Player.Ship.shipVelocity -= ((m_Player.Ship.shipVelocity.Length() * m_Player.Ship.shipVelocity) * fDeltaTime) * shipSlowConstant;
+                updateEngineSound();
 
                 foreach(Objects.Projectile projectile in Projectiles)
                 {
@@ -230,6 +241,7 @@ namespace itp380
             Objects.Projectile cannonShot = new Objects.Projectile(m_Game, ship);
             cannonShot.Position = ship.Position;
             Projectiles.Add(cannonShot);
+            SoundManager.Get().PlaySoundCue("Shoot");
             SpawnGameObject(cannonShot);
         }
 
@@ -240,7 +252,28 @@ namespace itp380
             RemoveGameObject(projectile);
         }
 
-
+        public void updateEngineSound()
+        {
+            //Play engine sound only when the engine is on.
+            soundEngineInstance.Pitch = InputManager.Get().RightTrigger/4;
+                if (InputManager.Get().RightTrigger > 0)
+                {
+                    soundEngineInstance.Volume = .65f;
+                    if (soundEngineInstance.State == SoundState.Stopped)
+                    {
+                        soundEngineInstance.Volume = 0.75f;
+                        soundEngineInstance.IsLooped = true;
+                        soundEngineInstance.Play();
+                    }
+                    else
+                        soundEngineInstance.Resume();
+                }
+                else if (InputManager.Get().RightTrigger == 0)
+                {
+                    if (soundEngineInstance.State == SoundState.Playing)
+                        soundEngineInstance.Volume = .4f;
+                }
+        }
 
 		public void RemoveGameObject(GameObject o, bool bRemoveFromList = true)
 		{

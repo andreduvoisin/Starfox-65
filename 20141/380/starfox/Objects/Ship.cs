@@ -94,7 +94,7 @@ namespace itp380.Objects
         {
             GameState.Get().SpawnProjectile(this);
             canFire = false;
-            m_Timer.AddTimer("EnableFire", .5f, enableFire, false);
+            m_Timer.AddTimer("EnableFire", .3f, enableFire, false);
         }
 
         public void enableFire()
