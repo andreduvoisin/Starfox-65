@@ -24,11 +24,6 @@ namespace itp380
 		Vector3 m_vTarget = Vector3.Zero;
 
         Ship m_ShipTarget;
-        public Ship CameraShipTarget
-        {
-            get { return m_ShipTarget; }
-            set { m_ShipTarget = value; }
-        }
 		
 		Matrix m_Camera;
 		public Matrix CameraMatrix
@@ -42,9 +37,10 @@ namespace itp380
         float fDampConstant;
         Vector3 vCameraVelocity = Vector3.Zero;
 
-		public Camera(Game game)
+		public Camera(Game game, Ship ship)
 		{
 			m_Game = game;
+            m_ShipTarget = ship;
 
             fSpringConstant = 512.0f;
             fDampConstant = 1.4f * (float)Math.Sqrt(fSpringConstant);
@@ -58,18 +54,22 @@ namespace itp380
 
 		public void ComputeMatrix(float fDeltaTime)
         {
-            Vector3 vShipForward = Vector3.Normalize(m_ShipTarget.Forward);
-            Vector3 vShipUp = Vector3.Normalize(m_ShipTarget.Up);
-            Vector3 vIdealPosition = m_ShipTarget.Position - (vShipForward * fHDist) + (vShipUp * fVDist);
-            
-            Vector3 vDisplacement = m_vCameraPosition - vIdealPosition;
-            Vector3 vSpringAccel = (-fSpringConstant * vDisplacement) - (fDampConstant * vCameraVelocity);
+            Vector3 vShipForward, vShipUp, vIdealPosition;
+            Vector3 vDisplacement, vSpringAccel;
+            Vector3 vCameraForward, vCameraLeft, vCameraUp;
+
+            vShipForward = Vector3.Normalize(m_ShipTarget.Forward);
+            vShipUp = Vector3.Normalize(m_ShipTarget.CameraUp);
+            vIdealPosition = m_ShipTarget.Position - (vShipForward * fHDist) + (vShipUp * fVDist);
+
+            vDisplacement = m_vCameraPosition - vIdealPosition;
+            vSpringAccel = (-fSpringConstant * vDisplacement) - (fDampConstant * vCameraVelocity);
             vCameraVelocity += vSpringAccel * fDeltaTime;
             m_vCameraPosition += vCameraVelocity * fDeltaTime;
 
-            Vector3 vCameraForward = Vector3.Normalize(m_ShipTarget.Position - m_vCameraPosition);
-            Vector3 vCameraLeft = Vector3.Normalize(Vector3.Cross(vShipUp, vCameraForward));
-            Vector3 vCameraUp = Vector3.Normalize(Vector3.Cross(vCameraForward, vCameraLeft));
+            vCameraForward = Vector3.Normalize(m_ShipTarget.Position - m_vCameraPosition);
+            vCameraLeft = Vector3.Normalize(Vector3.Cross(vShipUp, vCameraForward));
+            vCameraUp = Vector3.Normalize(Vector3.Cross(vCameraForward, vCameraLeft));
 
             m_Camera = Matrix.CreateLookAt(m_vCameraPosition, m_ShipTarget.Position, vCameraUp);
 		}
