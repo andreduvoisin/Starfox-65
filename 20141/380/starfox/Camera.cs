@@ -46,8 +46,8 @@ namespace itp380
 		{
 			m_Game = game;
 
-            fSpringConstant = 256.0f;
-            fDampConstant = 2.0f * (float)Math.Sqrt(fSpringConstant);
+            fSpringConstant = 512.0f;
+            fDampConstant = 1.4f * (float)Math.Sqrt(fSpringConstant);
 		}
 
 		public void Update(float fDeltaTime)
