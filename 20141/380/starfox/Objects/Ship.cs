@@ -11,11 +11,13 @@ namespace itp380.Objects
         enum ShipMoveState { NORMAL, BROLL };
         ShipMoveState m_MoveState;
 
-        const float MAX_PITCH = (float)Math.PI * 3f/8f;
-        const float PITCH_SPEED = (float).08f;
-        const float YAW_SPEED = (float).07f;
+        const float MAX_PITCH       = (float)Math.PI * 5f/16f;
+        const float PITCH_SPEED     = .08f;
+        const float PITCH_DAMP      = .91f;
+        const float YAW_SPEED       = .07f;
 
-        const float SHIP_SPEED = (float).2f;
+        const float SHIP_SPEED      = .1f;
+        const float SHIP_FRICTION   = 3f;
 
         //Ship Velocity
         public Vector3 shipVelocity = Vector3.Zero;
@@ -68,12 +70,20 @@ namespace itp380.Objects
 
             // Pitch
             m_Pitch += InputManager.Get().LeftThumbstick.Y * PITCH_SPEED;
-            m_Pitch = MathHelper.Clamp(m_Pitch, -MAX_PITCH * 0.7f, MAX_PITCH);
+            m_Pitch = MathHelper.Clamp(m_Pitch, -MAX_PITCH, MAX_PITCH);
+
+            // Hack for pitch to force it to return to 0 when player is not going up/down.
+            if (Math.Abs(InputManager.Get().LeftThumbstick.Y) == 0)
+                m_Pitch *= PITCH_DAMP;
 
             Rotation = Quaternion.CreateFromYawPitchRoll(m_Yaw, 0, m_Pitch);
 
             shipVelocity += Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
             shipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+
+            Position += shipVelocity;
+            shipVelocity -= shipVelocity * SHIP_FRICTION * fDeltaTime;
+            GameState.Get().updateEngineSound();
         }
 
         void UpdateBarrelRoll(float fDeltaTime)
@@ -94,12 +104,7 @@ namespace itp380.Objects
         {
             GameState.Get().SpawnProjectile(this);
             canFire = false;
-            m_Timer.AddTimer("EnableFire", .3f, enableFire, false);
-        }
-
-        public void enableFire()
-        {
-            canFire = true;
+            m_Timer.AddTimer("EnableFire", .3f, () => { canFire = true; }, false);
         }
     }
 }

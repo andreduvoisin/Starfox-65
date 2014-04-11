@@ -41,8 +41,6 @@ namespace itp380
 			get { return m_State; }
 		}
 
-        const float shipSlowConstant = 45f;
-
 		eGameState m_NextState;
 		Stack<UI.UIScreen> m_UIStack;
 		bool m_bPaused = false;
@@ -215,9 +213,6 @@ namespace itp380
 				m_Timer.Update(fDeltaTime);
 
 				// TODO: Any update code not for a specific game object should go here
-                m_Player.Ship.Position += m_Player.Ship.shipVelocity;
-                m_Player.Ship.shipVelocity -= ((m_Player.Ship.shipVelocity.Length() * m_Player.Ship.shipVelocity) * fDeltaTime) * shipSlowConstant;
-                updateEngineSound();
 
                 foreach(Objects.Projectile projectile in Projectiles)
                 {
