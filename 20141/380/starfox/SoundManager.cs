@@ -38,6 +38,7 @@ namespace itp380
 			m_Sounds.Add("Snared", Content.Load<SoundEffect>("Sounds/Snared"));
 			m_Sounds.Add("Alarm", Content.Load<SoundEffect>("Sounds/Alarm"));
             m_Sounds.Add("FlyingSound", Content.Load<SoundEffect>(".\\Sounds\\engine_flying"));
+            m_Sounds.Add("BarrelRoll", Content.Load<SoundEffect>(".\\Sounds\\barrel_roll"));
 			// TODO: Add any additional sounds here
 		}
 
