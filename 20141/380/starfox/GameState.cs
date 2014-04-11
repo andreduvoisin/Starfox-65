@@ -243,6 +243,12 @@ namespace itp380
             RemoveGameObject(projectile);
         }
 
+        public void SpawnReticle(Objects.Ship ship)
+        {
+            ship.m_Reticle = new Objects.Reticle(m_Game, ship);
+            SpawnGameObject(ship.m_Reticle);
+        }
+
         public void updateEngineSound()
         {
             //Play engine sound only when the engine is on.

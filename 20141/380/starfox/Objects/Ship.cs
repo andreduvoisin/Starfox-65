@@ -55,6 +55,9 @@ namespace itp380.Objects
         BarrelRollSide m_RollSide;
         float m_RollTime;
 
+        // Reticle
+        public Reticle m_Reticle;
+
         private bool canFire;
         public bool CanFire
         {
@@ -68,6 +71,7 @@ namespace itp380.Objects
             Scale = 0.4f;
             canFire = true;
             m_MoveState = ShipMoveState.NORMAL;
+            GameState.Get().SpawnReticle(this);
         }
 
         public override void Update(float fDeltaTime)
