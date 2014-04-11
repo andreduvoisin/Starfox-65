@@ -234,7 +234,7 @@ namespace itp380
             Objects.Projectile cannonShot = new Objects.Projectile(m_Game, ship);
             cannonShot.Position = ship.Position;
             Projectiles.Add(cannonShot);
-            SoundManager.Get().PlaySoundCue("Shoot");
+            SoundManager.Get().PlaySoundCue("BarrelRoll");
             SpawnGameObject(cannonShot);
         }
 
