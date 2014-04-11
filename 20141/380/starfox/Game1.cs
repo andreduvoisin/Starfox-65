@@ -40,7 +40,7 @@ namespace itp380
 			{
 				IsMouseVisible = false;
 			}
-			Window.Title = "MonoTower";
+			Window.Title = "Starfox 65";
 			Content.RootDirectory = "Content";
 		}
 

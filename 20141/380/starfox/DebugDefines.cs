@@ -21,6 +21,6 @@ namespace itp380
 		public static bool bShowBuildString = true;
 		public static bool bShowWindowsMouseCursor = true;
 		public static bool bShowGlobalPath = true;
-		public static string DebugName = "MonoTower";
+		public static string DebugName = "Starfox 65";
 	}
 }

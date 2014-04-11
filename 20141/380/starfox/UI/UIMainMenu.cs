@@ -34,7 +34,7 @@ namespace itp380.UI
 			vPos.X = (int) (GraphicsManager.Get().Width / 2.0f);
 			vPos.Y = (int)(GraphicsManager.Get().Height / 2.0f);
 
-			m_Title = "MonoTower";
+			m_Title = "Starfox 65";
 
 			m_Buttons.AddLast(new Button(vPos, "New Game", 
 				m_ButtonFont, Color.DarkBlue, 
