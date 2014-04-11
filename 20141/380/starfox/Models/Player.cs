@@ -19,11 +19,18 @@ namespace itp380.Models
         {
             get { return m_Ship; }
         }
+
+        Camera m_Camera;
+        public Camera Camera
+        {
+            get { return m_Camera; }
+        }
                 
         public Player(Game game)
         {
             m_Health = 100;
             m_Ship = new Objects.Ship(game);
+            m_Camera = new Camera(game, m_Ship);
             GameState.Get().SpawnGameObject(m_Ship);
         }
     }

@@ -67,15 +67,15 @@ namespace itp380
         Objects.grassfloor m_Terrain;
 
 		// Camera Information
-		Camera m_Camera;
+        Models.Player m_DisplayedPlayer;
 		public Camera Camera
 		{
-			get { return m_Camera; }
+			get { return m_DisplayedPlayer.Camera; }
 		}
 
 		public Matrix CameraMatrix
 		{
-			get { return m_Camera.CameraMatrix; }
+			get { return m_DisplayedPlayer.Camera.CameraMatrix; }
 		}
 
 		// Timer class for the global GameState
@@ -96,8 +96,6 @@ namespace itp380
 			m_Game = game;
 			m_State = eGameState.None;
 			m_UIStack = new Stack<UI.UIScreen>();
-
-			m_Camera = new Camera(m_Game);
 		}
 
 		public void SetState(eGameState NewState)
@@ -157,7 +155,7 @@ namespace itp380
             m_Projectiles = new List<Objects.Projectile>();
             Player.Ship.fireCannonProjectile();
 
-            m_Camera.CameraShipTarget = m_Player.Ship;
+            m_DisplayedPlayer = m_Player;
 
             //JEAN Spawn Asteroid Belt
             SpawnAsteroidBelt();
@@ -198,7 +196,7 @@ namespace itp380
 		{
 			if (!IsPaused)
 			{
-				m_Camera.Update(fDeltaTime);
+				Camera.Update(fDeltaTime);
 
 				// Update objects in the world
 				// We have to make a temp copy in case the objects list changes
@@ -301,6 +299,18 @@ namespace itp380
                     }
 
                     binds.Remove(eBindings.FireCannon);
+                }
+
+                if (binds.ContainsKey(eBindings.BRollLeft))
+                {
+                    Player.Ship.PerformRoll(Objects.Ship.BarrelRollSide.LEFT);
+                    binds.Remove(eBindings.BRollLeft);
+                }
+
+                if (binds.ContainsKey(eBindings.BRollRight))
+                {
+                    Player.Ship.PerformRoll(Objects.Ship.BarrelRollSide.RIGHT);
+                    binds.Remove(eBindings.BRollRight);
                 }
 			}
 		}
