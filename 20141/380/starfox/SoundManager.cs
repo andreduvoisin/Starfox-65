@@ -37,6 +37,7 @@ namespace itp380
 			m_Sounds.Add("Error", Content.Load<SoundEffect>("Sounds/Error"));
 			m_Sounds.Add("Snared", Content.Load<SoundEffect>("Sounds/Snared"));
 			m_Sounds.Add("Alarm", Content.Load<SoundEffect>("Sounds/Alarm"));
+            m_Sounds.Add("FlyingSound", Content.Load<SoundEffect>(".\\Sounds\\engine_flying"));
 			// TODO: Add any additional sounds here
 		}
 
@@ -44,5 +45,10 @@ namespace itp380
 		{
 			m_Sounds[cue].Play();
 		}
+
+        public SoundEffect GetSoundEffect(string cue)
+        {
+            return m_Sounds[cue];
+        }
 	}
 }
