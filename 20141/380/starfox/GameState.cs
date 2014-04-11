@@ -30,8 +30,7 @@ namespace itp380
 	public class GameState : itp380.Patterns.Singleton<GameState>
 	{
         
-        SoundEffect soundEngine;
-        SoundEffectInstance soundEngineInstance;
+        SoundEffectInstance flightSoundInstance;
         
 
 		Game m_Game;
@@ -147,14 +146,13 @@ namespace itp380
 			m_UIGameplay = new UI.UIGameplay(m_Game.Content);
 			m_UIStack.Push(m_UIGameplay);
 
-            IServiceProvider services;
 			m_bPaused = false;
 			GraphicsManager.Get().ResetProjection();
 			
 			m_Timer.RemoveAll();
 
-            soundEngine = m_Game.Content.Load<SoundEffect>(".\\Sounds\\engine_flying");
-            soundEngineInstance = soundEngine.CreateInstance();
+
+            flightSoundInstance = SoundManager.Get().GetSoundEffect("FlyingSound").CreateInstance();
 			// TODO: Add any gameplay setup here
             m_Player = new Models.Player(m_Game);
             
@@ -255,23 +253,23 @@ namespace itp380
         public void updateEngineSound()
         {
             //Play engine sound only when the engine is on.
-            soundEngineInstance.Pitch = InputManager.Get().RightTrigger/4;
+            flightSoundInstance.Pitch = InputManager.Get().RightTrigger/4;
                 if (InputManager.Get().RightTrigger > 0)
                 {
-                    soundEngineInstance.Volume = .65f;
-                    if (soundEngineInstance.State == SoundState.Stopped)
+                    flightSoundInstance.Volume = .65f;
+                    if (flightSoundInstance.State == SoundState.Stopped)
                     {
-                        soundEngineInstance.Volume = 0.75f;
-                        soundEngineInstance.IsLooped = true;
-                        soundEngineInstance.Play();
+                        flightSoundInstance.Volume = 0.75f;
+                        flightSoundInstance.IsLooped = true;
+                        flightSoundInstance.Play();
                     }
                     else
-                        soundEngineInstance.Resume();
+                        flightSoundInstance.Resume();
                 }
                 else if (InputManager.Get().RightTrigger == 0)
                 {
-                    if (soundEngineInstance.State == SoundState.Playing)
-                        soundEngineInstance.Volume = .4f;
+                    if (flightSoundInstance.State == SoundState.Playing)
+                        flightSoundInstance.Volume = .4f;
                 }
         }
 
