@@ -18,6 +18,7 @@ namespace itp380.Objects
 
         const float SHIP_SPEED      = .1f;
         const float SHIP_FRICTION   = 3f;
+        const int SHIP_CEILING      = 150;
 
         //Ship Velocity
         public Vector3 shipVelocity = Vector3.Zero;
@@ -73,13 +74,26 @@ namespace itp380.Objects
             m_Pitch = MathHelper.Clamp(m_Pitch, -MAX_PITCH, MAX_PITCH);
 
             // Hack for pitch to force it to return to 0 when player is not going up/down.
-            if (Math.Abs(InputManager.Get().LeftThumbstick.Y) == 0)
+            if ((Math.Abs(InputManager.Get().LeftThumbstick.Y) == 0) || Position.Y > SHIP_CEILING)
                 m_Pitch *= PITCH_DAMP;
 
             Rotation = Quaternion.CreateFromYawPitchRoll(m_Yaw, 0, m_Pitch);
 
-            shipVelocity += Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
-            shipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+            if (Position.Y > SHIP_CEILING)
+            {
+                Vector3 tempShipVel = Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
+                if (tempShipVel.Y > 0)
+                {
+                    tempShipVel.Y = 0;
+                }
+                shipVelocity += tempShipVel;
+                shipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+            }
+            else
+            {
+                shipVelocity += Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
+                shipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+            }
 
             Position += shipVelocity;
             shipVelocity -= shipVelocity * SHIP_FRICTION * fDeltaTime;
