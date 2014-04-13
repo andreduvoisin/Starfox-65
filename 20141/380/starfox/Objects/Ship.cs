@@ -29,23 +29,10 @@ namespace itp380.Objects
         }
 
         //Ship Velocity
-        public Vector3 shipVelocity = Vector3.Zero;
+        Vector3 m_ShipVelocity = Vector3.Zero;
 
         //Ship Position
-        public Vector3 shipPosition = Vector3.Zero;
-
-        // Camera Ship Up
-        Vector3 m_CameraUp;
-        public Vector3 CameraUp
-        {
-            get
-            {
-                if (m_MoveState == ShipMoveState.BROLL)
-                    return m_CameraUp;
-                else
-                    return Up;
-            }
-        }
+        Vector3 m_ShipPosition = Vector3.Zero;
 
         // Yaw and Pitch
         float m_Yaw, m_Pitch;
@@ -71,7 +58,6 @@ namespace itp380.Objects
             Scale = 0.4f;
             canFire = true;
             m_MoveState = ShipMoveState.NORMAL;
-            GameState.Get().SpawnReticle(this);
         }
 
         public override void Update(float fDeltaTime)
@@ -93,14 +79,12 @@ namespace itp380.Objects
         void UpdateSpeed(float fDeltaTime)
         {
             // Update position, hold speed.
-            Position += shipVelocity;
+            Position += m_ShipVelocity;
             GameState.Get().updateEngineSound();
         }
 
         void UpdateNormal(float fDeltaTime)
         {
-            m_CameraUp = Up;
-
             // Yaw
             m_Yaw += -InputManager.Get().LeftThumbstick.X * YAW_SPEED;
 
@@ -112,7 +96,10 @@ namespace itp380.Objects
             if ((Math.Abs(InputManager.Get().LeftThumbstick.Y) == 0) || Position.Y > SHIP_CEILING)
                 m_Pitch *= PITCH_DAMP;
 
-            Rotation = Quaternion.CreateFromYawPitchRoll(m_Yaw, 0, m_Pitch);
+            Rotation = Quaternion.CreateFromYawPitchRoll(
+                m_Yaw,
+                InputManager.Get().LeftThumbstick.X,
+                m_Pitch);
 
             // Update velocity, don't change position.
             if (Position.Y > SHIP_CEILING)
@@ -122,17 +109,17 @@ namespace itp380.Objects
                 {
                     tempShipVel.Y = 0;
                 }
-                shipVelocity += tempShipVel;
-                shipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+                m_ShipVelocity += tempShipVel;
+                m_ShipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
             }
             else
             {
-                shipVelocity += Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
-                shipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+                m_ShipVelocity += Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
+                m_ShipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
             }
 
             // Only reduce speed in normal mode.
-            shipVelocity -= shipVelocity * SHIP_FRICTION * fDeltaTime;
+            m_ShipVelocity -= m_ShipVelocity * SHIP_FRICTION * fDeltaTime;
         }
 
         public void PerformRoll(BarrelRollSide Side)
