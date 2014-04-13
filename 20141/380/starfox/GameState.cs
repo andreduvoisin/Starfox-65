@@ -243,9 +243,9 @@ namespace itp380
             RemoveGameObject(projectile);
         }
 
-        public void SpawnReticle(Objects.Ship ship)
+        public void SpawnReticle(Objects.Ship ship, Camera camera)
         {
-            ship.m_Reticle = new Objects.Reticle(m_Game, ship);
+            ship.m_Reticle = new Objects.Reticle(m_Game, ship, camera);
             SpawnGameObject(ship.m_Reticle);
         }
 
