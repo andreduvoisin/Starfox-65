@@ -42,6 +42,12 @@ namespace itp380
         float fDampConstant;
         Vector3 vCameraVelocity = Vector3.Zero;
 
+        // To compute the camera matrix...
+        public Vector3 vShipForward, vShipUp, vIdealPosition;
+        public Vector3 vDisplacement, vSpringAccel;
+        public Vector3 vCameraForward, vCameraLeft, vCameraUp;
+        public Vector3 TargetPosition;
+
 		public Camera(Game game, Ship ship)
 		{
 			m_Game = game;
@@ -59,11 +65,6 @@ namespace itp380
 
 		public void ComputeMatrix(float fDeltaTime)
         {
-            Vector3 vShipForward, vShipUp, vIdealPosition;
-            Vector3 vDisplacement, vSpringAccel;
-            Vector3 vCameraForward, vCameraLeft, vCameraUp;
-            Vector3 TargetPosition;
-
             TargetPosition = m_ShipTarget.Position + m_ShipTarget.Forward * TRACKPOINT;
 
             vShipForward = m_ShipTarget.Forward;
