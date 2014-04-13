@@ -25,16 +25,14 @@ namespace itp380.Objects
         public override void Update(float fDeltaTime)
         {
             Position = m_Ship.Position + m_Ship.Forward * 25;
-            // Need to change model orientation or function won't work.
-            /*Rotation = Quaternion.CreateFromRotationMatrix(
-                Matrix.CreateBillboard(Position, m_Camera.Position, Vector3.UnitY, null));*/
+            Rotation = Quaternion.CreateFromAxisAngle(Vector3.Cross(m_Ship.Forward, m_Camera.vCameraUp), 90f);
         }
 
         public override void Draw(float fDeltaTime)
         {
-            //GraphicsDevice.BlendState = BlendState.Additive;
+            //GraphicsManager.Get().GraphicsDevice.BlendState = BlendState.Additive;
             base.Draw(fDeltaTime);
-
+            //GraphicsManager.Get().GraphicsDevice.BlendState = BlendState.Opaque;
         }
     }
 }
