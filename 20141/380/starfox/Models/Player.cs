@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace itp380.Models
 {
@@ -25,14 +26,17 @@ namespace itp380.Models
         {
             get { return m_Camera; }
         }
-                
-        public Player(Game game)
+
+        public Viewport m_Viewport;
+
+        public Player(Game game, int playerIndex, Viewport viewport)
         {
             m_Health = 100;
             m_Ship = new Objects.Ship(game);
             m_Camera = new Camera(game, m_Ship);
             GameState.Get().SpawnReticle(m_Ship, m_Camera);
             GameState.Get().SpawnGameObject(m_Ship);
+            m_Viewport = viewport;
         }
     }
 }

@@ -29,10 +29,17 @@ namespace itp380
 
 	public class GameState : itp380.Patterns.Singleton<GameState>
 	{
-        
+        // Main, top, bottom, upperleft, upperright, bottomleft, bottomright viewports.
+        Viewport mainViewport;
+        Viewport topViewport;
+        Viewport bottomViewport;
+        Viewport ulViewport;
+        Viewport urViewport;
+        Viewport blViewport;
+        Viewport brViewport;
+
         SoundEffectInstance flightSoundInstance;
         
-
 		Game m_Game;
 		eGameState m_State;
         Random m_Random = new Random();
@@ -84,11 +91,8 @@ namespace itp380
 		UI.UIGameplay m_UIGameplay;
 
         //Players
-        Models.Player m_Player;
-        public Models.Player Player
-        {
-            get { return m_Player; }
-        }
+        public List<Models.Player> m_Players = new List<Models.Player>();
+
         //List<Objects.Projectile> m_Projectiles_P1 = new List<Objects.Projectile>(); // Asteroid Belt
 		
 		public void Start(Game game)
@@ -96,7 +100,43 @@ namespace itp380
 			m_Game = game;
 			m_State = eGameState.None;
 			m_UIStack = new Stack<UI.UIScreen>();
+
+            // Initialize Viewports
+            InitializeViewports();
 		}
+
+        void InitializeViewports()
+        {
+            mainViewport = GraphicsManager.Get().GraphicsDevice.Viewport;
+
+            topViewport = mainViewport;
+            bottomViewport = mainViewport;
+            ulViewport = mainViewport;
+            urViewport = mainViewport;
+            blViewport = mainViewport;
+            brViewport = mainViewport;
+
+            topViewport.Height = topViewport.Height / 2;
+
+            bottomViewport.Height = bottomViewport.Width / 2;
+            bottomViewport.Y = topViewport.Height + 1;
+
+            ulViewport.Height = ulViewport.Height / 2;
+            ulViewport.Width = ulViewport.Width / 2;
+
+            urViewport.Height = ulViewport.Height / 2;
+            urViewport.Width = ulViewport.Width / 2;
+            urViewport.X = ulViewport.Width + 1;
+
+            blViewport.Height = ulViewport.Height / 2;
+            blViewport.Width = ulViewport.Width / 2;
+            blViewport.Y = ulViewport.Height + 1;
+
+            brViewport.Height = ulViewport.Height / 2;
+            brViewport.Width = ulViewport.Width / 2;
+            brViewport.X = ulViewport.Width + 1;
+            brViewport.Y = ulViewport.Height + 1;
+        }
 
 		public void SetState(eGameState NewState)
 		{
@@ -150,12 +190,12 @@ namespace itp380
 
             flightSoundInstance = SoundManager.Get().GetSoundEffect("FlyingSound").CreateInstance();
 			// TODO: Add any gameplay setup here
-            m_Player = new Models.Player(m_Game);
+            m_Players.Add(new Models.Player(m_Game, 0, topViewport));
             
             m_Projectiles = new List<Objects.Projectile>();
-            Player.Ship.fireCannonProjectile();
+            m_Players[0].Ship.fireCannonProjectile();
 
-            m_DisplayedPlayer = m_Player;
+            m_DisplayedPlayer = m_Players[0];
 
             //JEAN Spawn Asteroid Belt
             SpawnAsteroidBelt();
@@ -299,9 +339,9 @@ namespace itp380
                 if (binds.ContainsKey(eBindings.FireCannon))
                 {
                     //Fire cannon.
-                    if (Player.Ship.CanFire)
+                    if (m_Players[0].Ship.CanFire)
                     {
-                        Player.Ship.fireCannonProjectile();
+                        m_Players[0].Ship.fireCannonProjectile();
                     }
 
                     binds.Remove(eBindings.FireCannon);
@@ -309,13 +349,13 @@ namespace itp380
 
                 if (binds.ContainsKey(eBindings.BRollLeft))
                 {
-                    Player.Ship.PerformRoll(Objects.Ship.BarrelRollSide.LEFT);
+                    m_Players[0].Ship.PerformRoll(Objects.Ship.BarrelRollSide.LEFT);
                     binds.Remove(eBindings.BRollLeft);
                 }
 
                 if (binds.ContainsKey(eBindings.BRollRight))
                 {
-                    Player.Ship.PerformRoll(Objects.Ship.BarrelRollSide.RIGHT);
+                    m_Players[0].Ship.PerformRoll(Objects.Ship.BarrelRollSide.RIGHT);
                     binds.Remove(eBindings.BRollRight);
                 }
 			}

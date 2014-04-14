@@ -26,8 +26,6 @@ namespace itp380
 	/// </summary>
 	public class Game1 : Microsoft.Xna.Framework.Game
 	{
-
-
 		public Game1()
 		{
 			IsFixedTimeStep = false;
