@@ -27,12 +27,5 @@ namespace itp380.Objects
             Position = m_Ship.Position + m_Ship.Forward * 25;
             Rotation = Quaternion.CreateFromAxisAngle(Vector3.Cross(m_Ship.Forward, m_Camera.vCameraUp), 90f);
         }
-
-        public override void Draw(float fDeltaTime)
-        {
-            //GraphicsManager.Get().GraphicsDevice.BlendState = BlendState.Additive;
-            base.Draw(fDeltaTime);
-            //GraphicsManager.Get().GraphicsDevice.BlendState = BlendState.Opaque;
-        }
     }
 }

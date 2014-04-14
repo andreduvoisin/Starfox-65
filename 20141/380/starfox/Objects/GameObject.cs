@@ -122,7 +122,7 @@ namespace itp380
 			m_Timer.Update(fDeltaTime);
 		}
 
-		public virtual void Draw(float fDeltaTime)
+		public virtual void Draw(float fDeltaTime, Models.Player player)
 		{
 			if (m_bTransformDirty)
 			{
@@ -134,7 +134,7 @@ namespace itp380
 				foreach (BasicEffect effect in mesh.Effects)
 				{
 					effect.World = m_ModelBones[mesh.ParentBone.Index] * m_WorldTransform;
-					effect.View = GameState.Get().CameraMatrix;
+					effect.View = player.Camera.CameraMatrix;
 					effect.Projection = GraphicsManager.Get().Projection;
 					effect.EnableDefaultLighting();
 					effect.AmbientLightColor = new Vector3(1.0f, 1.0f, 1.0f);
