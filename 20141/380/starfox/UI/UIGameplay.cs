@@ -48,7 +48,7 @@ namespace itp380.UI
 
             //Draw Healthbar
             DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Gray);
-            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, (int)(m_HealthBar.Width * ((double)GameState.Get().Player.Health / 100)), 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Red);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, (int)(m_HealthBar.Width * ((double)GameState.Get().m_Players[0].Health / 100)), 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Red);
             DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 0, m_HealthBar.Width, 44), Color.White);
 
             // Draw GOC (Game Object Count)
