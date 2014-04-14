@@ -28,6 +28,7 @@ namespace itp380.Models
         }
 
         public Viewport m_Viewport;
+        public int m_PlayerIndex;
 
         public Player(Game game, int playerIndex, Viewport viewport)
         {
@@ -37,6 +38,7 @@ namespace itp380.Models
             GameState.Get().SpawnReticle(m_Ship, m_Camera);
             GameState.Get().SpawnGameObject(m_Ship);
             m_Viewport = viewport;
+            m_PlayerIndex = playerIndex;
         }
     }
 }

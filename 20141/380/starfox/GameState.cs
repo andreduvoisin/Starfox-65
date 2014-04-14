@@ -30,13 +30,7 @@ namespace itp380
 	public class GameState : itp380.Patterns.Singleton<GameState>
 	{
         // Main, top, bottom, upperleft, upperright, bottomleft, bottomright viewports.
-        Viewport mainViewport;
-        Viewport topViewport;
-        Viewport bottomViewport;
-        Viewport ulViewport;
-        Viewport urViewport;
-        Viewport blViewport;
-        Viewport brViewport;
+        public Viewport mainViewport, topViewport, bottomViewport, ulViewport, urViewport, blViewport, brViewport;
 
         SoundEffectInstance flightSoundInstance;
         
@@ -73,18 +67,6 @@ namespace itp380
         List<Objects.Asteroid> m_Asteroids = new List<Objects.Asteroid>(); // Asteroid Belt
         Objects.grassfloor m_Terrain;
 
-		// Camera Information
-        Models.Player m_DisplayedPlayer;
-		public Camera Camera
-		{
-			get { return m_DisplayedPlayer.Camera; }
-		}
-
-		public Matrix CameraMatrix
-		{
-			get { return m_DisplayedPlayer.Camera.CameraMatrix; }
-		}
-
 		// Timer class for the global GameState
 		Utils.Timer m_Timer = new Utils.Timer();
 
@@ -118,22 +100,22 @@ namespace itp380
 
             topViewport.Height = topViewport.Height / 2;
 
-            bottomViewport.Height = bottomViewport.Width / 2;
-            bottomViewport.Y = topViewport.Height + 1;
+            bottomViewport.Height = bottomViewport.Height / 2;
+            bottomViewport.Y = --topViewport.Height + 1;
 
             ulViewport.Height = ulViewport.Height / 2;
             ulViewport.Width = ulViewport.Width / 2;
 
-            urViewport.Height = ulViewport.Height / 2;
-            urViewport.Width = ulViewport.Width / 2;
-            urViewport.X = ulViewport.Width + 1;
+            urViewport.Height = urViewport.Height / 2;
+            urViewport.Width = urViewport.Width / 2;
+            urViewport.X = --ulViewport.Width + 1;
 
-            blViewport.Height = ulViewport.Height / 2;
-            blViewport.Width = ulViewport.Width / 2;
-            blViewport.Y = ulViewport.Height + 1;
+            blViewport.Height = blViewport.Height / 2;
+            blViewport.Width = blViewport.Width / 2;
+            blViewport.Y = --ulViewport.Height + 1;
 
-            brViewport.Height = ulViewport.Height / 2;
-            brViewport.Width = ulViewport.Width / 2;
+            brViewport.Height = brViewport.Height / 2;
+            brViewport.Width = brViewport.Width / 2;
             brViewport.X = ulViewport.Width + 1;
             brViewport.Y = ulViewport.Height + 1;
         }
@@ -187,15 +169,17 @@ namespace itp380
 			
 			m_Timer.RemoveAll();
 
-
             flightSoundInstance = SoundManager.Get().GetSoundEffect("FlyingSound").CreateInstance();
+
 			// TODO: Add any gameplay setup here
-            m_Players.Add(new Models.Player(m_Game, 0, topViewport));
+            m_Players.Add(new Models.Player(m_Game, 0, mainViewport));
+            //m_Players.Add(new Models.Player(m_Game, 1, brViewport));
             
             m_Projectiles = new List<Objects.Projectile>();
-            m_Players[0].Ship.fireCannonProjectile();
-
-            m_DisplayedPlayer = m_Players[0];
+            foreach (Models.Player player in m_Players)
+            {
+                player.Ship.fireCannonProjectile();
+            }
 
             //JEAN Spawn Asteroid Belt
             SpawnAsteroidBelt();
@@ -236,7 +220,10 @@ namespace itp380
 		{
 			if (!IsPaused)
 			{
-				Camera.Update(fDeltaTime);
+                foreach (Models.Player player in m_Players)
+                {
+                    player.Camera.Update(fDeltaTime);
+                }
 
 				// Update objects in the world
 				// We have to make a temp copy in case the objects list changes

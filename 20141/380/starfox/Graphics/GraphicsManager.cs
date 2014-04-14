@@ -145,60 +145,91 @@ namespace itp380
 
 		public void Draw(float fDeltaTime)
 		{
-			// Clear back buffer
-			m_Graphics.GraphicsDevice.Clear(Color.Black);
+            // Clear back buffer
+            m_Graphics.GraphicsDevice.Clear(Color.Black);
 
-			// First draw all 3D components
-			m_Game.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-			// For background objects, disabled Z-Buffer
-			m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.None;
-			foreach (GameObject o in m_BGObjects)
-			{
-				if (o.Enabled)
-				{
-					o.Draw(fDeltaTime);
-				}
-			}
+            if (GameState.Get().State == eGameState.MainMenu)
+            {
+                // Now draw all 2D components
+                m_SpriteBatch.Begin();
 
-			m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-			foreach (GameObject o in m_DefaultObjects)
-			{
-				if (o.Enabled)
-				{
-					o.Draw(fDeltaTime);
-				}
-			}
+                // Draw the UI screens
+                GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch);
 
-			// Also disabled Z-Buffer for background objects
-			m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.None;
-			foreach (GameObject o in m_FGObjects)
-			{
-				if (o.Enabled)
-				{
-					o.Draw(fDeltaTime);
-				}
-			}
+                // Draw FPS counter
+                Vector2 vFPSPos = Vector2.Zero;
+                if (DebugDefines.bShowBuildString)
+                {
+                    m_SpriteBatch.DrawString(m_FPSFont, DebugDefines.DebugName, vFPSPos, Color.White);
+                    vFPSPos.Y += 25.0f;
+                }
+                if (DebugDefines.bShowFPS)
+                {
+                    string sFPS = String.Format("FPS: {0}", (int)(1 / fDeltaTime));
+                    m_SpriteBatch.DrawString(m_FPSFont, sFPS, vFPSPos, Color.White);
+                }
 
-			// Now draw all 2D components
-			m_SpriteBatch.Begin();
+                m_SpriteBatch.End();
+            }
+            else if (GameState.Get().State == eGameState.Gameplay)
+            {
+                foreach (Models.Player player in GameState.Get().m_Players)
+                {
+                    GraphicsDevice.Viewport = player.m_Viewport;
 
-			// Draw the UI screens
-			GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch);
+                    // First draw all 3D components
+                    m_Game.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+                    // For background objects, disabled Z-Buffer
+                    m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+                    foreach (GameObject o in m_BGObjects)
+                    {
+                        if (o.Enabled)
+                        {
+                            o.Draw(fDeltaTime, player);
+                        }
+                    }
 
-			// Draw FPS counter
-			Vector2 vFPSPos = Vector2.Zero;
-			if (DebugDefines.bShowBuildString)
-			{
-				m_SpriteBatch.DrawString(m_FPSFont, DebugDefines.DebugName, vFPSPos, Color.White);
-				vFPSPos.Y += 25.0f;
-			}
-			if (DebugDefines.bShowFPS)
-			{
-				string sFPS = String.Format("FPS: {0}", (int)(1 / fDeltaTime));
-				m_SpriteBatch.DrawString(m_FPSFont, sFPS, vFPSPos, Color.White);
-			}
+                    m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                    foreach (GameObject o in m_DefaultObjects)
+                    {
+                        if (o.Enabled)
+                        {
+                            o.Draw(fDeltaTime, player);
+                        }
+                    }
 
-			m_SpriteBatch.End();
+                    // Also disabled Z-Buffer for background objects
+                    m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+                    foreach (GameObject o in m_FGObjects)
+                    {
+                        if (o.Enabled)
+                        {
+                            o.Draw(fDeltaTime, player);
+                        }
+                    }
+
+                    // Now draw all 2D components
+                    m_SpriteBatch.Begin();
+
+                    // Draw the UI screens
+                    GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch);
+
+                    // Draw FPS counter
+                    Vector2 vFPSPos = Vector2.Zero;
+                    if (DebugDefines.bShowBuildString)
+                    {
+                        m_SpriteBatch.DrawString(m_FPSFont, DebugDefines.DebugName, vFPSPos, Color.White);
+                        vFPSPos.Y += 25.0f;
+                    }
+                    if (DebugDefines.bShowFPS)
+                    {
+                        string sFPS = String.Format("FPS: {0}", (int)(1 / fDeltaTime));
+                        m_SpriteBatch.DrawString(m_FPSFont, sFPS, vFPSPos, Color.White);
+                    }
+
+                    m_SpriteBatch.End();
+                }
+            }
 		}
 
 		public void AddGameObject(GameObject o)
@@ -254,15 +285,20 @@ namespace itp380
 
 		public void DrawLine3D(SpriteBatch batch, float width, Color color, Vector3 point1, Vector3 point2)
 		{
-			// Convert the 3D points into screen space points
-			Vector3 point1_screen = GraphicsDevice.Viewport.Project(point1, Projection, 
-				GameState.Get().CameraMatrix, Matrix.Identity);
-			Vector3 point2_screen = GraphicsDevice.Viewport.Project(point2, Projection,
-				GameState.Get().CameraMatrix, Matrix.Identity);
+            foreach (Models.Player player in GameState.Get().m_Players)
+            {
+                GraphicsDevice.Viewport = player.m_Viewport;
 
-			// Now draw a 2D line with the appropriate points
-			DrawLine(batch, width, color, new Vector2(point1_screen.X, point1_screen.Y),
-				new Vector2(point2_screen.X, point2_screen.Y));
+                // Convert the 3D points into screen space points
+                Vector3 point1_screen = GraphicsDevice.Viewport.Project(point1, Projection,
+                    player.Camera.CameraMatrix, Matrix.Identity);
+                Vector3 point2_screen = GraphicsDevice.Viewport.Project(point2, Projection,
+                    player.Camera.CameraMatrix, Matrix.Identity);
+
+                // Now draw a 2D line with the appropriate points
+                DrawLine(batch, width, color, new Vector2(point1_screen.X, point1_screen.Y),
+                    new Vector2(point2_screen.X, point2_screen.Y));
+            }
 		}
 
 		public void DrawFilled(SpriteBatch batch, Rectangle rect, Color color, float outWidth, Color outColor)
