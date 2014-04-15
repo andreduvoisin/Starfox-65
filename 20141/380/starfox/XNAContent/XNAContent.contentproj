@@ -305,6 +305,13 @@
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="full_level1.fbx">
+      <Name>full_level1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)\$(OutDir)\Content" "$(SolutionDir)\Content" /i /s /y</PostBuildEvent>

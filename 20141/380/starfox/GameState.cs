@@ -190,11 +190,11 @@ namespace itp380
             }
 
             //JEAN Spawn Asteroid Belt
-            SpawnAsteroidBelt();
+            //SpawnAsteroidBelt();
 
             //[JEAN] Spawn Level
             m_Terrain = new Objects.grassfloor(m_Game);
-            m_Terrain.Position = new Vector3(300, -30, 400);
+            m_Terrain.Position = new Vector3(200, -70, 100);
             m_Terrain.Rotation = Quaternion.Identity;
             SpawnGameObject(m_Terrain);
         }
