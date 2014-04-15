@@ -57,7 +57,7 @@ namespace itp380.Objects
         public Ship(Game game, Models.Player player) :
             base(game)
         {
-            m_ModelName = "ship1";
+            m_ModelName = "ship2";
             Scale = 0.4f;
             canFire = true;
             m_MoveState = ShipMoveState.NORMAL;
