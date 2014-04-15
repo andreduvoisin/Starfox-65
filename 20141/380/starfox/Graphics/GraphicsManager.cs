@@ -146,7 +146,7 @@ namespace itp380
 		public void Draw(float fDeltaTime)
 		{
             // Clear back buffer
-            m_Graphics.GraphicsDevice.Clear(Color.Black);
+            m_Graphics.GraphicsDevice.Clear(Color.LightSkyBlue);
 
             if (GameState.Get().State == eGameState.MainMenu)
             {

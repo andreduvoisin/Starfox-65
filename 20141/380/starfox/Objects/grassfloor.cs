@@ -11,8 +11,8 @@ namespace itp380.Objects
         public grassfloor(Game game) :
             base(game)
         {
-            m_ModelName = "grassy_floor";
-            Scale = 30f;
+            m_ModelName = "full_level1";
+            Scale = 32f;
         }
 
 
