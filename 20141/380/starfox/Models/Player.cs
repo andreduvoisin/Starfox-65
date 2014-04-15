@@ -28,12 +28,15 @@ namespace itp380.Models
         }
 
         public Viewport m_Viewport;
+
+        // player number (e.g. player 1, player 2, player 3, or player 4)
+        // helps with input management and stuff
         public int m_PlayerIndex;
 
         public Player(Game game, int playerIndex, Viewport viewport)
         {
             m_Health = 100;
-            m_Ship = new Objects.Ship(game);
+            m_Ship = new Objects.Ship(game, this);
             m_Camera = new Camera(game, m_Ship);
             GameState.Get().SpawnReticle(m_Ship, m_Camera);
             GameState.Get().SpawnGameObject(m_Ship);

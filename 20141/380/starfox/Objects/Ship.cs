@@ -51,13 +51,17 @@ namespace itp380.Objects
             get { return canFire; }
         }
 
-        public Ship(Game game) :
+        // Reference to the ship's player owner.
+        Models.Player m_Player;
+
+        public Ship(Game game, Models.Player player) :
             base(game)
         {
             m_ModelName = "ship1";
             Scale = 0.4f;
             canFire = true;
             m_MoveState = ShipMoveState.NORMAL;
+            m_Player = player;
         }
 
         public override void Update(float fDeltaTime)
@@ -86,36 +90,36 @@ namespace itp380.Objects
         void UpdateNormal(float fDeltaTime)
         {
             // Yaw
-            m_Yaw += -InputManager.Get().LeftThumbstick.X * YAW_SPEED;
+            m_Yaw += -InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X * YAW_SPEED;
 
             // Pitch
-            m_Pitch += InputManager.Get().LeftThumbstick.Y * PITCH_SPEED;
+            m_Pitch += InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y * PITCH_SPEED;
             m_Pitch = MathHelper.Clamp(m_Pitch, -MAX_PITCH, MAX_PITCH);
 
             // Hack for pitch to force it to return to 0 when player is not going up/down.
-            if ((Math.Abs(InputManager.Get().LeftThumbstick.Y) == 0) || Position.Y > SHIP_CEILING)
+            if ((Math.Abs(InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y) == 0) || Position.Y > SHIP_CEILING)
                 m_Pitch *= PITCH_DAMP;
 
             Rotation = Quaternion.CreateFromYawPitchRoll(
                 m_Yaw,
-                InputManager.Get().LeftThumbstick.X,
+                InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X,
                 m_Pitch);
 
             // Update velocity, don't change position.
             if (Position.Y > SHIP_CEILING)
             {
-                Vector3 tempShipVel = Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
+                Vector3 tempShipVel = Forward * SHIP_SPEED * InputManager.Get(m_Player.m_PlayerIndex).RightTrigger;
                 if (tempShipVel.Y > 0)
                 {
                     tempShipVel.Y = 0;
                 }
                 m_ShipVelocity += tempShipVel;
-                m_ShipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+                m_ShipVelocity -= Forward * SHIP_SPEED * InputManager.Get(m_Player.m_PlayerIndex).LeftTrigger;
             }
             else
             {
-                m_ShipVelocity += Forward * SHIP_SPEED * InputManager.Get().RightTrigger;
-                m_ShipVelocity -= Forward * SHIP_SPEED * InputManager.Get().LeftTrigger;
+                m_ShipVelocity += Forward * SHIP_SPEED * InputManager.Get(m_Player.m_PlayerIndex).RightTrigger;
+                m_ShipVelocity -= Forward * SHIP_SPEED * InputManager.Get(m_Player.m_PlayerIndex).LeftTrigger;
             }
 
             // Only reduce speed in normal mode.

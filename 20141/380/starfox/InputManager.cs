@@ -146,8 +146,21 @@ namespace itp380
             return m_Managers[Index];
         }
 
-        public static InputManager Get()
+        // always use this Get for getting controller input
+        public static InputManager Get(int index)
         {
+            switch (index)
+            {
+                case 1:
+                    return Get(PlayerIndex.One);
+                case 2:
+                    return Get(PlayerIndex.Two);
+                case 3:
+                    return Get(PlayerIndex.Three);
+                case 4:
+                    return Get(PlayerIndex.Four);
+            }
+            // default case
             return Get(PlayerIndex.One);
         }
 
@@ -265,14 +278,14 @@ namespace itp380
 					GameState.Get().GetCurrentUI().GamepadInput(m_ActiveBinds);
 				}
 
-				GameState.Get().GamepadInput(m_ActiveBinds, fDeltaTime);
+				GameState.Get().GamepadInput(m_ActiveBinds, m_Index, fDeltaTime);
 			}
 		}
 
 		public void Update(float fDeltaTime)
 		{
 			UpdateMouse(fDeltaTime);
-			UpdateGamepad(fDeltaTime);
+            UpdateGamepad(fDeltaTime);
 		}
 
 		protected bool JustPressed(ButtonState Previous, ButtonState Current)

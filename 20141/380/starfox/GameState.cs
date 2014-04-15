@@ -172,8 +172,16 @@ namespace itp380
             flightSoundInstance = SoundManager.Get().GetSoundEffect("FlyingSound").CreateInstance();
 
 			// TODO: Add any gameplay setup here
-            m_Players.Add(new Models.Player(m_Game, 0, mainViewport));
-            //m_Players.Add(new Models.Player(m_Game, 1, brViewport));
+            // UNCOMMENT THIS FOR 1 PLAYER
+            m_Players.Add(new Models.Player(m_Game, 1, mainViewport));
+            // UNCOMMENT THESE FOR 2 PLAYERS (aspect ratio's fucked up, need to figure that out)
+            //m_Players.Add(new Models.Player(m_Game, 1, topViewport));
+            //m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
+            // UNCOMMENT THESE FOR 3 OR 4 PLAYERS
+            //m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
+            //m_Players.Add(new Models.Player(m_Game, 2, urViewport));
+            //m_Players.Add(new Models.Player(m_Game, 3, blViewport));
+            //m_Players.Add(new Models.Player(m_Game, 4, brViewport));
             
             m_Projectiles = new List<Objects.Projectile>();
             foreach (Models.Player player in m_Players)
@@ -279,8 +287,10 @@ namespace itp380
         public void updateEngineSound()
         {
             //Play engine sound only when the engine is on.
-            flightSoundInstance.Pitch = InputManager.Get().RightTrigger/4;
-                if (InputManager.Get().RightTrigger > 0)
+            foreach (Models.Player player in m_Players)
+            {
+                flightSoundInstance.Pitch = InputManager.Get(player.m_PlayerIndex).RightTrigger / 4;
+                if (InputManager.Get(player.m_PlayerIndex).RightTrigger > 0)
                 {
                     flightSoundInstance.Volume = .65f;
                     if (flightSoundInstance.State == SoundState.Stopped)
@@ -292,11 +302,12 @@ namespace itp380
                     else
                         flightSoundInstance.Resume();
                 }
-                else if (InputManager.Get().RightTrigger == 0)
+                else if (InputManager.Get(player.m_PlayerIndex).RightTrigger == 0)
                 {
                     if (flightSoundInstance.State == SoundState.Playing)
                         flightSoundInstance.Volume = .4f;
                 }
+            }
         }
 
 		public void RemoveGameObject(GameObject o, bool bRemoveFromList = true)
@@ -319,16 +330,18 @@ namespace itp380
 		}
 
 		// I'm the last person to get keyboard input, so don't need to remove
-		public void GamepadInput(SortedList<eBindings, BindInfo> binds, float fDeltaTime)
+		public void GamepadInput(SortedList<eBindings, BindInfo> binds, PlayerIndex pIndex, float fDeltaTime)
 		{
 			if (m_State == eGameState.Gameplay && !IsPaused)
 			{
+                int index = (int)pIndex;
+
                 if (binds.ContainsKey(eBindings.FireCannon))
                 {
                     //Fire cannon.
-                    if (m_Players[0].Ship.CanFire)
+                    if (m_Players[index].Ship.CanFire)
                     {
-                        m_Players[0].Ship.fireCannonProjectile();
+                        m_Players[index].Ship.fireCannonProjectile();
                     }
 
                     binds.Remove(eBindings.FireCannon);
@@ -336,13 +349,13 @@ namespace itp380
 
                 if (binds.ContainsKey(eBindings.BRollLeft))
                 {
-                    m_Players[0].Ship.PerformRoll(Objects.Ship.BarrelRollSide.LEFT);
+                    m_Players[index].Ship.PerformRoll(Objects.Ship.BarrelRollSide.LEFT);
                     binds.Remove(eBindings.BRollLeft);
                 }
 
                 if (binds.ContainsKey(eBindings.BRollRight))
                 {
-                    m_Players[0].Ship.PerformRoll(Objects.Ship.BarrelRollSide.RIGHT);
+                    m_Players[index].Ship.PerformRoll(Objects.Ship.BarrelRollSide.RIGHT);
                     binds.Remove(eBindings.BRollRight);
                 }
 			}
