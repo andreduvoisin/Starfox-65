@@ -52,7 +52,10 @@ namespace itp380
 		{
 			GameState.Get().Start(this);
 			GameState.Get().SetState(eGameState.MainMenu);
-			InputManager.Get().Start();
+            for (int i = 0; i < 4; i++)
+            {
+                InputManager.Get(i + 1).Start();
+            }
 			PhysicsManager.Get().Start(this);
 			base.Initialize();
 		}
@@ -91,7 +94,10 @@ namespace itp380
 			// If the game doesn't have focus don't update anything
 			if (IsActive)
 			{
-				InputManager.Get().Update(fDeltaTime);
+                for (int i = 0; i < 4; i++)
+                {
+                    InputManager.Get(i + 1).Update(fDeltaTime);
+                }
 				GameState.Get().Update(fDeltaTime);
 			}
 			base.Update(gameTime);

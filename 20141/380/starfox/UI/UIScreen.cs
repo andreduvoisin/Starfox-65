@@ -37,7 +37,7 @@ namespace itp380.UI
 			m_fLiveTime += fDeltaTime;
 
             IEnumerable<Button> mouseButtons = m_Buttons
-                .Where(b => b.Enabled && b.m_Bounds.Contains(InputManager.Get().MousePosition));
+                .Where(b => b.Enabled && b.m_Bounds.Contains(InputManager.Get(0).MousePosition));
             if (mouseButtons.Any() && GameState.Get().GetCurrentUI() == this)
             {
                 foreach (Button b in m_Buttons)
