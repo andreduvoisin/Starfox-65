@@ -18,7 +18,11 @@ namespace itp380
 {
 	public class Camera
 	{
-        const float TRACKPOINT = 10f;
+        const float fHDist = 6f;
+        const float fVDist = 3.0f;
+        const float fSpringConstant = 512f;
+        const float trackpoint = fHDist / 2f;
+        float fDampConstant = 1.4f * (float)Math.Sqrt(fSpringConstant);
         
         Game m_Game;
 
@@ -26,6 +30,16 @@ namespace itp380
 		public Vector3 Position
         {
             get { return m_vCameraPosition; }
+        }
+
+        Vector3 TargetPosition
+        {
+            get { return m_ShipTarget.Position + m_ShipTarget.Forward * trackpoint; }
+        }
+
+        public Vector3 Forward
+        {
+            get { return Vector3.Normalize(TargetPosition - Position); }
         }
 
         Ship m_ShipTarget;
@@ -36,19 +50,12 @@ namespace itp380
 			get { return m_Camera; }
 		}
 
-        float fHDist = 20.0f;
-        float fVDist = 3.0f;
-        float fSpringConstant;
-        float fDampConstant;
         Vector3 vCameraVelocity = Vector3.Zero;
 
 		public Camera(Game game, Ship ship)
 		{
 			m_Game = game;
             m_ShipTarget = ship;
-
-            fSpringConstant = 512.0f;
-            fDampConstant = 1.4f * (float)Math.Sqrt(fSpringConstant);
 		}
 
 		public void Update(float fDeltaTime)
@@ -61,9 +68,6 @@ namespace itp380
         {
             Vector3 vShipForward, vIdealPosition;
             Vector3 vDisplacement, vSpringAccel;
-            Vector3 TargetPosition;
-
-            TargetPosition = m_ShipTarget.Position + m_ShipTarget.Forward * TRACKPOINT;
 
             vShipForward = m_ShipTarget.Forward;
             vShipForward.Y = 0;

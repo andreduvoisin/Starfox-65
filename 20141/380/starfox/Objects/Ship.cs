@@ -13,14 +13,14 @@ namespace itp380.Objects
         const float PITCH_DAMP      = .91f;
         const float YAW_SPEED       = .07f;
 
-        const float SHIP_BOOST      = .1f;
-        const float SHIP_SPEED      = 1f;
+        const float SHIP_BOOST      = .08f;
+        const float SHIP_SPEED      = .8f;
         const float SHIP_FRICTION   = 10f;
         const float SHIP_CEILING    = 150f;
         const float SHIP_FLOOR      = -60f;
 
         const uint BROLL_ROTS       = 2;
-        const float BROLL_TIME      = 1.0f;
+        const float BROLL_TIME      = 1f;
         const float BROLL_TVAL      = (float)BROLL_ROTS / BROLL_TIME;
 
         public enum ShipMoveState { NORMAL, BROLL };
@@ -167,7 +167,7 @@ namespace itp380.Objects
 
             m_BRollAng = MathHelper.SmoothStep(
                 0,
-                RollDirection * (float)MathHelper.TwoPi,
+                RollDirection * BROLL_ROTS * (float)MathHelper.TwoPi,
                 m_RollTime * BROLL_TVAL);
         }
 
