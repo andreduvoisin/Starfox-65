@@ -8,13 +8,13 @@ namespace itp380.Objects
 {
     public class Ship : GameObject
     {
-        const float MAX_PITCH       = (float)Math.PI * 5f / 16f;
+        const float MAX_PITCH       = (float)Math.PI * 4f / 16f;
         const float PITCH_SPEED     = .08f;
         const float PITCH_DAMP      = .91f;
         const float YAW_SPEED       = .07f;
         const float ROLL_SCALE      = 1.1f;
 
-        const float SHIP_BOOST      = .08f;
+        const float SHIP_BOOST      = .04f;
         const float SHIP_SPEED      = .8f;
         const float SHIP_FRICTION   = 10f;
         const float SHIP_CEILING    = 150f;
@@ -107,7 +107,7 @@ namespace itp380.Objects
 
             // Pitch
             m_Pitch += InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y * PITCH_SPEED;
-            m_Pitch = MathHelper.Clamp(m_Pitch, -MAX_PITCH, MAX_PITCH);
+            m_Pitch = MathHelper.Clamp(m_Pitch, -MAX_PITCH, MAX_PITCH*0.8f);
 
             // Hack for pitch to force it to return to 0 when player is not going up/down.
             if ((Math.Abs(InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y) == 0) || Position.Y > SHIP_CEILING)

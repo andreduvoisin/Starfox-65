@@ -129,7 +129,7 @@ namespace itp380
 
 		public void SetProjection(float fAspectRatio)
 		{
-            Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, fAspectRatio, 0.1f, 600.0f);
+            Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, fAspectRatio, 0.1f, 1200.0f);
 		}
 
 		public void ResetProjection()

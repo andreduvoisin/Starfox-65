@@ -18,13 +18,19 @@ namespace itp380
 {
 	public class Camera
 	{
-        const float fHDist = 6f;
+        const float fHDist = 2.0f;
         const float fVDist = 3.0f;
-        const float fSpringConstant = 512f;
-        const float trackpoint = fHDist / 2f;
-        float fDampConstant = 1.4f * (float)Math.Sqrt(fSpringConstant);
+        const float fSpringConstant = 256;
+        const float fHorizontalTrack = 0.3f;
+        public const float trackpoint = 12f;
+        float fDampConstant = 1f * (float)Math.Sqrt(fSpringConstant);
         
         Game m_Game;
+
+        public float Trackpoint
+        {
+            get { return trackpoint; }
+        }
 
 		Vector3 m_vCameraPosition = new Vector3(0, 0, 10);
 		public Vector3 Position
@@ -75,6 +81,8 @@ namespace itp380
             vIdealPosition = TargetPosition - (vShipForward * fHDist) + (Vector3.UnitY * fVDist);
 
             vDisplacement = m_vCameraPosition - vIdealPosition;
+            vDisplacement.Z *= fHorizontalTrack;
+            vDisplacement.X *= fHorizontalTrack;
             vSpringAccel = (-fSpringConstant * vDisplacement) - (fDampConstant * vCameraVelocity);
             vCameraVelocity += vSpringAccel * fDeltaTime;
             m_vCameraPosition += vCameraVelocity * fDeltaTime;

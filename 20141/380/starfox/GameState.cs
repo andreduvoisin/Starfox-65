@@ -176,14 +176,6 @@ namespace itp380
             //m_Players.Add(new Models.Player(m_Game, 2, urViewport));
             //m_Players.Add(new Models.Player(m_Game, 3, blViewport));
             //m_Players.Add(new Models.Player(m_Game, 4, brViewport));
-            
-            foreach (Models.Player player in m_Players)
-            {
-                //player.Ship.fireCannonProjectile();
-            }
-
-            //JEAN Spawn Asteroid Belt
-            //SpawnAsteroidBelt();
 
             //[JEAN] Spawn Level
             m_Terrain = new Objects.grassfloor(m_Game);
