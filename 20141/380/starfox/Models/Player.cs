@@ -38,7 +38,7 @@ namespace itp380.Models
             m_Health = 100;
             m_Ship = new Objects.Ship(game, this);
             m_Camera = new Camera(game, m_Ship);
-            GameState.Get().SpawnReticle(m_Ship, m_Camera);
+            GameState.Get().SpawnReticle(this, m_Camera);
             GameState.Get().SpawnGameObject(m_Ship);
             m_Viewport = viewport;
             m_PlayerIndex = playerIndex;

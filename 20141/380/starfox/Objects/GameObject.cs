@@ -24,6 +24,12 @@ namespace itp380
 		protected Matrix[] m_ModelBones;
 		protected string m_ModelName;
 
+        protected Models.Player m_Owner = null;
+        public Models.Player Owner
+        {
+            get { return m_Owner; }
+        }
+
 		protected Matrix m_WorldTransform = Matrix.Identity;
 		protected bool m_bTransformDirty = false;
 

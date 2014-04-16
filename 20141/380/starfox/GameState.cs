@@ -278,10 +278,10 @@ namespace itp380
             RemoveGameObject(projectile);
         }
 
-        public void SpawnReticle(Objects.Ship ship, Camera camera)
+        public void SpawnReticle(Models.Player player, Camera camera)
         {
-            ship.m_Reticle = new Objects.Reticle(m_Game, ship, camera);
-            SpawnGameObject(ship.m_Reticle);
+            player.Ship.m_Reticle = new Objects.Reticle(m_Game, player, camera);
+            SpawnGameObject(player.Ship.m_Reticle);
         }
 
         public void updateEngineSound()
@@ -332,10 +332,14 @@ namespace itp380
 		// I'm the last person to get keyboard input, so don't need to remove
 		public void GamepadInput(SortedList<eBindings, BindInfo> binds, PlayerIndex pIndex, float fDeltaTime)
 		{
-            Models.Player Player = m_Players[(int)pIndex];
+            if (m_State == eGameState.MainMenu)
+            {
 
-			if (m_State == eGameState.Gameplay && !IsPaused)
+            }
+            else if (m_State == eGameState.Gameplay && !IsPaused)
 			{
+                Models.Player Player = m_Players[(int)pIndex];
+
                 if (binds.ContainsKey(eBindings.FireCannon))
                 {
                     //Fire cannon.
@@ -412,32 +416,5 @@ namespace itp380
 			IsPaused = true;
 			m_UIStack.Push(new UI.UIGameOver(m_Game.Content, victorious));
 		}
-
-        //JEAN code
-        public void SpawnAsteroid(float x, float y, float z)
-        {
-            //Create Asteroid
-            Objects.Asteroid obj_Asteroid; obj_Asteroid = new Objects.Asteroid(m_Game);
-            //Add Asteroid to m_Asteroids
-            m_Asteroids.Add(obj_Asteroid);
-            //Set random rotation
-            float asteroid_angle = (float)m_Random.Next(0, 628) / 100;
-            //Set position and rotation of Asteroid
-            obj_Asteroid.Position = new Vector3(x, y + (float)m_Random.Next(-100, 100) , z - 10 + (float)m_Random.Next(-100, 100));
-            SpawnGameObject(obj_Asteroid);
-        }
-
-        //Jean Code
-        void SpawnAsteroidBelt()
-        {
-            for (int i = -100; i < 300; i++)
-            {
-                SpawnAsteroid(i, i, i);
-            }
-            for (int i = 300; i < 600; i++)
-            {
-                SpawnAsteroid(-i, -i, -i);
-            }
-        }
 	}
 }
