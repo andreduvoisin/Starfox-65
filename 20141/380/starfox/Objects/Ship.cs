@@ -12,6 +12,7 @@ namespace itp380.Objects
         const float PITCH_SPEED     = .08f;
         const float PITCH_DAMP      = .91f;
         const float YAW_SPEED       = .07f;
+        const float ROLL_SCALE      = 1.1f;
 
         const float SHIP_BOOST      = .08f;
         const float SHIP_SPEED      = .8f;
@@ -46,7 +47,7 @@ namespace itp380.Objects
         {
             get
             {
-                float rv = InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X;
+                float rv = ROLL_SCALE * InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X;
                 if (m_MoveState == ShipMoveState.BROLL)
                     rv += m_BRollAng;
 
