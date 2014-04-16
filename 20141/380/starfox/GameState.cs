@@ -58,7 +58,7 @@ namespace itp380
             get { return (uint)m_GameObjects.Count; }
         }
 
-        List<Objects.Asteroid> m_Asteroids = new List<Objects.Asteroid>(); // Asteroid Belt
+        List<Objects.building> m_Buildings = new List<Objects.building>(); // Building Array
         Objects.grassfloor m_Terrain;
 
 		// Timer class for the global GameState
@@ -182,6 +182,12 @@ namespace itp380
             m_Terrain.Position = new Vector3(200, -70, 100);
             m_Terrain.Rotation = Quaternion.Identity;
             SpawnGameObject(m_Terrain);
+            //[JEAN] Spawn buildings
+            //Objects.building obj_building1 = new Objects.building(m_Game);
+            //obj_building1.Position = new Vector3(200, -70, 100);
+            //obj_building1.Rotation = Quaternion.Identity;
+            //m_Buildings.Add(obj_building1);
+            //SpawnGameObject(obj_building1);
         }
 
 		public void Update(float fDeltaTime)
