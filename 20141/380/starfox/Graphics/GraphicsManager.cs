@@ -176,6 +176,7 @@ namespace itp380
                 foreach (Models.Player player in GameState.Get().m_Players)
                 {
                     GraphicsDevice.Viewport = player.m_Viewport;
+                    SetProjection((float)player.m_Viewport.Width / player.m_Viewport.Height);
 
                     // First draw all 3D components
                     m_Game.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
