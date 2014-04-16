@@ -12,6 +12,7 @@ namespace itp380.Models
         uint m_Health;
         public uint Health
         {
+            set { m_Health = value; }
             get { return m_Health; }
         }
 
@@ -39,6 +40,7 @@ namespace itp380.Models
             m_Ship = new Objects.Ship(game, this);
             m_Camera = new Camera(game, m_Ship);
             GameState.Get().SpawnReticle(this, m_Camera);
+            m_Ship.Position = new Vector3(0, 20 * playerIndex, 50 * playerIndex);
             GameState.Get().SpawnGameObject(m_Ship);
             m_Viewport = viewport;
             m_PlayerIndex = playerIndex;
