@@ -11,8 +11,8 @@ namespace itp380.Objects
         public Asteroid(Game game) :
             base(game)
         {
-            m_ModelName = "Asteroid";
-            Scale = 0.75f;
+            //m_ModelName = "Asteroid";
+            //Scale = 0.75f;
         }
     }
 }
