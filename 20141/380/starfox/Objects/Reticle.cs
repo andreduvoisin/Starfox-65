@@ -20,13 +20,16 @@ namespace itp380.Objects
             m_Owner = player;
             m_Ship = player.Ship;
             m_Camera = camera;
-            Scale = 1f;
+            Scale = 0.5f;
         }
 
         public override void Update(float fDeltaTime)
         {
             Position = m_Ship.Position + m_Ship.Forward * 25;
-            Rotation = Quaternion.CreateFromAxisAngle(Vector3.Cross(m_Ship.Forward, Vector3.UnitY), (float)Math.PI/2);
+
+            Rotation = Quaternion.CreateFromRotationMatrix(Matrix.CreateBillboard(
+                Position, m_Camera.Position, Vector3.UnitY, m_Camera.Forward));
+            Rotation = Quaternion.Concatenate(Quaternion.CreateFromAxisAngle(Vector3.UnitX, (float)Math.PI / 2), Rotation);
         }
     }
 }
