@@ -51,12 +51,6 @@ namespace itp380
 			set	{ m_bPaused = value; }
 		}
 
-        List<Objects.Projectile> m_Projectiles;
-        public List<Objects.Projectile> Projectiles
-        {
-            get { return m_Projectiles; }
-        }
-
 		// Keeps track of all active game objects
 		LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
         public uint GOC
@@ -183,10 +177,9 @@ namespace itp380
             //m_Players.Add(new Models.Player(m_Game, 3, blViewport));
             //m_Players.Add(new Models.Player(m_Game, 4, brViewport));
             
-            m_Projectiles = new List<Objects.Projectile>();
             foreach (Models.Player player in m_Players)
             {
-                player.Ship.fireCannonProjectile();
+                //player.Ship.fireCannonProjectile();
             }
 
             //JEAN Spawn Asteroid Belt
@@ -246,13 +239,41 @@ namespace itp380
 				m_Timer.Update(fDeltaTime);
 
 				// TODO: Any update code not for a specific game object should go here
-
-                foreach(Objects.Projectile projectile in Projectiles)
+                foreach (Models.Player player in m_Players)
                 {
-                    projectile.Position += projectile.projectileVelocity;
+                    foreach (Objects.Projectile projectile in player.Ship.Projectiles)
+                    {
+                        projectile.Position += projectile.projectileVelocity;
+                    }
+                    detectProjectileCollision(player.Ship);
                 }
 			}
 		}
+
+        public void detectProjectileCollision(Objects.Ship ship)
+        {
+            int playerCount = m_Players.Count;
+            int projectileCount = ship.Projectiles.Count;
+            foreach (Models.Player player in m_Players)
+            {
+                if (player.Ship.Equals(ship))
+                {
+                    break;
+                }
+                else
+                {
+                    for (int i = 0; i < projectileCount; i++)
+                    {
+                        if (player.Ship.m_WorldBounds.Intersects(ship.Projectiles.ElementAt(i).m_WorldBounds))
+                        {
+                            player.Health -= 10;
+                            RemoveProjectile(ship.Projectiles.ElementAt(i));
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
 		public void SpawnGameObject(GameObject o)
 		{
@@ -266,7 +287,7 @@ namespace itp380
             //Find player with this ship.  Not necessary yet.
             Objects.Projectile cannonShot = new Objects.Projectile(m_Game, ship);
             cannonShot.Position = ship.Position;
-            Projectiles.Add(cannonShot);
+            ship.Projectiles.Add(cannonShot);
             SoundManager.Get().PlaySoundCue("Shoot");
             SpawnGameObject(cannonShot);
         }
@@ -274,7 +295,10 @@ namespace itp380
         public void RemoveProjectile(Objects.Projectile projectile)
         {
             //Find player with this projectile.  Not necessary yet.  Use ship to search(max search of 4).
-            Projectiles.Remove(projectile);
+            foreach(Models.Player player in m_Players)
+            {
+                player.Ship.Projectiles.Remove(projectile);
+            }
             RemoveGameObject(projectile);
         }
 

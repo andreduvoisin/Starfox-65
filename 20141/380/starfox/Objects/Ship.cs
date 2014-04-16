@@ -68,6 +68,12 @@ namespace itp380.Objects
             get { return canFire; }
         }
 
+        List<Objects.Projectile> m_Projectiles;
+        public List<Objects.Projectile> Projectiles
+        {
+            get { return m_Projectiles; }
+        }
+
         // Reference to the ship's player owner.
         Models.Player m_Player;
 
@@ -79,6 +85,7 @@ namespace itp380.Objects
             canFire = true;
             m_MoveState = ShipMoveState.NORMAL;
             m_Player = player;
+            m_Projectiles = new List<Objects.Projectile>();
         }
 
         public override void Update(float fDeltaTime)

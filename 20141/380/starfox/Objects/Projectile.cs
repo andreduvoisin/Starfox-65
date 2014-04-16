@@ -27,5 +27,6 @@ namespace itp380.Objects
          {
              GameState.Get().RemoveProjectile(this);
          }
+
     }
 }
