@@ -21,6 +21,8 @@ namespace itp380.Objects
             m_Ship = player.Ship;
             m_Camera = camera;
             Scale = 0.5f;
+
+            m_DrawOrder = eDrawOrder.Foreground;
         }
 
         public override void Update(float fDeltaTime)
