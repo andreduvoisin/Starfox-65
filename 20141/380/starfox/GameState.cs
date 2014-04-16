@@ -167,10 +167,10 @@ namespace itp380
 
 			// TODO: Add any gameplay setup here
             // UNCOMMENT THIS FOR 1 PLAYER
-            m_Players.Add(new Models.Player(m_Game, 1, mainViewport));
+            //m_Players.Add(new Models.Player(m_Game, 1, mainViewport));
             // UNCOMMENT THESE FOR 2 PLAYERS (aspect ratio's fucked up, need to figure that out)
-            //m_Players.Add(new Models.Player(m_Game, 1, topViewport));
-            //m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
+            m_Players.Add(new Models.Player(m_Game, 1, topViewport));
+            m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
             // UNCOMMENT THESE FOR 3 OR 4 PLAYERS
             //m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
             //m_Players.Add(new Models.Player(m_Game, 2, urViewport));
@@ -376,14 +376,20 @@ namespace itp380
                 if (binds.ContainsKey(eBindings.BRollLeft))
                 {
                     if (Player.Ship.MoveState == Objects.Ship.ShipMoveState.NORMAL)
+                    {
                         Player.Ship.PerformRoll(Objects.Ship.BarrelRollSide.LEFT);
+                        SoundManager.Get().GetSoundEffect("BarrelRoll").Play(.1f, 0, 0);
+                    }
                     binds.Remove(eBindings.BRollLeft);
                 }
 
                 if (binds.ContainsKey(eBindings.BRollRight))
                 {
                     if (Player.Ship.MoveState == Objects.Ship.ShipMoveState.NORMAL)
+                    {
                         Player.Ship.PerformRoll(Objects.Ship.BarrelRollSide.RIGHT);
+                        SoundManager.Get().GetSoundEffect("BarrelRoll").Play(.1f, 0, 0);
+                    }
                     binds.Remove(eBindings.BRollRight);
                 }
 			}
