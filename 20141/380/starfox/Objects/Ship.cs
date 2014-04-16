@@ -13,9 +13,11 @@ namespace itp380.Objects
         const float PITCH_DAMP      = .91f;
         const float YAW_SPEED       = .07f;
 
-        const float SHIP_SPEED      = .1f;
-        const float SHIP_FRICTION   = 3f;
-        const int SHIP_CEILING      = 150;
+        const float SHIP_BOOST      = .1f;
+        const float SHIP_SPEED      = 1f;
+        const float SHIP_FRICTION   = 10f;
+        const float SHIP_CEILING    = 150f;
+        const float SHIP_FLOOR      = -60f;
 
         const uint BROLL_ROTS       = 2;
         const float BROLL_TIME      = 1.0f;
@@ -29,13 +31,28 @@ namespace itp380.Objects
         }
 
         //Ship Velocity
-        Vector3 m_ShipVelocity = Vector3.Zero;
+        float m_ShipSpeed = 0;
+        Vector3 ShipVelocity
+        {
+            get { return Forward * (m_ShipSpeed + SHIP_SPEED); }
+        }
 
         //Ship Position
         Vector3 m_ShipPosition = Vector3.Zero;
 
         // Yaw and Pitch
-        float m_Yaw, m_Pitch;
+        float m_Yaw, m_Pitch, m_BRollAng;
+        float Roll
+        {
+            get
+            {
+                float rv = InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X;
+                if (m_MoveState == ShipMoveState.BROLL)
+                    rv += m_BRollAng;
+
+                return rv;
+            }
+        }
 
         // BarrelRoll Side and time
         public enum BarrelRollSide { LEFT, RIGHT };
@@ -68,26 +85,14 @@ namespace itp380.Objects
         {
             base.Update(fDeltaTime);
 
-            UpdateSpeed(fDeltaTime);
-            switch (m_MoveState)
-            {
-                case ShipMoveState.NORMAL:
-                    UpdateNormal(fDeltaTime);
-                    break;
-                case ShipMoveState.BROLL:
-                    UpdateBarrelRoll(fDeltaTime);
-                    break;
-            }
-        }
+            UpdatePhysics(fDeltaTime);
+            ApplyPhysics();
 
-        void UpdateSpeed(float fDeltaTime)
-        {
-            // Update position, hold speed.
-            Position += m_ShipVelocity;
+            // Sound
             GameState.Get().updateEngineSound();
         }
 
-        void UpdateNormal(float fDeltaTime)
+        void UpdatePhysics(float fDeltaTime)
         {
             // Yaw
             m_Yaw += -InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X * YAW_SPEED;
@@ -100,30 +105,34 @@ namespace itp380.Objects
             if ((Math.Abs(InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y) == 0) || Position.Y > SHIP_CEILING)
                 m_Pitch *= PITCH_DAMP;
 
+            m_ShipSpeed -= m_ShipSpeed * SHIP_FRICTION * fDeltaTime;
+
+            Position += ShipVelocity;
+
+            if (m_MoveState == ShipMoveState.BROLL)
+                UpdateBarrelRoll(fDeltaTime);
+        }
+
+        // Apply velocity and rotation.
+        void ApplyPhysics()
+        {
+            Position += ShipVelocity;
+
+            if (Position.Y > SHIP_CEILING)
+                Position = new Vector3(Position.X, SHIP_CEILING, Position.Z);
+            else if (Position.Y < SHIP_FLOOR)
+                Position = new Vector3(Position.X, SHIP_FLOOR, Position.Z);
+
             Rotation = Quaternion.CreateFromYawPitchRoll(
                 m_Yaw,
-                InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X,
+                0,
                 m_Pitch);
+            Rotation = Quaternion.Concatenate(Rotation, Quaternion.CreateFromAxisAngle(Forward, Roll));
+        }
 
-            // Update velocity, don't change position.
-            if (Position.Y > SHIP_CEILING)
-            {
-                Vector3 tempShipVel = Forward * SHIP_SPEED * InputManager.Get(m_Player.m_PlayerIndex).RightTrigger;
-                if (tempShipVel.Y > 0)
-                {
-                    tempShipVel.Y = 0;
-                }
-                m_ShipVelocity += tempShipVel;
-                m_ShipVelocity -= Forward * SHIP_SPEED * InputManager.Get(m_Player.m_PlayerIndex).LeftTrigger;
-            }
-            else
-            {
-                m_ShipVelocity += Forward * SHIP_SPEED * InputManager.Get(m_Player.m_PlayerIndex).RightTrigger;
-                m_ShipVelocity -= Forward * SHIP_SPEED * InputManager.Get(m_Player.m_PlayerIndex).LeftTrigger;
-            }
-
-            // Only reduce speed in normal mode.
-            m_ShipVelocity -= m_ShipVelocity * SHIP_FRICTION * fDeltaTime;
+        public void Boost()
+        {
+            m_ShipSpeed += SHIP_BOOST;
         }
 
         public void PerformRoll(BarrelRollSide Side)
@@ -138,7 +147,7 @@ namespace itp380.Objects
                 () =>
                 {
                     m_MoveState = ShipMoveState.NORMAL;
-                    Rotation = Quaternion.CreateFromYawPitchRoll(m_Yaw, 0, m_Pitch);
+                    m_BRollAng = 0f;
                 },
                 false);
         }
@@ -146,19 +155,13 @@ namespace itp380.Objects
         void UpdateBarrelRoll(float fDeltaTime)
         {
             float RollDirection = (m_RollSide == BarrelRollSide.RIGHT) ? 1f : -1f;
-            float RollAng;
 
             m_RollTime += fDeltaTime;
 
-            RollAng = MathHelper.SmoothStep(
+            m_BRollAng = MathHelper.SmoothStep(
                 0,
                 RollDirection * (float)MathHelper.TwoPi,
                 m_RollTime * BROLL_TVAL);
-
-            Rotation = Quaternion.CreateFromYawPitchRoll(m_Yaw, 0, m_Pitch) *
-                Quaternion.CreateFromAxisAngle(
-                    Vector3.UnitX,
-                    RollAng);
         }
 
         public void fireCannonProjectile()
