@@ -42,12 +42,6 @@ namespace itp380
         float fDampConstant;
         Vector3 vCameraVelocity = Vector3.Zero;
 
-        // To compute the camera matrix...
-        public Vector3 vShipForward, vShipUp, vIdealPosition;
-        public Vector3 vDisplacement, vSpringAccel;
-        public Vector3 vCameraForward, vCameraLeft, vCameraUp;
-        public Vector3 TargetPosition;
-
 		public Camera(Game game, Ship ship)
 		{
 			m_Game = game;
@@ -65,24 +59,23 @@ namespace itp380
 
 		public void ComputeMatrix(float fDeltaTime)
         {
+            Vector3 vShipForward, vIdealPosition;
+            Vector3 vDisplacement, vSpringAccel;
+            Vector3 TargetPosition;
+
             TargetPosition = m_ShipTarget.Position + m_ShipTarget.Forward * TRACKPOINT;
 
             vShipForward = m_ShipTarget.Forward;
             vShipForward.Y = 0;
             vShipForward.Normalize();
-            vShipUp = Vector3.UnitY;
-            vIdealPosition = TargetPosition - (vShipForward * fHDist) + (vShipUp * fVDist);
+            vIdealPosition = TargetPosition - (vShipForward * fHDist) + (Vector3.UnitY * fVDist);
 
             vDisplacement = m_vCameraPosition - vIdealPosition;
             vSpringAccel = (-fSpringConstant * vDisplacement) - (fDampConstant * vCameraVelocity);
             vCameraVelocity += vSpringAccel * fDeltaTime;
             m_vCameraPosition += vCameraVelocity * fDeltaTime;
 
-            vCameraForward = Vector3.Normalize(TargetPosition - m_vCameraPosition);
-            vCameraLeft = Vector3.Normalize(Vector3.Cross(vShipUp, vCameraForward));
-            vCameraUp = Vector3.Normalize(Vector3.Cross(vCameraForward, vCameraLeft));
-
-            m_Camera = Matrix.CreateLookAt(m_vCameraPosition, TargetPosition, vCameraUp);
+            m_Camera = Matrix.CreateLookAt(m_vCameraPosition, TargetPosition, Vector3.UnitY);
 		}
 	}
 }

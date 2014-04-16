@@ -332,30 +332,38 @@ namespace itp380
 		// I'm the last person to get keyboard input, so don't need to remove
 		public void GamepadInput(SortedList<eBindings, BindInfo> binds, PlayerIndex pIndex, float fDeltaTime)
 		{
+            Models.Player Player = m_Players[(int)pIndex];
+
 			if (m_State == eGameState.Gameplay && !IsPaused)
 			{
-                int index = (int)pIndex;
-
                 if (binds.ContainsKey(eBindings.FireCannon))
                 {
                     //Fire cannon.
-                    if (m_Players[index].Ship.CanFire)
+                    if (Player.Ship.CanFire)
                     {
-                        m_Players[index].Ship.fireCannonProjectile();
+                        Player.Ship.fireCannonProjectile();
                     }
 
                     binds.Remove(eBindings.FireCannon);
                 }
 
+                if (binds.ContainsKey(eBindings.Boost))
+                {
+                    Player.Ship.Boost();
+                    binds.Remove(eBindings.Boost);
+                }
+
                 if (binds.ContainsKey(eBindings.BRollLeft))
                 {
-                    m_Players[index].Ship.PerformRoll(Objects.Ship.BarrelRollSide.LEFT);
+                    if (Player.Ship.MoveState == Objects.Ship.ShipMoveState.NORMAL)
+                        Player.Ship.PerformRoll(Objects.Ship.BarrelRollSide.LEFT);
                     binds.Remove(eBindings.BRollLeft);
                 }
 
                 if (binds.ContainsKey(eBindings.BRollRight))
                 {
-                    m_Players[index].Ship.PerformRoll(Objects.Ship.BarrelRollSide.RIGHT);
+                    if (Player.Ship.MoveState == Objects.Ship.ShipMoveState.NORMAL)
+                        Player.Ship.PerformRoll(Objects.Ship.BarrelRollSide.RIGHT);
                     binds.Remove(eBindings.BRollRight);
                 }
 			}

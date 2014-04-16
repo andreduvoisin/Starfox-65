@@ -25,7 +25,7 @@ namespace itp380.Objects
         public override void Update(float fDeltaTime)
         {
             Position = m_Ship.Position + m_Ship.Forward * 25;
-            Rotation = Quaternion.CreateFromAxisAngle(Vector3.Cross(m_Ship.Forward, m_Camera.vCameraUp), 90f);
+            Rotation = Quaternion.CreateFromAxisAngle(Vector3.Cross(m_Ship.Forward, Vector3.UnitY), (float)Math.PI/2);
         }
     }
 }
