@@ -13,11 +13,12 @@ namespace itp380.Objects
         Ship m_Ship;
         Camera m_Camera;
 
-        public Reticle(Game game, Ship ship, Camera camera) :
+        public Reticle(Game game, Models.Player player, Camera camera) :
             base(game)
         {
             m_ModelName = "reticle";
-            m_Ship = ship;
+            m_Owner = player;
+            m_Ship = player.Ship;
             m_Camera = camera;
             Scale = 1f;
         }

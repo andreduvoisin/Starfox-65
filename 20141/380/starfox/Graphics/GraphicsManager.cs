@@ -184,7 +184,7 @@ namespace itp380
                     m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.None;
                     foreach (GameObject o in m_BGObjects)
                     {
-                        if (o.Enabled)
+                        if (o.Enabled && (o.Owner == null || o.Owner == player))
                         {
                             o.Draw(fDeltaTime, player);
                         }
@@ -193,7 +193,7 @@ namespace itp380
                     m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                     foreach (GameObject o in m_DefaultObjects)
                     {
-                        if (o.Enabled)
+                        if (o.Enabled && (o.Owner == null || o.Owner == player))
                         {
                             o.Draw(fDeltaTime, player);
                         }
@@ -203,7 +203,7 @@ namespace itp380
                     m_Game.GraphicsDevice.DepthStencilState = DepthStencilState.None;
                     foreach (GameObject o in m_FGObjects)
                     {
-                        if (o.Enabled)
+                        if (o.Enabled && (o.Owner == null || o.Owner == player))
                         {
                             o.Draw(fDeltaTime, player);
                         }
