@@ -96,6 +96,7 @@ namespace itp380
 				Matrix.CreateFromQuaternion(m_Rotation) * Matrix.CreateTranslation(m_vPos);
             m_WorldBounds = m_ModelBounds;
             m_WorldBounds.Radius = m_WorldBounds.Radius * Scale;
+            m_WorldBounds.Center = Position;
 		}
 
 		public bool m_bEnabled = true;

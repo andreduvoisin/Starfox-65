@@ -82,7 +82,7 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "ship2";
-            Scale = 0.4f;
+            Scale = 1.0f;
             canFire = true;
             m_MoveState = ShipMoveState.NORMAL;
             m_Player = player;
