@@ -51,7 +51,7 @@ namespace itp380.UI
 			m_Timer.Update(fDeltaTime);
 		}
 
-		public virtual void Draw(float fDeltaTime, SpriteBatch DrawBatch)
+		public virtual void Draw(float fDeltaTime, SpriteBatch DrawBatch, Models.Player player)
 		{
 			DrawButtons(fDeltaTime, DrawBatch);
 		}

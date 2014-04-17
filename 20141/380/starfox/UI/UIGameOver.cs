@@ -64,7 +64,7 @@ namespace itp380.UI
 			base.Update(fDeltaTime);
 		}
 
-		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch)
+		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch, Models.Player player)
 		{
 			// Draw background
 			GraphicsManager g = GraphicsManager.Get();
@@ -81,7 +81,7 @@ namespace itp380.UI
 			}
 			DrawCenteredString(DrawBatch, m_GameOverText, m_TitleFont, color, vOffset);
 						
-			base.Draw(fDeltaTime, DrawBatch);
+			base.Draw(fDeltaTime, DrawBatch, player);
 		}
 
 		public override void OnExit()

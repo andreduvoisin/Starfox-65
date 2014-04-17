@@ -154,7 +154,7 @@ namespace itp380
                 m_SpriteBatch.Begin();
 
                 // Draw the UI screens
-                GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch);
+                GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch, null);
 
                 // Draw FPS counter
                 Vector2 vFPSPos = Vector2.Zero;
@@ -213,7 +213,7 @@ namespace itp380
                     m_SpriteBatch.Begin();
 
                     // Draw the UI screens
-                    GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch);
+                    GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch, player);
 
                     // Draw FPS counter
                     Vector2 vFPSPos = Vector2.Zero;
