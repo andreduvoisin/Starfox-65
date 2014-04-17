@@ -68,8 +68,12 @@ namespace itp380.UI
 
 		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch, Models.Player player)
 		{
-			// Draw background
+            // Quick hacky fix to multiple players + pause menu, but better than what it looks like without this line.
+            GraphicsManager.Get().GraphicsDevice.Viewport = GameState.Get().mainViewport;
+
+            // Draw background
 			GraphicsManager g = GraphicsManager.Get();
+
 			Rectangle rect = new Rectangle(g.Width / 2 - 200, g.Height / 2 - 115,
 				400, 250);
 			g.DrawFilled(DrawBatch, rect, Color.Black, 4.0f, Color.DarkBlue);
