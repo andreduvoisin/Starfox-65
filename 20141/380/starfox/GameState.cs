@@ -168,14 +168,14 @@ namespace itp380
 			// TODO: Add any gameplay setup here
             // UNCOMMENT THIS FOR 1 PLAYER
             //m_Players.Add(new Models.Player(m_Game, 1, mainViewport));
-            // UNCOMMENT THESE FOR 2 PLAYERS (aspect ratio's fucked up, need to figure that out)
-            m_Players.Add(new Models.Player(m_Game, 1, topViewport));
-            m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
+            // UNCOMMENT THESE FOR 2 PLAYERS
+            //m_Players.Add(new Models.Player(m_Game, 1, topViewport));
+            //m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
             // UNCOMMENT THESE FOR 3 OR 4 PLAYERS
-            //m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
-            //m_Players.Add(new Models.Player(m_Game, 2, urViewport));
-            //m_Players.Add(new Models.Player(m_Game, 3, blViewport));
-            //m_Players.Add(new Models.Player(m_Game, 4, brViewport));
+            m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
+            m_Players.Add(new Models.Player(m_Game, 2, urViewport));
+            m_Players.Add(new Models.Player(m_Game, 3, blViewport));
+            m_Players.Add(new Models.Player(m_Game, 4, brViewport));
 
             //[JEAN] Spawn Level
             m_Terrain = new Objects.grassfloor(m_Game);
@@ -243,8 +243,12 @@ namespace itp380
                     {
                         player.Ship.Projectiles.ElementAt(i).Position += player.Ship.Projectiles.ElementAt(i).projectileVelocity;
                         detectProjectileCollision(player.Ship.Projectiles.ElementAt(i));
+                        if (projectileCount != player.Ship.Projectiles.Count)
+                        {
+                            projectileCount = player.Ship.Projectiles.Count;
+                            i--;
+                        }
                     }
-                    
                 }
 			}
 		}
