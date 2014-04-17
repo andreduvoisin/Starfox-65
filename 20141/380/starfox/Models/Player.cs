@@ -19,6 +19,7 @@ namespace itp380.Models
         Objects.Ship m_Ship;
         public Objects.Ship Ship
         {
+            set{m_Ship = value;}
             get { return m_Ship; }
         }
 

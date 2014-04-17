@@ -187,7 +187,6 @@ namespace itp380
             //obj_building1.Position = new Vector3(200, -70, 100);
             //obj_building1.Rotation = Quaternion.Identity;
             //m_Buildings.Add(obj_building1);
-            //SpawnGameObject(obj_building1);
         }
 
 		public void Update(float fDeltaTime)
@@ -239,36 +238,31 @@ namespace itp380
 				// TODO: Any update code not for a specific game object should go here
                 foreach (Models.Player player in m_Players)
                 {
-                    foreach (Objects.Projectile projectile in player.Ship.Projectiles)
+                    int projectileCount = player.Ship.Projectiles.Count;
+                    for (int i = 0; i < projectileCount; i++ )
                     {
-                        projectile.Position += projectile.projectileVelocity;
+                        player.Ship.Projectiles.ElementAt(i).Position += player.Ship.Projectiles.ElementAt(i).projectileVelocity;
+                        detectProjectileCollision(player.Ship.Projectiles.ElementAt(i));
                     }
-                    detectProjectileCollision(player.Ship);
+                    
                 }
 			}
 		}
 
-        public void detectProjectileCollision(Objects.Ship ship)
+        public void detectProjectileCollision(Objects.Projectile projectile)
         {
-            int playerCount = m_Players.Count;
-            int projectileCount = ship.Projectiles.Count;
             foreach (Models.Player player in m_Players)
             {
-                if (player.Ship.Equals(ship))
+                if (projectile.m_WorldBounds.Intersects(player.Ship.m_WorldBounds) && projectile.projectileOwner != player.Ship)
                 {
-                    break;
-                }
-                else
-                {
-                    for (int i = 0; i < projectileCount; i++)
+                    RemoveProjectile(projectile);
+                    player.Health -= 10;
+                    if (player.Health <= 0)
                     {
-                        if (player.Ship.m_WorldBounds.Intersects(ship.Projectiles.ElementAt(i).m_WorldBounds))
-                        {
-                            player.Health -= 10;
-                            RemoveProjectile(ship.Projectiles.ElementAt(i));
-                            break;
-                        }
+                        RemoveGameObject(player.Ship);
+                        SoundManager.Get().PlaySoundCue("Snared");
                     }
+                    break;
                 }
             }
         }
@@ -286,7 +280,6 @@ namespace itp380
             Objects.Projectile cannonShot = new Objects.Projectile(m_Game, ship);
             cannonShot.Position = ship.Position;
             ship.Projectiles.Add(cannonShot);
-            SoundManager.Get().PlaySoundCue("Shoot");
             SpawnGameObject(cannonShot);
         }
 

@@ -16,11 +16,11 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "ship_bullet";
-            Scale = 0.7f;
+            Scale = 1.5f;
             Rotation = projectileOwner.Rotation;
             this.projectileOwner = projectileOwner;
             projectileVelocity = projectileOwner.Forward * 8f;
-            m_Timer.AddTimer("BulletDeath", 2f, lifetimeReached, false);
+            m_Timer.AddTimer("Bullet Death", 2f, lifetimeReached, false);
         }
 
          public void lifetimeReached()
