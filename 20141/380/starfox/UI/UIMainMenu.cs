@@ -67,13 +67,13 @@ namespace itp380.UI
 			base.Update(fDeltaTime);
 		}
 
-		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch)
+		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch, Models.Player player)
 		{
 			Vector2 vOffset = Vector2.Zero;
 			vOffset.Y = -1.0f * GraphicsManager.Get().Height / 4.0f;
 			DrawCenteredString(DrawBatch, m_Title, m_TitleFont, Color.DarkBlue, vOffset);
 
-			base.Draw(fDeltaTime, DrawBatch);
+			base.Draw(fDeltaTime, DrawBatch, player);
 		}
 	}
 }

@@ -42,13 +42,13 @@ namespace itp380.UI
 			base.Update(fDeltaTime);
 		}
 
-		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch)
+		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch, Models.Player player)
 		{	
-			base.Draw(fDeltaTime, DrawBatch);
+			base.Draw(fDeltaTime, DrawBatch, player);
 
             //Draw Healthbar
             DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Gray);
-            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, (int)(m_HealthBar.Width * ((double)GameState.Get().m_Players[1].Health / 100)), 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Red);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, (int)(m_HealthBar.Width * ((double)player.Health / 100)), 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Red);
             DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 0, m_HealthBar.Width, 44), Color.White);
 
             // Draw GOC (Game Object Count)

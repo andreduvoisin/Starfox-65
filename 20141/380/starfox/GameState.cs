@@ -405,12 +405,12 @@ namespace itp380
 		}
 
 		// Has to be here because only this can access stack!
-		public void DrawUI(float fDeltaTime, SpriteBatch batch)
+		public void DrawUI(float fDeltaTime, SpriteBatch batch, Models.Player player)
 		{
 			// We draw in reverse so the items at the TOP of the stack are drawn after those on the bottom
 			foreach (UI.UIScreen u in m_UIStack.Reverse())
 			{
-				u.Draw(fDeltaTime, batch);
+                u.Draw(fDeltaTime, batch, player);
 			}
 		}
 
