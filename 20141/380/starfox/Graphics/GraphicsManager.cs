@@ -175,6 +175,7 @@ namespace itp380
             {
                 foreach (Models.Player player in GameState.Get().m_Players)
                 {
+                    // Set viewport and aspect ratio projection for this player.
                     GraphicsDevice.Viewport = player.m_Viewport;
                     SetProjection((float)player.m_Viewport.Width / player.m_Viewport.Height);
 
@@ -215,17 +216,20 @@ namespace itp380
                     // Draw the UI screens
                     GameState.Get().DrawUI(fDeltaTime, m_SpriteBatch, player);
 
-                    // Draw FPS counter
-                    Vector2 vFPSPos = Vector2.Zero;
-                    if (DebugDefines.bShowBuildString)
+                    // Draw FPS counter (only for player 1)
+                    if (player.m_PlayerIndex == 1)
                     {
-                        m_SpriteBatch.DrawString(m_FPSFont, DebugDefines.DebugName, vFPSPos, Color.White);
-                        vFPSPos.Y += 25.0f;
-                    }
-                    if (DebugDefines.bShowFPS)
-                    {
-                        string sFPS = String.Format("FPS: {0}", (int)(1 / fDeltaTime));
-                        m_SpriteBatch.DrawString(m_FPSFont, sFPS, vFPSPos, Color.White);
+                        Vector2 vFPSPos = Vector2.Zero;
+                        if (DebugDefines.bShowBuildString)
+                        {
+                            m_SpriteBatch.DrawString(m_FPSFont, DebugDefines.DebugName, vFPSPos, Color.White);
+                            vFPSPos.Y += 25.0f;
+                        }
+                        if (DebugDefines.bShowFPS)
+                        {
+                            string sFPS = String.Format("FPS: {0}", (int)(1 / fDeltaTime));
+                            m_SpriteBatch.DrawString(m_FPSFont, sFPS, vFPSPos, Color.White);
+                        }
                     }
 
                     m_SpriteBatch.End();
