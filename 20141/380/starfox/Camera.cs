@@ -18,7 +18,7 @@ namespace itp380
 {
 	public class Camera
 	{
-        const float fHDist = 2.0f;
+        const float fHDist = 3.0f;
         const float fVDist = 3.0f;
         const float fSpringConstant = 256;
         const float fHorizontalTrack = 0.3f;
