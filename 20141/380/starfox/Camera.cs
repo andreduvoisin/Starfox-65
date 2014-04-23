@@ -32,7 +32,7 @@ namespace itp380
             get { return trackpoint; }
         }
 
-		Vector3 m_vCameraPosition = new Vector3(0, 0, 10);
+        Vector3 m_vCameraPosition;
 		public Vector3 Position
         {
             get { return m_vCameraPosition; }
@@ -62,6 +62,7 @@ namespace itp380
 		{
 			m_Game = game;
             m_ShipTarget = ship;
+            m_vCameraPosition = ship.Position - ship.Forward * fHDist;
 		}
 
 		public void Update(float fDeltaTime)
