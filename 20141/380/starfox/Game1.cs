@@ -28,7 +28,8 @@ namespace itp380
 	{
 		public Game1()
 		{
-			IsFixedTimeStep = false;
+			IsFixedTimeStep = true;
+            TargetElapsedTime = TimeSpan.FromMilliseconds(1000.0 / 30.0);
 			GraphicsManager.Get().Start(this);
 			if (DebugDefines.bShowWindowsMouseCursor)
 			{

@@ -54,8 +54,11 @@ namespace itp380.UI
             // Draw GOC (Game Object Count) (only for player 1)
             if (player.m_PlayerIndex == 1)
             {
-                string GOC = String.Format("GOC: {0}", GameState.Get().GOC);
-                DrawBatch.DrawString(m_FixedFont, GOC, new Vector2(0, 50), Color.White);
+                DrawBatch.DrawString(
+                    m_FixedFont,
+                    String.Format("GOC: {0}", GameState.Get().GOC),
+                    new Vector2(0, 50),
+                    Color.White);
             }
 		}
 
