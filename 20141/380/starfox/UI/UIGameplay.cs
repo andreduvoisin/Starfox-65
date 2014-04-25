@@ -52,13 +52,13 @@ namespace itp380.UI
 
             //Draw radar
             DrawBatch.Draw(m_HealthBar, new Rectangle(412, 290, 100, 100), new Rectangle(412, 290, 100, 100), Color.Gray);
-            DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)player.Ship.m_WorldBounds.Center.X / 6), 320 + ((int)player.Ship.m_WorldBounds.Center.Z / 6), 5, 5), new Rectangle(410 + ((int)player.Ship.m_WorldBounds.Center.X / 6), 320 +((int)player.Ship.m_WorldBounds.Center.Z / 6), 5, 5), Color.Blue);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)player.Ship.Position.X / 6), 320 + ((int)player.Ship.Position.Z / 6), 5, 5), new Rectangle(410 + ((int)player.Ship.Position.X / 6), 320 +((int)player.Ship.Position.Z / 6), 5, 5), Color.Blue);
 
             foreach (Models.Player p in GameState.Get().m_Players)
             {
                 if (p != player)
                 {
-                  DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)p.Ship.m_WorldBounds.Center.X / 6), 320 + ((int)p.Ship.m_WorldBounds.Center.Z / 6), 5, 5), new Rectangle(410 + ((int)p.Ship.m_WorldBounds.Center.X / 6), 320 + ((int)p.Ship.m_WorldBounds.Center.Z / 6), 5, 5), Color.Red);
+                  DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)p.Ship.Position.X / 6), 320 + ((int)p.Ship.Position.Z / 6), 5, 5), new Rectangle(410 + ((int)p.Ship.Position.X / 6), 320 + ((int)p.Ship.Position.Z / 6), 5, 5), Color.Red);
                 }
             }
 
