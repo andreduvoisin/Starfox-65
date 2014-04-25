@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace itp380.Objects
 {
-    class Radar
+    class Radar : GameObject
     {
-      /*  private SpriteBatch spriteBatch;
+        private SpriteBatch spriteBatch;
         GraphicsDevice graphicsDevice;
 
         private bool enabled = false;
@@ -34,8 +36,10 @@ namespace itp380.Objects
         /// <param name="scale">Factor to scale the graphics.</param>
         /// <param name="dimension">Dimension of the world.</param>
         /// <param name="graphicsDevice">Graphicsdevice that is required to create the textures for the objects.</param>
-        public Radar(Vector2 position, Texture2D backgroundImage, SpriteBatch spriteBatch, float scale, int dimension, GraphicsDevice graphicsDevice)
+        public Radar(Vector2 position, Texture2D backgroundImage, SpriteBatch spriteBatch, float scale, int dimension, GraphicsDevice graphicsDevice, Game game) :
+            base(game)
         {
+
             this.position = position;
 
             this.backgroundImage = backgroundImage;
@@ -64,6 +68,7 @@ namespace itp380.Objects
         /// greater index will be displayed in a smaller size and a different color.</param>
         /// <param name="currentAngle">Angle for the rotation of the radar.</param>
         /// <param name="myPosition">Position of the player.</param>
+        
         public void update(Vector3[] objectPositions, int highlight, float currentAngle, Vector3 myPosition)
         {
             this.objectPositions = objectPositions;
@@ -127,6 +132,6 @@ namespace itp380.Objects
 
                 spriteBatch.Draw(dummyTexture2, backgroundRectangle2, Color.Pink);
             }
-        }*/
+        }
     }
 }

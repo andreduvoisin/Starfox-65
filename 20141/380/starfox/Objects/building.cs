@@ -12,7 +12,7 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "building1";
-            Scale = 0.75f;
+            Scale = 8f;
         }
     }
 }

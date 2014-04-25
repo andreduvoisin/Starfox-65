@@ -39,12 +39,12 @@ namespace itp380
 			get { return m_DrawOrder; }
 		}
 
-        public BoundingSphere m_WorldBounds;
-        public BoundingSphere WorldBounds
+        public BoundingBox m_WorldBounds;
+        public BoundingBox WorldBounds
         {
             get { return m_WorldBounds; }
         }
-        public BoundingSphere m_ModelBounds;
+        public BoundingBox m_ModelBounds;
 
 		// Anything that's timer logic is assumed to be affected by time factor
 		protected Utils.Timer m_Timer = new Utils.Timer();
@@ -95,8 +95,9 @@ namespace itp380
 			m_WorldTransform = Matrix.CreateScale(m_fScale) *
 				Matrix.CreateFromQuaternion(m_Rotation) * Matrix.CreateTranslation(m_vPos);
             m_WorldBounds = m_ModelBounds;
-            m_WorldBounds.Radius = m_WorldBounds.Radius * Scale;
-            m_WorldBounds.Center = Position;
+            m_WorldBounds.Max = m_WorldBounds.Max * Scale + Position;
+            m_WorldBounds.Min = m_WorldBounds.Min * Scale + Position;
+            
 		}
 
 		public bool m_bEnabled = true;
@@ -119,7 +120,7 @@ namespace itp380
 				m_ModelBones = new Matrix[m_Model.Bones.Count];
 				m_Model.CopyAbsoluteBoneTransformsTo(m_ModelBones);
 			}
-            m_ModelBounds = PhysicsManager.Get().GetBoundingSphere(m_ModelName);
+            m_ModelBounds = PhysicsManager.Get().GetBoundingBox(m_ModelName);
 			RebuildWorldTransform();
 		}
 

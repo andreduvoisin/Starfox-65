@@ -33,7 +33,7 @@ namespace itp380
         public Viewport mainViewport, topViewport, bottomViewport, ulViewport, urViewport, blViewport, brViewport;
 
         SoundEffectInstance flightSoundInstance;
-        
+
 		Game m_Game;
 		eGameState m_State;
         Random m_Random = new Random();
@@ -59,6 +59,7 @@ namespace itp380
         }
 
         List<Objects.building> m_Buildings = new List<Objects.building>(); // Building Array
+        Objects.building m_building;
         Objects.grassfloor m_Terrain;
 
 		// Timer class for the global GameState
@@ -182,6 +183,10 @@ namespace itp380
             m_Terrain.Position = new Vector3(200, -70, 100);
             m_Terrain.Rotation = Quaternion.Identity;
             SpawnGameObject(m_Terrain);
+            m_building = new Objects.building(m_Game);
+            m_building.Position = new Vector3(200, 0, 50);
+            m_building.Rotation = Quaternion.Identity;
+            SpawnGameObject(m_building);
             //[JEAN] Spawn buildings
             //Objects.building obj_building1 = new Objects.building(m_Game);
             //obj_building1.Position = new Vector3(200, -70, 100);
@@ -249,6 +254,8 @@ namespace itp380
                             i--;
                         }
                     }
+                    detectBuildingCollision();
+                    detectPlayerCollisions();
                 }
 
                 // Prints out the position of a ship.
@@ -270,6 +277,34 @@ namespace itp380
                         SoundManager.Get().PlaySoundCue("Snared");
                     }
                     break;
+                }
+            }
+        }
+
+        public void detectBuildingCollision()
+        {
+            foreach (Models.Player player in m_Players)
+            {
+                if (player.Ship.m_WorldBounds.Intersects(m_building.m_WorldBounds))
+                {
+                    RemoveGameObject(player.Ship);
+                    SoundManager.Get().PlaySoundCue("Snared");
+                }
+                    
+            }
+        }
+
+        public void detectPlayerCollisions()
+        {
+            foreach (Models.Player mainPlayer in m_Players)
+            {
+                foreach(Models.Player otherPlayer in m_Players)
+                {
+                    if (!(mainPlayer.Equals(otherPlayer)) && mainPlayer.Ship.WorldBounds.Intersects(otherPlayer.Ship.WorldBounds))
+                    {
+                        RemoveGameObject(mainPlayer.Ship);
+                        RemoveGameObject(otherPlayer.Ship);
+                    }
                 }
             }
         }
