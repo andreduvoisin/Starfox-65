@@ -23,6 +23,12 @@ namespace itp380
 		Foreground
 	}
 
+    public enum eLightingType
+    {
+        Normal,
+        Ambient
+    }
+
 	public class GraphicsManager : itp380.Patterns.Singleton<GraphicsManager>
 	{
 		GraphicsDeviceManager m_Graphics;

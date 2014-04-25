@@ -39,11 +39,18 @@ namespace itp380
 			get { return m_DrawOrder; }
 		}
 
+        protected eLightingType m_lightingType = eLightingType.Normal;
+        public eLightingType LightingType
+        {
+            get { return m_lightingType; }
+        }
+
         public BoundingBox m_WorldBounds;
         public BoundingBox WorldBounds
         {
             get { return m_WorldBounds; }
         }
+
         public BoundingBox m_ModelBounds;
 
 		// Anything that's timer logic is assumed to be affected by time factor
@@ -155,10 +162,21 @@ namespace itp380
 					effect.Projection = GraphicsManager.Get().Projection;
 					effect.EnableDefaultLighting();
 					effect.AmbientLightColor = new Vector3(1.0f, 1.0f, 1.0f);
-					effect.DirectionalLight0.Enabled = true;
-					effect.DirectionalLight1.Enabled = true;
-					effect.DirectionalLight2.Enabled = true;
-					effect.PreferPerPixelLighting = true;
+
+                    if (m_lightingType == eLightingType.Normal)
+                    {
+                        effect.DirectionalLight0.Enabled = true;
+                        effect.DirectionalLight1.Enabled = true;
+                        effect.DirectionalLight2.Enabled = true;
+                    }
+                    else
+                    {
+                        effect.DirectionalLight0.Enabled = false;
+                        effect.DirectionalLight1.Enabled = false;
+                        effect.DirectionalLight2.Enabled = false;
+                    }
+
+                    effect.PreferPerPixelLighting = true;
 				}
 				mesh.Draw();
 			}
