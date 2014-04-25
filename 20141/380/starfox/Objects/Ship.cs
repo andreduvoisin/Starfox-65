@@ -10,15 +10,15 @@ namespace itp380.Objects
     {
         const float MAX_PITCH       = (float)Math.PI * 4f / 16f;
         const float PITCH_SPEED     = .08f;
-        const float PITCH_DAMP      = .91f;
+        const float PITCH_DAMP      = .89f;
         const float YAW_SPEED       = .07f;
         const float ROLL_SCALE      = 1.1f;
 
-        const float SHIP_BOOST      = .04f;
+        const float SHIP_BOOST      = .2f;
         const float SHIP_SPEED      = .8f;
         const float SHIP_FRICTION   = 10f;
-        const float SHIP_CEILING    = 150f;
-        const float SHIP_FLOOR      = -60f;
+        const float SHIP_CEILING    = 145f;
+        const float SHIP_FLOOR      = -55f;
         const float SHIP_X_MIN      = -165f;
         const float SHIP_X_MAX      = 600f;
         const float SHIP_Z_MIN      = -275f;
@@ -110,11 +110,14 @@ namespace itp380.Objects
             m_Yaw += -InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X * YAW_SPEED;
 
             // Pitch
-            m_Pitch += InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y * PITCH_SPEED;
-            m_Pitch = MathHelper.Clamp(m_Pitch, -MAX_PITCH, MAX_PITCH*0.8f);
+            float PitchDelta = InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y * PITCH_SPEED;
+            if ((Position.Y > SHIP_CEILING && PitchDelta >= 0) || (Position.Y < SHIP_FLOOR && PitchDelta <= 0))
+                m_Pitch *= PITCH_DAMP;
+            else
+                m_Pitch = MathHelper.Clamp(m_Pitch + PitchDelta, -MAX_PITCH, MAX_PITCH * 0.8f);
 
             // Hack for pitch to force it to return to 0 when player is not going up/down.
-            if ((Math.Abs(InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y) == 0) || Position.Y > SHIP_CEILING)
+            if ((Math.Abs(InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y) == 0) || Position.Y > SHIP_CEILING || Position.Y < SHIP_FLOOR)
                 m_Pitch *= PITCH_DAMP;
 
             m_ShipSpeed -= m_ShipSpeed * SHIP_FRICTION * fDeltaTime;
@@ -129,12 +132,6 @@ namespace itp380.Objects
         void ApplyPhysics()
         {
             Position += ShipVelocity;
-
-            // Check up/down max.
-            if (Position.Y > SHIP_CEILING)
-                Position = new Vector3(Position.X, SHIP_CEILING, Position.Z);
-            else if (Position.Y < SHIP_FLOOR)
-                Position = new Vector3(Position.X, SHIP_FLOOR, Position.Z);
 
             // Check x/z max.
             if (Position.X > SHIP_X_MAX)

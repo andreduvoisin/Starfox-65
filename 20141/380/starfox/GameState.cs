@@ -170,13 +170,13 @@ namespace itp380
             // UNCOMMENT THIS FOR 1 PLAYER
             //m_Players.Add(new Models.Player(m_Game, 1, mainViewport));
             // UNCOMMENT THESE FOR 2 PLAYERS
-            //m_Players.Add(new Models.Player(m_Game, 1, topViewport));
-            //m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
+            m_Players.Add(new Models.Player(m_Game, 1, topViewport));
+            m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
             // UNCOMMENT THESE FOR 3 OR 4 PLAYERS
-            m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
-            m_Players.Add(new Models.Player(m_Game, 2, urViewport));
-            m_Players.Add(new Models.Player(m_Game, 3, blViewport));
-            m_Players.Add(new Models.Player(m_Game, 4, brViewport));
+            //m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
+            //m_Players.Add(new Models.Player(m_Game, 2, urViewport));
+            //m_Players.Add(new Models.Player(m_Game, 3, blViewport));
+            //m_Players.Add(new Models.Player(m_Game, 4, brViewport));
 
             //[JEAN] Spawn Level
             m_Terrain = new Objects.grassfloor(m_Game);

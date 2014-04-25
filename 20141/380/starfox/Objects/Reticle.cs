@@ -23,6 +23,7 @@ namespace itp380.Objects
             Scale = 0.5f;
 
             m_DrawOrder = eDrawOrder.Foreground;
+            m_lightingType = eLightingType.Ambient;
         }
 
         public override void Update(float fDeltaTime)
