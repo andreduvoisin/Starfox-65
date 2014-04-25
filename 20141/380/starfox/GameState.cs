@@ -250,6 +250,9 @@ namespace itp380
                         }
                     }
                 }
+
+                // Prints out the position of a ship.
+                //System.Console.WriteLine("pos: " + m_Players[0].Ship.Position.X + " " + m_Players[0].Ship.Position.Y + " " + m_Players[0].Ship.Position.Z);
 			}
 		}
 
