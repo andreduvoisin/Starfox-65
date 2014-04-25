@@ -46,13 +46,22 @@ namespace itp380.UI
 		{	
 			base.Draw(fDeltaTime, DrawBatch, player);
             //Draw Healthbar
-            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Gray);
-            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, (int)(m_HealthBar.Width * ((double)player.Health / 100)), 44), new Rectangle(0, 45, m_HealthBar.Width, 44), Color.Red);
-            DrawBatch.Draw(m_HealthBar, new Rectangle(20, 30, m_HealthBar.Width, 44), new Rectangle(0, 0, m_HealthBar.Width, 44), Color.White);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(130, 30, m_HealthBar.Width/2, 20), new Rectangle(0, 45, m_HealthBar.Width/2, 20), Color.Gray);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(130, 30, (int)(m_HealthBar.Width/2 * ((double)player.Health / 100)), 20), new Rectangle(0, 45, m_HealthBar.Width/2, 20), Color.Red);
+            //DrawBatch.Draw(m_HealthBar, new Rectangle(130, 30, m_HealthBar.Width/2, 20), new Rectangle(0, 0, m_HealthBar.Width/2, 20), Color.White);
 
             //Draw radar
-            //DrawBatch.Draw(m_HealthBar, new Rectangle(410, 300, 100, 100), new Rectangle(410, 300, 100, 100), Color.Gray);
-            //DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)player.Ship.m_WorldBounds.Center.X / 5), 340 + ((int)player.Ship.m_WorldBounds.Center.Y / 5), 5, 5), new Rectangle(410 + ((int)player.Ship.m_WorldBounds.Center.X / 5), 340 +((int)player.Ship.m_WorldBounds.Center.Y / 5), 5, 5), Color.Red);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(412, 290, 100, 100), new Rectangle(412, 290, 100, 100), Color.Gray);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)player.Ship.m_WorldBounds.Center.X / 6), 320 + ((int)player.Ship.m_WorldBounds.Center.Z / 6), 5, 5), new Rectangle(410 + ((int)player.Ship.m_WorldBounds.Center.X / 6), 320 +((int)player.Ship.m_WorldBounds.Center.Z / 6), 5, 5), Color.Blue);
+
+            foreach (Models.Player p in GameState.Get().m_Players)
+            {
+                if (p != player)
+                {
+                  DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)p.Ship.m_WorldBounds.Center.X / 6), 320 + ((int)p.Ship.m_WorldBounds.Center.Z / 6), 5, 5), new Rectangle(410 + ((int)p.Ship.m_WorldBounds.Center.X / 6), 320 + ((int)p.Ship.m_WorldBounds.Center.Z / 6), 5, 5), Color.Red);
+                }
+            }
+
 
             // Draw GOC (Game Object Count) (only for player 1)
             if (player.m_PlayerIndex == 1)
