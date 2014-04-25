@@ -19,6 +19,10 @@ namespace itp380.Objects
         const float SHIP_FRICTION   = 10f;
         const float SHIP_CEILING    = 150f;
         const float SHIP_FLOOR      = -60f;
+        const float SHIP_X_MIN      = -165f;
+        const float SHIP_X_MAX      = 600f;
+        const float SHIP_Z_MIN      = -275f;
+        const float SHIP_Z_MAX      = 475f;
 
         const uint BROLL_ROTS       = 2;
         const float BROLL_TIME      = 1f;
@@ -126,10 +130,22 @@ namespace itp380.Objects
         {
             Position += ShipVelocity;
 
+            // Check up/down max.
             if (Position.Y > SHIP_CEILING)
                 Position = new Vector3(Position.X, SHIP_CEILING, Position.Z);
             else if (Position.Y < SHIP_FLOOR)
                 Position = new Vector3(Position.X, SHIP_FLOOR, Position.Z);
+
+            // Check x/z max.
+            if (Position.X > SHIP_X_MAX)
+                Position = new Vector3(SHIP_X_MAX, Position.Y, Position.Z);
+            else if (Position.X < SHIP_X_MIN)
+                Position = new Vector3(SHIP_X_MIN, Position.Y, Position.Z);
+
+            if (Position.Z > SHIP_Z_MAX)
+                Position = new Vector3(Position.X, Position.Y, SHIP_Z_MAX);
+            else if (Position.Z < SHIP_Z_MIN)
+                Position = new Vector3(Position.X, Position.Y, SHIP_Z_MIN);
 
             Rotation = Quaternion.CreateFromYawPitchRoll(
                 m_Yaw,
