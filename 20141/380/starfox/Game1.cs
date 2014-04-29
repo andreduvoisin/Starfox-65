@@ -14,9 +14,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace itp380
@@ -24,10 +22,35 @@ namespace itp380
 	/// <summary>
 	/// This is the main type for your game
 	/// </summary>
+    /// 
+
 	public class Game1 : Microsoft.Xna.Framework.Game
 	{
+
+        ParticleSystem projectileTrailParticles;
+        ParticleSystem smokePlumeParticles;
+        List<Projectile> projectiles = new List<Projectile>();
+
+
 		public Game1()
 		{
+            Content.RootDirectory = "Content";
+
+            // Construct our particle system components.
+            projectileTrailParticles = new ProjectileTrailParticleSystem(this, Content);
+            smokePlumeParticles = new SmokePlumeParticleSystem(this, Content);
+
+
+            // Set the draw order so the explosions and fire
+            // will appear over the top of the smoke.
+            smokePlumeParticles.DrawOrder = 100;
+            projectileTrailParticles.DrawOrder = 300;
+
+            // Register the particle system components.
+            Components.Add(projectileTrailParticles);
+            Components.Add(smokePlumeParticles);
+            
+
 			IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000.0 / 30.0);
 			GraphicsManager.Get().Start(this);
@@ -40,7 +63,10 @@ namespace itp380
 				IsMouseVisible = false;
 			}
 			Window.Title = "Starfox 65";
-			Content.RootDirectory = "Content";
+
+            
+
+
 		}
 
 		/// <summary>
@@ -100,10 +126,41 @@ namespace itp380
                     InputManager.Get(i + 1).Update(fDeltaTime);
                 }
 				GameState.Get().Update(fDeltaTime);
+                
 			}
+            UpdateSmokePlume();
+            UpdateProjectiles(gameTime);
 			base.Update(gameTime);
 		}
 
+        void UpdateSmokePlume()
+        {
+            // This is trivial: we just create one new smoke particle per frame.
+            foreach (Models.Player player in GameState.Get().m_Players)
+            {
+                smokePlumeParticles.AddParticle(new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z), new Vector3(player.Ship.Position.X , player.Ship.Position.Y, player.Ship.Position.Z));
+                    // player.Ship.Position
+            }
+        }
+
+        void UpdateProjectiles(GameTime gameTime)
+        {
+            int i = 0;
+
+            while (i < projectiles.Count)
+            {
+                if (!projectiles[i].Update(gameTime))
+                {
+                    // Remove projectiles at the end of their life.
+                    projectiles.RemoveAt(i);
+                }
+                else
+                {
+                    // Advance to the next projectile.
+                    i++;
+                }
+            }
+        }
 		/// <summary>
 		/// This is called when the game should draw itself.
 		/// </summary>
@@ -111,6 +168,12 @@ namespace itp380
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsManager.Get().Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
+            //GraphicsManager.Get().Projection
+            //GameState.Get().m_Players[0].Camera.CameraMatrix
+            foreach (Models.Player player in GameState.Get().m_Players)
+            {
+                smokePlumeParticles.SetCamera(player.Camera.CameraMatrix, GraphicsManager.Get().Projection);
+            }
 
 			base.Draw(gameTime);
 		}

@@ -177,7 +177,6 @@ namespace itp380
             //m_Players.Add(new Models.Player(m_Game, 2, urViewport));
             //m_Players.Add(new Models.Player(m_Game, 3, blViewport));
             //m_Players.Add(new Models.Player(m_Game, 4, brViewport));
-
             //[JEAN] Spawn Level
             m_Terrain = new Objects.grassfloor(m_Game);
             m_Terrain.Position = new Vector3(200, -70, 100);

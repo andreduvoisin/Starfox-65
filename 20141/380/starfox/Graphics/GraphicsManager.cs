@@ -13,9 +13,13 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Content;
 
 namespace itp380
 {
+
+        
+
 	public enum eDrawOrder
 	{
 		Default,
@@ -41,6 +45,8 @@ namespace itp380
 		LinkedList<GameObject> m_DefaultObjects = new LinkedList<GameObject>();
 		LinkedList<GameObject> m_BGObjects = new LinkedList<GameObject>();
 		LinkedList<GameObject> m_FGObjects = new LinkedList<GameObject>();
+
+        
 
 		public Matrix Projection;
 		
@@ -154,6 +160,7 @@ namespace itp380
             // Clear back buffer
             m_Graphics.GraphicsDevice.Clear(Color.LightSkyBlue);
 
+
             if (GameState.Get().State == eGameState.MainMenu)
             {
                 // Now draw all 2D components
@@ -181,6 +188,9 @@ namespace itp380
             {
                 foreach (Models.Player player in GameState.Get().m_Players)
                 {
+
+
+
                     // Set viewport and aspect ratio projection for this player.
                     GraphicsDevice.Viewport = player.m_Viewport;
                     SetProjection((float)player.m_Viewport.Width / player.m_Viewport.Height);
