@@ -253,8 +253,8 @@ namespace itp380
                             i--;
                         }
                     }
-                    detectBuildingCollision();
-                    detectPlayerCollisions();
+                    detectShipBuildingCollision();
+                    detectPlayerShipCollisions();
                 }
 
                 // Prints out the position of a ship.
@@ -277,10 +277,17 @@ namespace itp380
                     }
                     break;
                 }
+                foreach (Objects.building building in m_Buildings)
+                {
+                    if(projectile.m_WorldBounds.Intersects(m_building.WorldBounds))
+                    {
+                        RemoveProjectile(projectile);
+                    }
+                }
             }
         }
 
-        public void detectBuildingCollision()
+        public void detectShipBuildingCollision()
         {
             foreach (Models.Player player in m_Players)
             {
@@ -292,7 +299,7 @@ namespace itp380
             }
         }
 
-        public void detectPlayerCollisions()
+        public void detectPlayerShipCollisions()
         {
             foreach (Models.Player mainPlayer in m_Players)
             {
