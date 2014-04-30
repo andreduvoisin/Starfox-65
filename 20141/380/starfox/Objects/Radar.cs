@@ -4,133 +4,61 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace itp380.Objects
 {
-    class Radar : GameObject
+    class Radar
     {
-        private SpriteBatch spriteBatch;
-        GraphicsDevice graphicsDevice;
+        // Set THESE to change sizes
+        static Point Location = new Point(412, 290);
+        static Point Size = new Point(100, 100);
+        static int ShipSize = 5;
 
-        private bool enabled = false;
+        // THESE are internal
+        static Rectangle BackgroundRect = new Rectangle(Location.X, Location.Y, Size.X, Size.Y);
 
-        private float scale;
-        private int dimension;
+        Texture2D m_Background;
 
-        private Vector2 position;
-
-        private Texture2D backgroundImage;
-
-        public float currentAngle = 0;
-
-        private Vector3[] objectPositions;
-        private Vector3 myPosition;
-        private int highlight;
-
-        /// <summary>
-        /// Creates a new RadarComponent for the HUD.
-        /// </summary>
-        /// <param name="position">Component position on the screen.</param>
-        /// <param name="backgroundImage">Image for the background of the radar.</param>
-        /// <param name="spriteBatch">SpriteBatch that is required to draw the sprite.</param>
-        /// <param name="scale">Factor to scale the graphics.</param>
-        /// <param name="dimension">Dimension of the world.</param>
-        /// <param name="graphicsDevice">Graphicsdevice that is required to create the textures for the objects.</param>
-        public Radar(Vector2 position, Texture2D backgroundImage, SpriteBatch spriteBatch, float scale, int dimension, GraphicsDevice graphicsDevice, Game game) :
-            base(game)
+        public Radar(ContentManager Content)
         {
-
-            this.position = position;
-
-            this.backgroundImage = backgroundImage;
-
-            this.spriteBatch = spriteBatch;
-            this.graphicsDevice = graphicsDevice;
-
-            this.scale = scale;
-            this.dimension = dimension;
+            m_Background = Content.Load<Texture2D>("HealthBar_border") as Texture2D;
         }
 
-        /// <summary>
-        /// Sets whether the component should be drawn.
-        /// </summary>
-        /// <param name="enabled">enable the component</param>
-        public void Enable(bool enabled)
+        Rectangle GetRectangleForShip(Vector3 Position)
         {
-            this.enabled = enabled;
+            float fracX = (Position.X - Objects.Ship.SHIP_X_MIN) / (Objects.Ship.SHIP_X_MAX - Objects.Ship.SHIP_X_MIN) * Size.X;
+            float fracY = (Position.Z - Objects.Ship.SHIP_Z_MIN) / (Objects.Ship.SHIP_Z_MAX - Objects.Ship.SHIP_Z_MIN) * Size.Y;
+            int RadarX = (int)fracX - ShipSize / 2;
+            int RadarY = (int)fracY - ShipSize / 2;
+
+            return new Rectangle(Location.X + RadarX, Location.Y + RadarY, ShipSize, ShipSize);
         }
 
-        /// <summary>
-        /// Updates the positions of the objects to be drawn and the angle for the rotation of the radar.
-        /// </summary>
-        /// <param name="objectPositions">Position of all objects to be drawn.</param>
-        /// <param name="highlight">Index of the object to be highlighted. Object with a smaller or a 
-        /// greater index will be displayed in a smaller size and a different color.</param>
-        /// <param name="currentAngle">Angle for the rotation of the radar.</param>
-        /// <param name="myPosition">Position of the player.</param>
-        
-        public void update(Vector3[] objectPositions, int highlight, float currentAngle, Vector3 myPosition)
+        void DrawShip(SpriteBatch DrawBatch, Objects.Ship Ship, Objects.Ship Origin, Color Color)
         {
-            this.objectPositions = objectPositions;
-            this.highlight = highlight;
-            this.currentAngle = currentAngle;
-            this.myPosition = myPosition;
+            float Angle;
+            Vector3 RelativePosition;
+            Rectangle ShipRect;
+
+            Angle = (float)Math.Asin(2 * Origin.Rotation.X * Origin.Rotation.Y + 2 * Origin.Rotation.Z * Origin.Rotation.W);
+            RelativePosition = Vector3.Transform(Ship.Position - Origin.Position, Matrix.CreateFromAxisAngle(Vector3.UnitY, Angle));
+            ShipRect = GetRectangleForShip(RelativePosition);
+
+            DrawBatch.Draw(m_Background, ShipRect, ShipRect, Color);
         }
 
-        /// <summary>
-        /// Draws the RadarComponent with the values set before.
-        /// </summary>
-        public void Draw()
+        public void Draw(float fDeltaTime, SpriteBatch DrawBatch, Models.Player Player)
         {
-            if (enabled)
+            //Draw radar
+            DrawBatch.Draw(m_Background, BackgroundRect, BackgroundRect, Color.Gray);
+
+            foreach (Models.Player p in GameState.Get().m_Players)
             {
-                spriteBatch.Draw(backgroundImage, position, null, Color.White, 0, new Vector2(backgroundImage.Width / 2, backgroundImage.Height / 2), scale, SpriteEffects.None, 0);
-
-                for (int i = 0; i < objectPositions.Length; i++)
+                if (p != Player)
                 {
-                    Color myTransparentColor = new Color(255, 0, 0);
-                    if (highlight == i)
-                    {
-                        myTransparentColor = new Color(255, 255, 0);
-                    }
-                    else if (highlight > i)
-                    {
-                        myTransparentColor = new Color(0, 255, 0);
-                    }
-
-                    Vector3 temp = objectPositions[i];
-                    temp.X = temp.X / dimension * backgroundImage.Width / 2 * scale;
-                    temp.Z = temp.Z / dimension * backgroundImage.Height / 2 * scale;
-
-                    temp = Vector3.Transform(temp, Matrix.CreateRotationY(MathHelper.ToRadians(currentAngle)));
-
-                    Rectangle backgroundRectangle = new Rectangle();
-                    backgroundRectangle.Width = 2;
-                    backgroundRectangle.Height = 2;
-                    backgroundRectangle.X = (int)(position.X + temp.X);
-                    backgroundRectangle.Y = (int)(position.Y + temp.Z);
-
-                    Texture2D dummyTexture = new Texture2D(graphicsDevice, 1, 1);
-                    dummyTexture.SetData(new Color[] { myTransparentColor });
-
-                    spriteBatch.Draw(dummyTexture, backgroundRectangle, myTransparentColor);
+                    DrawShip(DrawBatch, p.Ship, Player.Ship, Color.Red);
                 }
-
-                myPosition.X = myPosition.X / dimension * backgroundImage.Width / 2 * scale;
-                myPosition.Z = myPosition.Z / dimension * backgroundImage.Height / 2 * scale;
-
-                myPosition = Vector3.Transform(myPosition, Matrix.CreateRotationY(MathHelper.ToRadians(currentAngle)));
-
-                Rectangle backgroundRectangle2 = new Rectangle();
-                backgroundRectangle2.Width = 5;
-                backgroundRectangle2.Height = 5;
-                backgroundRectangle2.X = (int)(position.X + myPosition.X);
-                backgroundRectangle2.Y = (int)(position.Y + myPosition.Z);
-
-                Texture2D dummyTexture2 = new Texture2D(graphicsDevice, 1, 1);
-                dummyTexture2.SetData(new Color[] { Color.Pink });
-
-                spriteBatch.Draw(dummyTexture2, backgroundRectangle2, Color.Pink);
             }
         }
     }
