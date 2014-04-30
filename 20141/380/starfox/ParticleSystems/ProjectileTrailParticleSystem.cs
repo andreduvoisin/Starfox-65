@@ -12,6 +12,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 #endregion
 
 namespace itp380
@@ -21,10 +22,11 @@ namespace itp380
     /// </summary>
     class ProjectileTrailParticleSystem : ParticleSystem
     {
+        List<Projectile> projectiles = new List<Projectile>();
+
         public ProjectileTrailParticleSystem(Game game, ContentManager content)
             : base(game, content)
         { }
-
 
         protected override void InitializeSettings(ParticleSettings settings)
         {
@@ -55,6 +57,27 @@ namespace itp380
 
             settings.MinEndSize = 4;
             settings.MaxEndSize = 11;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            int i = 0;
+
+            while (i < projectiles.Count)
+            {
+                if (!projectiles[i].Update(gameTime))
+                {
+                    // Remove projectiles at the end of their life.
+                    projectiles.RemoveAt(i);
+                }
+                else
+                {
+                    // Advance to the next projectile.
+                    i++;
+                }
+            }
         }
     }
 }

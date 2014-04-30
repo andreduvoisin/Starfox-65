@@ -362,7 +362,6 @@ namespace itp380
             }
         }
 
-        
         /// <summary>
         /// Draws the particle system.
         /// </summary>
@@ -370,73 +369,80 @@ namespace itp380
         {
             GraphicsDevice device = GraphicsDevice;
 
-            // Restore the vertex buffer contents if the graphics device was lost.
-            if (vertexBuffer.IsContentLost)
+            foreach (Models.Player player in GameState.Get().m_Players)
             {
-                vertexBuffer.SetData(particles);
-            }
+                // Set viewport and aspect ratio projection for this player.
+                device.Viewport = player.m_Viewport;
+                GraphicsManager.Get().SetProjection((float)player.m_Viewport.Width / player.m_Viewport.Height);
 
-            // If there are any particles waiting in the newly added queue,
-            // we'd better upload them to the GPU ready for drawing.
-            if (firstNewParticle != firstFreeParticle)
-            {
-                AddNewParticlesToVertexBuffer();
-            }
-
-            // If there are any active particles, draw them now!
-            if (firstActiveParticle != firstFreeParticle)
-            {
-                device.BlendState = settings.BlendState;
-                device.DepthStencilState = DepthStencilState.DepthRead;
-
-                // Set an effect parameter describing the viewport size. This is
-                // needed to convert particle sizes into screen space point sizes.
-                effectViewportScaleParameter.SetValue(new Vector2(0.5f / device.Viewport.AspectRatio, -0.5f));
-
-                // Set an effect parameter describing the current time. All the vertex
-                // shader particle animation is keyed off this value.
-                effectTimeParameter.SetValue(currentTime);
-
-                // Set the particle vertex and index buffer.
-                device.SetVertexBuffer(vertexBuffer);
-                device.Indices = indexBuffer;
-
-                // Activate the particle effect.
-                foreach (EffectPass pass in particleEffect.CurrentTechnique.Passes)
+                // Restore the vertex buffer contents if the graphics device was lost.
+                if (vertexBuffer.IsContentLost)
                 {
-                    pass.Apply();
-
-                    if (firstActiveParticle < firstFreeParticle)
-                    {
-                        // If the active particles are all in one consecutive range,
-                        // we can draw them all in a single call.
-                        device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-                                                     firstActiveParticle * 4, (firstFreeParticle - firstActiveParticle) * 4,
-                                                     firstActiveParticle * 6, (firstFreeParticle - firstActiveParticle) * 2);
-                    }
-                    else
-                    {
-                        // If the active particle range wraps past the end of the queue
-                        // back to the start, we must split them over two draw calls.
-                        device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-                                                     firstActiveParticle * 4, (settings.MaxParticles - firstActiveParticle) * 4,
-                                                     firstActiveParticle * 6, (settings.MaxParticles - firstActiveParticle) * 2);
-
-                        if (firstFreeParticle > 0)
-                        {
-                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-                                                         0, firstFreeParticle * 4,
-                                                         0, firstFreeParticle * 2);
-                        }
-                    }
+                    vertexBuffer.SetData(particles);
                 }
 
-                // Reset some of the renderstates that we changed,
-                // so as not to mess up any other subsequent drawing.
-                device.DepthStencilState = DepthStencilState.Default;
-            }
+                // If there are any particles waiting in the newly added queue,
+                // we'd better upload them to the GPU ready for drawing.
+                if (firstNewParticle != firstFreeParticle)
+                {
+                    AddNewParticlesToVertexBuffer();
+                }
 
-            drawCounter++;
+                // If there are any active particles, draw them now!
+                if (firstActiveParticle != firstFreeParticle)
+                {
+                    device.BlendState = settings.BlendState;
+                    device.DepthStencilState = DepthStencilState.DepthRead;
+
+                    // Set an effect parameter describing the viewport size. This is
+                    // needed to convert particle sizes into screen space point sizes.
+                    effectViewportScaleParameter.SetValue(new Vector2(0.5f / device.Viewport.AspectRatio, -0.5f));
+
+                    // Set an effect parameter describing the current time. All the vertex
+                    // shader particle animation is keyed off this value.
+                    effectTimeParameter.SetValue(currentTime);
+
+                    // Set the particle vertex and index buffer.
+                    device.SetVertexBuffer(vertexBuffer);
+                    device.Indices = indexBuffer;
+
+                    // Activate the particle effect.
+                    foreach (EffectPass pass in particleEffect.CurrentTechnique.Passes)
+                    {
+                        pass.Apply();
+
+                        if (firstActiveParticle < firstFreeParticle)
+                        {
+                            // If the active particles are all in one consecutive range,
+                            // we can draw them all in a single call.
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                                                         firstActiveParticle * 4, (firstFreeParticle - firstActiveParticle) * 4,
+                                                         firstActiveParticle * 6, (firstFreeParticle - firstActiveParticle) * 2);
+                        }
+                        else
+                        {
+                            // If the active particle range wraps past the end of the queue
+                            // back to the start, we must split them over two draw calls.
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                                                         firstActiveParticle * 4, (settings.MaxParticles - firstActiveParticle) * 4,
+                                                         firstActiveParticle * 6, (settings.MaxParticles - firstActiveParticle) * 2);
+
+                            if (firstFreeParticle > 0)
+                            {
+                                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                                                             0, firstFreeParticle * 4,
+                                                             0, firstFreeParticle * 2);
+                            }
+                        }
+                    }
+
+                    // Reset some of the renderstates that we changed,
+                    // so as not to mess up any other subsequent drawing.
+                    device.DepthStencilState = DepthStencilState.Default;
+                }
+
+                drawCounter++;
+            }
         }
 
 
