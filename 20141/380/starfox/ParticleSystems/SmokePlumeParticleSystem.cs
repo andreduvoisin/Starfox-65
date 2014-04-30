@@ -25,7 +25,6 @@ namespace itp380
             : base(game, content)
         { }
 
-
         protected override void InitializeSettings(ParticleSettings settings)
         {
             settings.TextureName = "smoke";
@@ -47,11 +46,22 @@ namespace itp380
             settings.MinRotateSpeed = -1;
             settings.MaxRotateSpeed = 1;
 
-            settings.MinStartSize = 3;
-            settings.MaxStartSize = 3;
+            settings.MinStartSize = 10;
+            settings.MaxStartSize = 10;
 
-            settings.MinEndSize = 6;
+            settings.MinEndSize = 10;
             settings.MaxEndSize = 10;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            // This is trivial: we just create one new smoke particle per frame.
+            foreach (Models.Player player in GameState.Get().m_Players)
+            {
+                
+            }
         }
     }
 }

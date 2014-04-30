@@ -46,7 +46,8 @@ namespace itp380
 		LinkedList<GameObject> m_BGObjects = new LinkedList<GameObject>();
 		LinkedList<GameObject> m_FGObjects = new LinkedList<GameObject>();
 
-        
+        ParticleSystem projectileTrailParticles;
+        ParticleSystem smokePlumeParticles;
 
 		public Matrix Projection;
 		
@@ -96,6 +97,19 @@ namespace itp380
 				SetResolutionToCurrent();
 				ToggleFullScreen();
 			}
+
+            // Construct our particle system components.
+            projectileTrailParticles = new ProjectileTrailParticleSystem(m_Game, m_Game.Content);
+            smokePlumeParticles = new SmokePlumeParticleSystem(m_Game, m_Game.Content);
+
+            // Set the draw order so the explosions and fire
+            // will appear over the top of the smoke.
+            smokePlumeParticles.DrawOrder = 100;
+            projectileTrailParticles.DrawOrder = 300;
+
+            // Register the particle system components.
+            m_Game.Components.Add(projectileTrailParticles);
+            m_Game.Components.Add(smokePlumeParticles);
 		}
 
 		public void LoadContent()
@@ -188,9 +202,6 @@ namespace itp380
             {
                 foreach (Models.Player player in GameState.Get().m_Players)
                 {
-
-
-
                     // Set viewport and aspect ratio projection for this player.
                     GraphicsDevice.Viewport = player.m_Viewport;
                     SetProjection((float)player.m_Viewport.Width / player.m_Viewport.Height);
@@ -225,6 +236,10 @@ namespace itp380
                             o.Draw(fDeltaTime, player);
                         }
                     }
+
+                    // Particle Effects
+                    smokePlumeParticles.AddParticle(new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z), new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z));
+                    smokePlumeParticles.SetCamera(player.Camera.CameraMatrix, Projection);
 
                     // Now draw all 2D components
                     m_SpriteBatch.Begin();
