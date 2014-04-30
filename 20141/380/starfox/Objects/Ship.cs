@@ -19,10 +19,10 @@ namespace itp380.Objects
         const float SHIP_FRICTION   = 10f;
         const float SHIP_CEILING    = 145f;
         const float SHIP_FLOOR      = -55f;
-        const float SHIP_X_MIN      = -165f;
-        const float SHIP_X_MAX      = 600f;
-        const float SHIP_Z_MIN      = -275f;
-        const float SHIP_Z_MAX      = 475f;
+        public const float SHIP_X_MIN      = -165f;
+        public const float SHIP_X_MAX      = 600f;
+        public const float SHIP_Z_MIN      = -275f;
+        public const float SHIP_Z_MAX      = 475f;
 
         const uint BROLL_ROTS       = 2;
         const float BROLL_TIME      = 1f;
