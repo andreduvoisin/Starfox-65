@@ -287,7 +287,6 @@ namespace itp380
                 if (player.Ship.m_WorldBounds.Intersects(m_building.m_WorldBounds))
                 {
                     RemoveGameObject(player.Ship);
-                    SoundManager.Get().PlaySoundCue("Snared");
                 }
                     
             }
