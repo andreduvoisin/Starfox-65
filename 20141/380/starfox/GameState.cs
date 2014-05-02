@@ -59,7 +59,7 @@ namespace itp380
         }
 
         List<Objects.building> m_Buildings = new List<Objects.building>(); // Building Array
-        List<Objects.PowerUp> m_PowerUps = new List<Objects.PowerUp>();
+        public List<Objects.PowerUp> m_PowerUps = new List<Objects.PowerUp>();
         Objects.grassfloor m_Terrain;
 
 		// Timer class for the global GameState
@@ -311,7 +311,6 @@ namespace itp380
                     {
                         m_PowerUps.ElementAt(i).startPowerUp(player.Ship);
                         RemoveGameObject(m_PowerUps.ElementAt(i));
-                        m_PowerUps.Remove(m_PowerUps.ElementAt(i));
                     }
                     if (powerUpSize != m_PowerUps.Count)
                     {
@@ -367,7 +366,7 @@ namespace itp380
             Objects.PowerUp powerUp;
             //Some Regular height buildings
             powerUp = new Objects.PowerUp(m_Game);
-            powerUp.Position = new Vector3(200, -30, 50);
+            powerUp.Position = new Vector3(200, 10, 50);
             powerUp.Rotation = Quaternion.Identity;
             m_PowerUps.Add(powerUp);
             SpawnGameObject(powerUp);
