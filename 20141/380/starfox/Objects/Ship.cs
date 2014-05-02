@@ -59,6 +59,11 @@ namespace itp380.Objects
             }
         }
 
+        public float Yaw
+        {
+            get { return m_Yaw; }
+        }
+
         // BarrelRoll Side and time
         public enum BarrelRollSide { LEFT, RIGHT };
         BarrelRollSide m_RollSide;
@@ -114,6 +119,10 @@ namespace itp380.Objects
         {
             // Yaw
             m_Yaw += -InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.X * YAW_SPEED;
+            if (m_Yaw < 0)
+                m_Yaw += MathHelper.TwoPi;
+            if (m_Yaw > MathHelper.TwoPi)
+                m_Yaw -= MathHelper.TwoPi;
 
             // Pitch
             float PitchDelta = InputManager.Get(m_Player.m_PlayerIndex).LeftThumbstick.Y * PITCH_SPEED;
