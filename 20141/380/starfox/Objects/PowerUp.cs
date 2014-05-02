@@ -16,12 +16,14 @@ namespace itp380.Objects
         {
             m_ModelName = "Projectiles/Sphere";
             Scale = 12f;
+            affectedShip = null;
         }
 
         public void startPowerUp(Ship ship)
         {
             originalFireSpeed = ship.FireSpeed;
             ship.FireSpeed = originalFireSpeed / 2f;
+            affectedShip = ship;
             m_Timer.AddTimer("Stop PowerUp", 5.0f, stopPowerUp, false);
         }
 
