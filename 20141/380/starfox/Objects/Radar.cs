@@ -11,7 +11,8 @@ namespace itp380.Objects
     class Radar
     {
         // Set THESE to change sizes
-        static Point Location = new Point(412, 290);
+        static float MaxRadarDist = 300;
+        static Point Location = new Point(0, 250);
         static Point Size = new Point(100, 100);
         static int ShipSize = 5;
 
@@ -25,24 +26,44 @@ namespace itp380.Objects
             m_Background = Content.Load<Texture2D>("HealthBar_border") as Texture2D;
         }
 
-        Rectangle GetRectangleForShip(Vector3 Position)
+        static Vector2 V2Rotate(Vector2 v, float ang)
         {
-            float fracX = (Position.X - Objects.Ship.SHIP_X_MIN) / (Objects.Ship.SHIP_X_MAX - Objects.Ship.SHIP_X_MIN) * Size.X;
-            float fracY = (Position.Z - Objects.Ship.SHIP_Z_MIN) / (Objects.Ship.SHIP_Z_MAX - Objects.Ship.SHIP_Z_MIN) * Size.Y;
-            int RadarX = (int)fracX - ShipSize / 2;
-            int RadarY = (int)fracY - ShipSize / 2;
+            float cos = (float)Math.Cos(ang);
+            float sin = (float)Math.Sin(ang);
 
-            return new Rectangle(Location.X + RadarX, Location.Y + RadarY, ShipSize, ShipSize);
+            return new Vector2(
+                v.X * cos - v.Y * sin,
+                v.Y * sin + v.X * cos);
+        }
+
+        Rectangle GetRectangleForShip(Vector2 Position)
+        {
+            float fracX = Position.X / MaxRadarDist * Size.X;
+            float fracY = Position.Y / MaxRadarDist * Size.Y;
+            int RadarX = (int)MathHelper.Clamp(fracX, -Size.X/2, Size.X/2);
+            int RadarY = (int)MathHelper.Clamp(fracY, -Size.Y/2, Size.Y/2);
+
+            Vector2 Final = Vector2.Zero;
+            Final += new Vector2(Location.X, Location.Y);               // For basic radar location on screen
+            Final += new Vector2(Size.X/2, Size.Y/2);                   // For location within the radar -- If ship is at origin, the ship should be in the center of radar.
+            Final -= new Vector2((float)ShipSize/2, (float)ShipSize/2); // Center the ship
+            Final += new Vector2(RadarX, RadarY);                       // Add in ship coordinates.
+            return new Rectangle((int)Final.X, (int)Final.Y, ShipSize, ShipSize);
+        }
+
+        Vector3 WorldToPlayerCoordinates(Vector3 Target, Objects.Ship Origin)
+        {
+            return Vector3.Transform(Target - Origin.Position, Matrix.CreateFromYawPitchRoll(-Origin.Yaw, 0, 0));
         }
 
         void DrawShip(SpriteBatch DrawBatch, Objects.Ship Ship, Objects.Ship Origin, Color Color)
         {
-            float Angle;
-            Vector3 RelativePosition;
             Rectangle ShipRect;
+            Vector3 PlayerCoords;
+            Vector2 RelativePosition;
 
-            Angle = (float)Math.Asin(2 * Origin.Rotation.X * Origin.Rotation.Y + 2 * Origin.Rotation.Z * Origin.Rotation.W);
-            RelativePosition = Vector3.Transform(Ship.Position - Origin.Position, Matrix.CreateFromAxisAngle(Vector3.UnitY, Angle));
+            PlayerCoords = WorldToPlayerCoordinates(Ship.Position, Origin);
+            RelativePosition = new Vector2(PlayerCoords.Z, -PlayerCoords.X);
             ShipRect = GetRectangleForShip(RelativePosition);
 
             DrawBatch.Draw(m_Background, ShipRect, ShipRect, Color);
@@ -52,6 +73,7 @@ namespace itp380.Objects
         {
             //Draw radar
             DrawBatch.Draw(m_Background, BackgroundRect, BackgroundRect, Color.Gray);
+            DrawShip(DrawBatch, Player.Ship, Player.Ship, Color.Blue);
 
             foreach (Models.Player p in GameState.Get().m_Players)
             {
