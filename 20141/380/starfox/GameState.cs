@@ -59,6 +59,7 @@ namespace itp380
         }
 
         List<Objects.building> m_Buildings = new List<Objects.building>(); // Building Array
+        List<Objects.PowerUp> m_PowerUps = new List<Objects.PowerUp>();
         Objects.grassfloor m_Terrain;
 
 		// Timer class for the global GameState
@@ -182,6 +183,7 @@ namespace itp380
             m_Terrain.Rotation = Quaternion.Identity;
             SpawnGameObject(m_Terrain);
             SpawnBuildings();
+            SpawnPowerUps();
             //[JEAN] Spawn buildings
             //Objects.building obj_building1 = new Objects.building(m_Game);
             //obj_building1.Position = new Vector3(200, -70, 100);
@@ -250,6 +252,7 @@ namespace itp380
                         }
                     }
                     detectShipBuildingCollision();
+                    detectShipPowerUpCollision();
                     detectPlayerShipCollisions();
                 }
 
@@ -297,6 +300,28 @@ namespace itp380
             }
         }
 
+        public void detectShipPowerUpCollision()
+        {
+            foreach (Models.Player player in m_Players)
+            {
+                int powerUpSize = m_PowerUps.Count;
+                for (int i = 0; i < powerUpSize; i++)
+                {
+                    if (player.Ship.m_WorldBounds.Intersects(m_PowerUps.ElementAt(i).m_WorldBounds))
+                    {
+                        m_PowerUps.ElementAt(i).startPowerUp(player.Ship);
+                        RemoveGameObject(m_PowerUps.ElementAt(i));
+                        m_PowerUps.Remove(m_PowerUps.ElementAt(i));
+                    }
+                    if (powerUpSize != m_PowerUps.Count)
+                    {
+                        powerUpSize = m_PowerUps.Count;
+                        i--;
+                    }
+                }
+            }
+        }
+
         public void detectPlayerShipCollisions()
         {
             foreach (Models.Player mainPlayer in m_Players)
@@ -323,11 +348,11 @@ namespace itp380
         {
             Objects.building building;
             //Some Regular height buildings
-            building = new Objects.building(m_Game);
-            building.Position = new Vector3(200, -70, 50);
-            building.Rotation = Quaternion.Identity;
-            m_Buildings.Add(building);
-            SpawnGameObject(building);
+            //building = new Objects.building(m_Game);
+            //building.Position = new Vector3(200, -30, 50);
+            //building.Rotation = Quaternion.Identity;
+            //m_Buildings.Add(building);
+            //SpawnGameObject(building);
             //Some Short Buildings
             building = new Objects.building(m_Game);
             building.Position = new Vector3(50, -90, 100);
@@ -335,6 +360,17 @@ namespace itp380
             m_Buildings.Add(building);
             SpawnGameObject(building);
 
+        }
+
+        public void SpawnPowerUps()
+        {
+            Objects.PowerUp powerUp;
+            //Some Regular height buildings
+            powerUp = new Objects.PowerUp(m_Game);
+            powerUp.Position = new Vector3(200, -30, 50);
+            powerUp.Rotation = Quaternion.Identity;
+            m_PowerUps.Add(powerUp);
+            SpawnGameObject(powerUp);
         }
 
         public void SpawnProjectile(Objects.Ship ship)

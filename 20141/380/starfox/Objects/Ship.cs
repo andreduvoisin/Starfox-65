@@ -79,6 +79,13 @@ namespace itp380.Objects
             get { return m_Projectiles; }
         }
 
+        private float fireSpeed;
+        public float FireSpeed
+        {
+            get { return fireSpeed; }
+            set { fireSpeed = value; }
+        }
+
         // Reference to the ship's player owner.
         Models.Player m_Player;
 
@@ -91,15 +98,14 @@ namespace itp380.Objects
             m_MoveState = ShipMoveState.NORMAL;
             m_Player = player;
             m_Projectiles = new List<Objects.Projectile>();
+            fireSpeed = .3f;
         }
 
         public override void Update(float fDeltaTime)
         {
             base.Update(fDeltaTime);
-
             UpdatePhysics(fDeltaTime);
             ApplyPhysics();
-
             // Sound
             GameState.Get().updateEngineSound();
         }
@@ -189,7 +195,7 @@ namespace itp380.Objects
         {
             GameState.Get().SpawnProjectile(this);
             canFire = false;
-            m_Timer.AddTimer("EnableFire", .3f, () => { canFire = true; }, false);
+            m_Timer.AddTimer("EnableFire", FireSpeed, () => { canFire = true; }, false);
         }
     }
 }

@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="DebugDefines.cs" />
+    <Compile Include="Objects\PowerUp.cs" />
     <Compile Include="ParticleSystems\ExplosionSmokeParticleSystem.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameState.cs" />
