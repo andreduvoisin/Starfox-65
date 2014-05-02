@@ -167,10 +167,10 @@ namespace itp380
 
 			// TODO: Add any gameplay setup here
             // UNCOMMENT THIS FOR 1 PLAYER
-            //m_Players.Add(new Models.Player(m_Game, 1, mainViewport));
+            m_Players.Add(new Models.Player(m_Game, 1, mainViewport));
             // UNCOMMENT THESE FOR 2 PLAYERS
-            m_Players.Add(new Models.Player(m_Game, 1, topViewport));
-            m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
+            //m_Players.Add(new Models.Player(m_Game, 1, topViewport));
+            //m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
             // UNCOMMENT THESE FOR 3 OR 4 PLAYERS
             //m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
             //m_Players.Add(new Models.Player(m_Game, 2, urViewport));
@@ -339,9 +339,16 @@ namespace itp380
 
         public void SpawnProjectile(Objects.Ship ship)
         {
-            //Find player with this ship.  Not necessary yet.
+            //Fire from left.
             Objects.Projectile cannonShot = new Objects.Projectile(m_Game, ship);
-            cannonShot.Position = ship.Position;
+            cannonShot.Position = ship.Left * 2.75f + ship.Position;
+            cannonShot.Position = cannonShot.Position - new Vector3(0, 1, 0);
+            ship.Projectiles.Add(cannonShot);
+            SpawnGameObject(cannonShot);
+            //Fire from right.
+            cannonShot = new Objects.Projectile(m_Game, ship);
+            cannonShot.Position = (ship.Left*-1) * 2.75f + ship.Position;
+            cannonShot.Position = cannonShot.Position - new Vector3(0, 1, 0);
             ship.Projectiles.Add(cannonShot);
             SpawnGameObject(cannonShot);
         }

@@ -95,6 +95,14 @@ namespace itp380
             }
         }
 
+        public Vector3 Left
+        {
+            get
+            {
+                return Vector3.Cross(Up, Forward);
+            }
+        }
+
 		public void RebuildWorldTransform()
 		{
 			m_bTransformDirty = false;
