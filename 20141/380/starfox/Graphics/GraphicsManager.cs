@@ -238,8 +238,11 @@ namespace itp380
                     }
 
                     // Particle Effects
-                    smokePlumeParticles.AddParticle(new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z), new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z));
-                    smokePlumeParticles.SetCamera(player.Camera.CameraMatrix, Projection);
+                    if (GameState.Get().IsPaused == false)
+                    {
+                        smokePlumeParticles.AddParticle(new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z), new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z));
+                        smokePlumeParticles.SetCamera(player.Camera.CameraMatrix, Projection);
+                    }
 
                     // Now draw all 2D components
                     m_SpriteBatch.Begin();
