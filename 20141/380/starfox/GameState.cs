@@ -345,59 +345,59 @@ namespace itp380
 
         public void SpawnBuildings()
         {
-            
-            //Some Regular height buildings
-            //building = new Objects.building(m_Game);
-            //building.Position = new Vector3(200, -30, 50);
-            //building.Rotation = Quaternion.Identity;
-            //m_Buildings.Add(building);
-            //SpawnGameObject(building);
-            //Some Short Buildings
             Objects.building building;
+            //Some Regular height buildings
             building = new Objects.building(m_Game);
-            building.Position = new Vector3(50, -90, 100);
+            building.Position = new Vector3(200, -70, 50);
             building.Rotation = Quaternion.Identity;
             m_Buildings.Add(building);
             SpawnGameObject(building);
-
-            
-
             building = new Objects.building(m_Game);
-            building.Position = new Vector3(0, -90, 100);
+            building.Position = new Vector3(300, -70, 100);
             building.Rotation = Quaternion.Identity;
             m_Buildings.Add(building);
             SpawnGameObject(building);
-
             building = new Objects.building(m_Game);
-            building.Position = new Vector3(-70, -90, -200);
+            building.Position = new Vector3(600, -70, 200);
             building.Rotation = Quaternion.Identity;
             m_Buildings.Add(building);
             SpawnGameObject(building);
-
             building = new Objects.building(m_Game);
-            building.Position = new Vector3(-70, -90, 300);
+            building.Position = new Vector3(200, -70, 325);
+            building.Scale = building.Scale * 1.25f;
             building.Rotation = Quaternion.Identity;
             m_Buildings.Add(building);
             SpawnGameObject(building);
-
             building = new Objects.building(m_Game);
-            building.Position = new Vector3(-70, -90, 370);
+            building.Position = new Vector3(400, -70, 345);
+            building.Scale = building.Scale * 1.25f;
             building.Rotation = Quaternion.Identity;
             m_Buildings.Add(building);
             SpawnGameObject(building);
-
+            //Some Short Buildings
             building = new Objects.building(m_Game);
-            building.Position = new Vector3(200, -90, 500);
+            building.Position = new Vector3(-80, -90, 100);
             building.Rotation = Quaternion.Identity;
             m_Buildings.Add(building);
             SpawnGameObject(building);
-
             building = new Objects.building(m_Game);
-            building.Position = new Vector3(400, -90, -200);
+            building.Position = new Vector3(75, -90, -100);
             building.Rotation = Quaternion.Identity;
             m_Buildings.Add(building);
             SpawnGameObject(building);
-
+            building = new Objects.building(m_Game);
+            building.Position = new Vector3(300, -90, -225);
+            building.Rotation = Quaternion.Identity;
+            building.Scale = building.Scale * 1.5f;
+            m_Buildings.Add(building);
+            SpawnGameObject(building);
+            //A big-ass building
+            building = new Objects.building(m_Game);
+            building.Position = new Vector3(515, -70, 55);
+            building.Rotation = Quaternion.Identity;
+            building.Scale = building.Scale * 2f;
+            m_Buildings.Add(building);
+            SpawnGameObject(building);
         }
 
         public void SpawnPowerUps()
