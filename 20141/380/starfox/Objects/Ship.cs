@@ -101,6 +101,8 @@ namespace itp380.Objects
             set { homingFireDelay = value; }
         }
 
+        public bool collidingAtBounds;
+
         // Reference to the ship's player owner.
         Models.Player m_Player;
 
@@ -117,6 +119,7 @@ namespace itp380.Objects
             m_Projectiles = new List<Objects.Projectile>();
             fireSpeed = .1f;
             homingFireDelay = 1.5f;
+            collidingAtBounds = false;
         }
 
         public override void Update(float fDeltaTime)
@@ -161,16 +164,30 @@ namespace itp380.Objects
         {
             Position += ShipVelocity;
 
+            collidingAtBounds = false;
+
             // Check x/z max.
             if (Position.X > SHIP_X_MAX)
+            {
                 Position = new Vector3(SHIP_X_MAX, Position.Y, Position.Z);
+                collidingAtBounds = true;
+            }
             else if (Position.X < SHIP_X_MIN)
+            {
                 Position = new Vector3(SHIP_X_MIN, Position.Y, Position.Z);
+                collidingAtBounds = true;
+            }
 
             if (Position.Z > SHIP_Z_MAX)
+            {
                 Position = new Vector3(Position.X, Position.Y, SHIP_Z_MAX);
+                collidingAtBounds = true;
+            }
             else if (Position.Z < SHIP_Z_MIN)
+            {
                 Position = new Vector3(Position.X, Position.Y, SHIP_Z_MIN);
+                collidingAtBounds = true;
+            }
 
             Rotation = Quaternion.CreateFromYawPitchRoll(
                 m_Yaw,
