@@ -76,19 +76,27 @@ namespace itp380
             Vector3 vShipForward, vIdealPosition;
             Vector3 vDisplacement, vSpringAccel;
 
-            vShipForward = m_ShipTarget.Forward;
-            vShipForward.Y = 0;
-            vShipForward.Normalize();
-            vIdealPosition = TargetPosition - (vShipForward * fHDist) + (Vector3.UnitY * fVDist);
+            if (!m_ShipTarget.collidingAtBounds)
+            {
+                vShipForward = m_ShipTarget.Forward;
+                vShipForward.Y = 0;
+                vShipForward.Normalize();
+                vIdealPosition = TargetPosition - (vShipForward * fHDist) + (Vector3.UnitY * fVDist);
 
-            vDisplacement = m_vCameraPosition - vIdealPosition;
-            vDisplacement.Z *= fHorizontalTrack;
-            vDisplacement.X *= fHorizontalTrack;
-            vSpringAccel = (-fSpringConstant * vDisplacement) - (fDampConstant * vCameraVelocity);
-            vCameraVelocity += vSpringAccel * fDeltaTime;
-            m_vCameraPosition += vCameraVelocity * fDeltaTime;
+                vDisplacement = m_vCameraPosition - vIdealPosition;
+                vDisplacement.Z *= fHorizontalTrack;
+                vDisplacement.X *= fHorizontalTrack;
+                vSpringAccel = (-fSpringConstant * vDisplacement) - (fDampConstant * vCameraVelocity);
+                vCameraVelocity += vSpringAccel * fDeltaTime;
+                m_vCameraPosition += vCameraVelocity * fDeltaTime;
 
-            m_Camera = Matrix.CreateLookAt(m_vCameraPosition, TargetPosition, Vector3.UnitY);
+                m_Camera = Matrix.CreateLookAt(m_vCameraPosition, TargetPosition, Vector3.UnitY);
+            }
+            else
+            {
+                m_vCameraPosition = m_ShipTarget.Position - (m_ShipTarget.Forward * fHDist) + (Vector3.UnitY * fVDist);
+                m_Camera = Matrix.CreateLookAt(m_vCameraPosition, TargetPosition, Vector3.UnitY);
+            }
 		}
 	}
 }
