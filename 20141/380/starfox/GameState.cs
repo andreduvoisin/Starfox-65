@@ -170,13 +170,13 @@ namespace itp380
             // UNCOMMENT THIS FOR 1 PLAYER
             //m_Players.Add(new Models.Player(m_Game, 1, mainViewport));
             // UNCOMMENT THESE FOR 2 PLAYERS
-            m_Players.Add(new Models.Player(m_Game, 1, topViewport));
-            m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
+            //m_Players.Add(new Models.Player(m_Game, 1, topViewport));
+            //m_Players.Add(new Models.Player(m_Game, 2, bottomViewport));
             // UNCOMMENT THESE FOR 3 OR 4 PLAYERS
-            //m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
-            //m_Players.Add(new Models.Player(m_Game, 2, urViewport));
-            //m_Players.Add(new Models.Player(m_Game, 3, blViewport));
-            //m_Players.Add(new Models.Player(m_Game, 4, brViewport));
+            m_Players.Add(new Models.Player(m_Game, 1, ulViewport));
+            m_Players.Add(new Models.Player(m_Game, 2, urViewport));
+            m_Players.Add(new Models.Player(m_Game, 3, blViewport));
+            m_Players.Add(new Models.Player(m_Game, 4, brViewport));
             //[JEAN] Spawn Level
             m_Terrain = new Objects.grassfloor(m_Game);
             m_Terrain.Position = new Vector3(200, -70, 100);
@@ -388,6 +388,15 @@ namespace itp380
             SpawnGameObject(cannonShot);
         }
 
+        public void SpawnHomingProjectile(Objects.Ship ship)
+        {
+            //Fire from center.
+            Objects.Projectile cannonShot = new Objects.HomingProjectile(m_Game, ship);
+            cannonShot.Position = ship.Position;
+            ship.Projectiles.Add(cannonShot);
+            SpawnGameObject(cannonShot);
+        }
+
         public void RemoveProjectile(Objects.Projectile projectile)
         {
             //Find player with this projectile.  Not necessary yet.  Use ship to search(max search of 4).
@@ -469,6 +478,20 @@ namespace itp380
                     }
 
                     binds.Remove(eBindings.FireCannon);
+                }
+
+                if (binds.ContainsKey(eBindings.ChargeHomingCannon))
+                {
+                    Player.Ship.chargeHomingCannonProjectile();
+
+                    binds.Remove(eBindings.ChargeHomingCannon);
+                }
+
+                if (binds.ContainsKey(eBindings.FireButtonReleased))
+                {
+                    Player.Ship.handleFireButtonReleased();
+
+                    binds.Remove(eBindings.FireButtonReleased);
                 }
 
                 if (binds.ContainsKey(eBindings.Boost))

@@ -12,7 +12,7 @@ namespace itp380.Objects
         public Vector3 projectileVelocity = Vector3.Zero;
         public Ship projectileOwner;
 
-         public Projectile(Game game, Ship projectileOwner) :
+        public Projectile(Game game, Ship projectileOwner) :
             base(game)
         {
             m_ModelName = "ship_bullet";
@@ -23,10 +23,9 @@ namespace itp380.Objects
             m_Timer.AddTimer("Bullet Death", 2f, lifetimeReached, false);
         }
 
-         public void lifetimeReached()
-         {
-             GameState.Get().RemoveProjectile(this);
-         }
-
+        public void lifetimeReached()
+        {
+            GameState.Get().RemoveProjectile(this);
+        }
     }
 }
