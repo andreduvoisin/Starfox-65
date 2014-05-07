@@ -19,7 +19,7 @@ namespace itp380.Objects
             Scale = 2.4f;
             Rotation = projectileOwner.Rotation;
             this.projectileOwner = projectileOwner;
-            projectileVelocity = projectileOwner.Forward * 8f;
+            projectileVelocity = projectileOwner.Forward * 16f;
             m_Timer.AddTimer("Bullet Death", 2f, lifetimeReached, false);
         }
 
