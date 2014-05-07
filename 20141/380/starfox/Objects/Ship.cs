@@ -78,6 +78,9 @@ namespace itp380.Objects
             get { return canFire; }
         }
 
+        private bool fireHoming;
+        private bool homingTimerActive;
+
         List<Objects.Projectile> m_Projectiles;
         public List<Objects.Projectile> Projectiles
         {
@@ -91,6 +94,13 @@ namespace itp380.Objects
             set { fireSpeed = value; }
         }
 
+        private float homingFireDelay;
+        public float HomingFireDelay
+        {
+            get { return homingFireDelay; }
+            set { homingFireDelay = value; }
+        }
+
         // Reference to the ship's player owner.
         Models.Player m_Player;
 
@@ -100,10 +110,13 @@ namespace itp380.Objects
             m_ModelName = "ship2";
             Scale = 0.9f;
             canFire = true;
+            fireHoming = false;
+            homingTimerActive = false;
             m_MoveState = ShipMoveState.NORMAL;
             m_Player = player;
             m_Projectiles = new List<Objects.Projectile>();
-            fireSpeed = .3f;
+            fireSpeed = .1f;
+            homingFireDelay = 1.5f;
         }
 
         public override void Update(float fDeltaTime)
@@ -202,9 +215,36 @@ namespace itp380.Objects
 
         public void fireCannonProjectile()
         {
-            GameState.Get().SpawnProjectile(this);
-            canFire = false;
-            m_Timer.AddTimer("EnableFire", FireSpeed, () => { canFire = true; }, false);
+            if (fireHoming)
+            {
+                GameState.Get().SpawnHomingProjectile(this);
+                fireHoming = false;
+                homingTimerActive = false;
+            }
+            else
+            {
+                GameState.Get().SpawnProjectile(this);
+                canFire = false;
+                m_Timer.AddTimer("EnableFire", FireSpeed, () => { canFire = true; }, false);
+            }
+        }
+
+        public void chargeHomingCannonProjectile()
+        {
+            if (!homingTimerActive)
+            {
+                m_Timer.AddTimer("EnableHomingFire", HomingFireDelay, () => { fireHoming = true; }, false);
+                homingTimerActive = true;
+            }
+        }
+
+        public void handleFireButtonReleased()
+        {
+            if (m_Timer.GetRemainingTime("EnableHomingFire") > 0)
+            {
+                m_Timer.RemoveTimer("EnableHomingFire");
+                homingTimerActive = false;
+            }
         }
     }
 }

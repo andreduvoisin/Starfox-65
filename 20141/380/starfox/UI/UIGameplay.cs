@@ -26,8 +26,6 @@ namespace itp380.UI
 
         Texture2D m_HealthBar;
 
-        Objects.Radar m_Radar;
-
 		public UIGameplay(ContentManager Content) :
 			base(Content)
 		{
@@ -37,8 +35,6 @@ namespace itp380.UI
 
             //Healthbar
             m_HealthBar = Content.Load<Texture2D>("HealthBar_border") as Texture2D;
-
-            m_Radar = new Objects.Radar(Content);
 		}
 
 		public override void Update(float fDeltaTime)
@@ -54,7 +50,18 @@ namespace itp380.UI
             DrawBatch.Draw(m_HealthBar, new Rectangle(130, 30, (int)(m_HealthBar.Width/2 * ((double)player.Health / 100)), 20), new Rectangle(0, 45, m_HealthBar.Width/2, 20), Color.Red);
             //DrawBatch.Draw(m_HealthBar, new Rectangle(130, 30, m_HealthBar.Width/2, 20), new Rectangle(0, 0, m_HealthBar.Width/2, 20), Color.White);
 
-            m_Radar.Draw(fDeltaTime, DrawBatch, player);
+            //Draw radar
+            DrawBatch.Draw(m_HealthBar, new Rectangle(412, 290, 100, 100), new Rectangle(412, 290, 100, 100), Color.Gray);
+            DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)player.Ship.Position.X / 6), 320 + ((int)player.Ship.Position.Z / 6), 5, 5), new Rectangle(410 + ((int)player.Ship.Position.X / 6), 320 +((int)player.Ship.Position.Z / 6), 5, 5), Color.Blue);
+
+            foreach (Models.Player p in GameState.Get().m_Players)
+            {
+                if (p != player)
+                {
+                  DrawBatch.Draw(m_HealthBar, new Rectangle(410 + ((int)p.Ship.Position.X / 6), 320 + ((int)p.Ship.Position.Z / 6), 5, 5), new Rectangle(410 + ((int)p.Ship.Position.X / 6), 320 + ((int)p.Ship.Position.Z / 6), 5, 5), Color.Red);
+                }
+            }
+
 
             // Draw GOC (Game Object Count) (only for player 1)
             if (player.m_PlayerIndex == 1)

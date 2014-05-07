@@ -53,6 +53,8 @@ namespace itp380
         UI_Down,
         // Game bindings
         FireCannon,
+        ChargeHomingCannon,
+        FireButtonReleased,
         Boost,
         BRollLeft,
         BRollRight,
@@ -85,7 +87,9 @@ namespace itp380
             m_Bindings.Add(eBindings.UI_Up, new BindInfo(eButton.DUp, eBindType.JustPressed));
             m_Bindings.Add(eBindings.UI_Down, new BindInfo(eButton.DDown, eBindType.JustPressed));
             // Game Bindings
-            m_Bindings.Add(eBindings.FireCannon, new BindInfo(eButton.A, eBindType.Held));
+            m_Bindings.Add(eBindings.FireCannon, new BindInfo(eButton.A, eBindType.JustPressed));
+            m_Bindings.Add(eBindings.ChargeHomingCannon, new BindInfo(eButton.A, eBindType.Held));
+            m_Bindings.Add(eBindings.FireButtonReleased, new BindInfo(eButton.A, eBindType.JustReleased));
             m_Bindings.Add(eBindings.Boost, new BindInfo(eButton.B, eBindType.Held));
             m_Bindings.Add(eBindings.BRollLeft, new BindInfo(eButton.LeftShoulder, eBindType.Held));
             m_Bindings.Add(eBindings.BRollRight, new BindInfo(eButton.RightShoulder, eBindType.Held));
