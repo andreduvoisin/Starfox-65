@@ -345,7 +345,7 @@ namespace itp380
 
         public void SpawnBuildings()
         {
-            Objects.building building;
+            
             //Some Regular height buildings
             //building = new Objects.building(m_Game);
             //building.Position = new Vector3(200, -30, 50);
@@ -353,8 +353,47 @@ namespace itp380
             //m_Buildings.Add(building);
             //SpawnGameObject(building);
             //Some Short Buildings
+            Objects.building building;
             building = new Objects.building(m_Game);
             building.Position = new Vector3(50, -90, 100);
+            building.Rotation = Quaternion.Identity;
+            m_Buildings.Add(building);
+            SpawnGameObject(building);
+
+            
+
+            building = new Objects.building(m_Game);
+            building.Position = new Vector3(0, -90, 100);
+            building.Rotation = Quaternion.Identity;
+            m_Buildings.Add(building);
+            SpawnGameObject(building);
+
+            building = new Objects.building(m_Game);
+            building.Position = new Vector3(-70, -90, -200);
+            building.Rotation = Quaternion.Identity;
+            m_Buildings.Add(building);
+            SpawnGameObject(building);
+
+            building = new Objects.building(m_Game);
+            building.Position = new Vector3(-70, -90, 300);
+            building.Rotation = Quaternion.Identity;
+            m_Buildings.Add(building);
+            SpawnGameObject(building);
+
+            building = new Objects.building(m_Game);
+            building.Position = new Vector3(-70, -90, 370);
+            building.Rotation = Quaternion.Identity;
+            m_Buildings.Add(building);
+            SpawnGameObject(building);
+
+            building = new Objects.building(m_Game);
+            building.Position = new Vector3(200, -90, 500);
+            building.Rotation = Quaternion.Identity;
+            m_Buildings.Add(building);
+            SpawnGameObject(building);
+
+            building = new Objects.building(m_Game);
+            building.Position = new Vector3(400, -90, -200);
             building.Rotation = Quaternion.Identity;
             m_Buildings.Add(building);
             SpawnGameObject(building);
