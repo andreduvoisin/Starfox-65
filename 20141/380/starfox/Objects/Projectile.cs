@@ -16,7 +16,7 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "ship_bullet";
-            Scale = 1.5f;
+            Scale = 2.4f;
             Rotation = projectileOwner.Rotation;
             this.projectileOwner = projectileOwner;
             projectileVelocity = projectileOwner.Forward * 8f;
