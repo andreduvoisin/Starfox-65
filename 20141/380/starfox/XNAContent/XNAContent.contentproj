@@ -219,13 +219,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="reticle.fbx">
-      <Name>reticle</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sounds\arwing_shot.wav">
       <Name>arwing_shot</Name>
       <Importer>WavImporter</Importer>
@@ -309,6 +302,20 @@
   <ItemGroup>
     <Compile Include="homing_bullet1.fbx">
       <Name>homing_bullet1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="redreticle.fbx">
+      <Name>redreticle</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="greenreticle.fbx">
+      <Name>greenreticle</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

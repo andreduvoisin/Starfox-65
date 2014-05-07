@@ -16,7 +16,7 @@ namespace itp380.Objects
         public Reticle(Game game, Models.Player player, Camera camera) :
             base(game)
         {
-            m_ModelName = "reticle";
+            m_ModelName = "greenreticle";
             m_Owner = player;
             m_Ship = player.Ship;
             m_Camera = camera;
