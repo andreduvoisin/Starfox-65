@@ -10,10 +10,15 @@ namespace itp380.Objects
     {
         public Ship projectileTarget;
 
-        public HomingProjectile(Game game, Ship projectileOwner)://, Ship projectileTarget) :
+        public HomingProjectile(Game game, Ship projectileOwner, Ship projectileTarget) :
             base(game, projectileOwner)
         {
             m_ModelName = "homing_bullet1";
+            this.projectileTarget = projectileTarget;
+            if (projectileTarget != null)
+            {
+
+            }
         }
     }
 }
