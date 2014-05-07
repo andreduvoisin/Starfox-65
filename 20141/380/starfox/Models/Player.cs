@@ -34,6 +34,8 @@ namespace itp380.Models
         // helps with input management and stuff
         public int m_PlayerIndex;
 
+        public Objects.LockedOn m_LockedOn;
+
         public Player(Game game, int playerIndex, Viewport viewport)
         {
             m_Health = 100;
@@ -41,6 +43,7 @@ namespace itp380.Models
             m_Ship.Position = new Vector3(0, 20 * playerIndex, 50 * playerIndex);
             m_Camera = new Camera(game, m_Ship);
             GameState.Get().SpawnReticle(this, m_Camera);
+            GameState.Get().SpawnLockedOn(this, m_Camera);
             GameState.Get().SpawnGameObject(m_Ship);
             m_Viewport = viewport;
             m_PlayerIndex = playerIndex;

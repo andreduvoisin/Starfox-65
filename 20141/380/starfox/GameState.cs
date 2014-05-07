@@ -177,6 +177,7 @@ namespace itp380
             m_Players.Add(new Models.Player(m_Game, 2, urViewport));
             m_Players.Add(new Models.Player(m_Game, 3, blViewport));
             m_Players.Add(new Models.Player(m_Game, 4, brViewport));
+
             //[JEAN] Spawn Level
             m_Terrain = new Objects.grassfloor(m_Game);
             m_Terrain.Position = new Vector3(200, -70, 100);
@@ -430,7 +431,7 @@ namespace itp380
         public void SpawnHomingProjectile(Objects.Ship ship)
         {
             //Fire from center.
-            Objects.Projectile cannonShot = new Objects.HomingProjectile(m_Game, ship);
+            Objects.Projectile cannonShot = new Objects.HomingProjectile(m_Game, ship, null);
             cannonShot.Position = ship.Position;
             ship.Projectiles.Add(cannonShot);
             SpawnGameObject(cannonShot);
@@ -450,6 +451,12 @@ namespace itp380
         {
             player.Ship.m_Reticle = new Objects.Reticle(m_Game, player, camera);
             SpawnGameObject(player.Ship.m_Reticle);
+        }
+
+        public void SpawnLockedOn(Models.Player player, Camera camera)
+        {
+            player.m_LockedOn = new Objects.LockedOn(m_Game, player, camera);
+            SpawnGameObject(player.m_LockedOn);
         }
 
         public void updateEngineSound()
