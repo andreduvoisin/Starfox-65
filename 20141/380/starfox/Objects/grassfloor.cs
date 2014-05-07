@@ -12,7 +12,7 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "full_level1";
-            Scale = 32f;
+            Scale = 40f;
         }
 
 

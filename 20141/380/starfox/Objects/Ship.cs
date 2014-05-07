@@ -14,14 +14,14 @@ namespace itp380.Objects
         const float YAW_SPEED       = .07f;
         const float ROLL_SCALE      = 1.1f;
 
-        const float SHIP_BOOST      = .2f;
-        const float SHIP_SPEED      = .8f;
+        const float SHIP_BOOST      = .4f;
+        const float SHIP_SPEED      = 1f;
         const float SHIP_FRICTION   = 10f;
         const float SHIP_CEILING    = 145f;
         const float SHIP_FLOOR      = -55f;
         public const float SHIP_X_MIN      = -165f;
         public const float SHIP_X_MAX      = 600f;
-        public const float SHIP_Z_MIN      = -275f;
+        public const float SHIP_Z_MIN      = -375f;
         public const float SHIP_Z_MAX      = 475f;
 
         const uint BROLL_ROTS       = 2;
@@ -98,7 +98,7 @@ namespace itp380.Objects
             base(game)
         {
             m_ModelName = "ship2";
-            Scale = 0.4f;
+            Scale = 0.9f;
             canFire = true;
             m_MoveState = ShipMoveState.NORMAL;
             m_Player = player;
