@@ -54,7 +54,7 @@ namespace itp380
         public BoundingBox m_ModelBounds;
 
 		// Anything that's timer logic is assumed to be affected by time factor
-		protected Utils.Timer m_Timer = new Utils.Timer();
+		public Utils.Timer m_Timer = new Utils.Timer();
 
         Quaternion m_Rotation = Quaternion.Identity;
         public Quaternion Rotation

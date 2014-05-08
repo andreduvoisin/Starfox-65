@@ -80,8 +80,8 @@ namespace itp380.Objects
             get { return canFire; }
         }
 
-        private bool fireHoming;
-        private bool homingTimerActive;
+        public bool fireHoming;
+        public bool homingTimerActive;
 
         List<Objects.Projectile> m_Projectiles;
         public List<Objects.Projectile> Projectiles
