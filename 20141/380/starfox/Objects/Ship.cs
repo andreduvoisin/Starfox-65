@@ -108,6 +108,8 @@ namespace itp380.Objects
         // Reference to the ship's player owner.
         Models.Player m_Player;
 
+        public Ship ShipUnderReticle;
+
         public Ship(Game game, Models.Player player) :
             base(game)
         {
@@ -126,8 +128,6 @@ namespace itp380.Objects
 
         public override void Update(float fDeltaTime)
         {
-            Ship ShipUnderReticle;
-
             base.Update(fDeltaTime);
             UpdatePhysics(fDeltaTime);
             ApplyPhysics();
@@ -145,7 +145,7 @@ namespace itp380.Objects
             }
 
             // Sound
-            GameState.Get().updateEngineSound();
+            GameState.Get().UpdateEngineSound();
         }
 
         void UpdatePhysics(float fDeltaTime)

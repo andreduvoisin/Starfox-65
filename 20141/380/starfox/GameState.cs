@@ -431,7 +431,7 @@ namespace itp380
         public void SpawnHomingProjectile(Objects.Ship ship)
         {
             //Fire from center.
-            Objects.Projectile cannonShot = new Objects.HomingProjectile(m_Game, ship, null);
+            Objects.Projectile cannonShot = new Objects.HomingProjectile(m_Game, ship, ship.ShipUnderReticle);
             cannonShot.Position = ship.Position;
             ship.Projectiles.Add(cannonShot);
             SpawnGameObject(cannonShot);
@@ -459,7 +459,7 @@ namespace itp380
             SpawnGameObject(player.Ship.m_LockedOn);
         }
 
-        public void updateEngineSound()
+        public void UpdateEngineSound()
         {
             //Play engine sound only when the engine is on.
             foreach (Models.Player player in m_Players)
