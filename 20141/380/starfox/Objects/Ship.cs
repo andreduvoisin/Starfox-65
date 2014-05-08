@@ -24,8 +24,6 @@ namespace itp380.Objects
         public const float SHIP_Z_MIN      = -375f;
         public const float SHIP_Z_MAX      = 475f;
 
-        const float MAX_RETICLE_LOCK_DIST = 1f;
-
         const uint BROLL_ROTS       = 2;
         const float BROLL_TIME      = 1f;
         const float BROLL_TVAL      = (float)BROLL_ROTS / BROLL_TIME;
@@ -63,6 +61,7 @@ namespace itp380.Objects
 
         public float Yaw
         {
+            set { m_Yaw = value; }
             get { return m_Yaw; }
         }
 
@@ -134,6 +133,7 @@ namespace itp380.Objects
 
             // Reticle cover
             ShipUnderReticle = ClosestShipUnderReticle();
+            this.m_Player.m_LockedOn.setTarget(ShipUnderReticle);
 
             // Sound
             GameState.Get().updateEngineSound();
@@ -229,7 +229,8 @@ namespace itp380.Objects
                 }
             }
 
-            if (best < MAX_RETICLE_LOCK_DIST)
+            if (best < Reticle.LOCK_RADIUS &&
+                (rv.Position - Position).Length() <= Reticle.MAX_LOCK_DIST)
                 return rv;
             else
                 return null;

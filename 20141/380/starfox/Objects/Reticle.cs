@@ -13,6 +13,9 @@ namespace itp380.Objects
         Ship m_Ship;
         Camera m_Camera;
 
+        public const float MAX_LOCK_DIST = 300f;
+        public const float LOCK_RADIUS = 20f;
+
         public Reticle(Game game, Models.Player player, Camera camera) :
             base(game)
         {
