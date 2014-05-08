@@ -12,7 +12,7 @@ namespace itp380.Objects
     {
         // Set THESE to change sizes
         static float MaxRadarDist = 300;
-        static Point Location = new Point(0, 250);
+        static Point Location = new Point(0, 285);
         static Point Size = new Point(100, 100);
         static int ShipSize = 5;
 
