@@ -48,7 +48,7 @@ namespace itp380
             get { return Vector3.Normalize(TargetPosition - Position); }
         }
 
-        Ship m_ShipTarget;
+        public Ship m_ShipTarget;
 		
 		Matrix m_Camera;
 		public Matrix CameraMatrix
