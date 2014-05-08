@@ -229,12 +229,15 @@ namespace itp380.Objects
                 if (this.m_Player == player)
                     continue;
 
-                current = CheckReticleCover(player.Ship);
-
-                if (current < best)
+                if (GameState.Get().m_GameObjects.Contains(player.Ship))
                 {
-                    best = current;
-                    rv = player.Ship;
+                    current = CheckReticleCover(player.Ship);
+
+                    if (current < best)
+                    {
+                        best = current;
+                        rv = player.Ship;
+                    }
                 }
             }
 

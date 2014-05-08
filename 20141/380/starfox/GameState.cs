@@ -52,7 +52,7 @@ namespace itp380
 		}
 
 		// Keeps track of all active game objects
-		LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
+		public LinkedList<GameObject> m_GameObjects = new LinkedList<GameObject>();
         public uint GOC
         {
             get { return (uint)m_GameObjects.Count; }
@@ -329,8 +329,11 @@ namespace itp380
                 {
                     if (!(mainPlayer.Equals(otherPlayer)) && mainPlayer.Ship.WorldBounds.Intersects(otherPlayer.Ship.WorldBounds))
                     {
-                        DestroyPlayerShip(mainPlayer);
-                        DestroyPlayerShip(otherPlayer);
+                        if (m_GameObjects.Contains(mainPlayer.Ship) && m_GameObjects.Contains(otherPlayer.Ship))
+                        {
+                            DestroyPlayerShip(mainPlayer);
+                            DestroyPlayerShip(otherPlayer);
+                        }
                     }
                 }
             }
@@ -338,13 +341,13 @@ namespace itp380
 
         public void DestroyPlayerShip(Models.Player player)
         {
-            if (!player.respawnTimerRunning)
+            if (!player.respawnTimerRunning && player.m_Lives > 0)
             {
+                SoundManager.Get().PlaySoundCue("Snared");
                 RemoveGameObject(player.Ship.m_Reticle);
                 RemoveGameObject(player.Ship.m_LockedOn);
                 RemoveGameObject(player.Ship);
                 player.m_Lives--;
-                SoundManager.Get().PlaySoundCue("Snared");
                 if (player.m_Lives > 0)
                 {
                     player.SetRespawnTimer();

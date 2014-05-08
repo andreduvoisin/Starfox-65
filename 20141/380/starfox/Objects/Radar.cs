@@ -79,7 +79,10 @@ namespace itp380.Objects
             {
                 if (p != Player)
                 {
-                    DrawShip(DrawBatch, p.Ship, Player.Ship, Color.Red);
+                    if (GameState.Get().m_GameObjects.Contains(p.Ship))
+                    {
+                        DrawShip(DrawBatch, p.Ship, Player.Ship, Color.Red);
+                    }
                 }
             }
         }
