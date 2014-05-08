@@ -29,7 +29,7 @@ namespace itp380.Objects
             m_TargetShip = null;
         }
 
-        public void setTarget(Ship target)
+        public void SetTarget(Ship target)
         {
             m_TargetShip = target;
         }

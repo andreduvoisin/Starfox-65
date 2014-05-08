@@ -72,6 +72,7 @@ namespace itp380.Objects
 
         // Reticle
         public Reticle m_Reticle;
+        public LockedOn m_LockedOn;
 
         private bool canFire;
         public bool CanFire
@@ -133,7 +134,15 @@ namespace itp380.Objects
 
             // Reticle cover
             ShipUnderReticle = ClosestShipUnderReticle();
-            this.m_Player.m_LockedOn.setTarget(ShipUnderReticle);
+            m_LockedOn.SetTarget(ShipUnderReticle);
+            if (ShipUnderReticle != null)
+            {
+                m_Reticle.ShowRedReticle();
+            }
+            else
+            {
+                m_Reticle.ShowGreenReticle();
+            }
 
             // Sound
             GameState.Get().updateEngineSound();

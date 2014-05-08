@@ -29,6 +29,24 @@ namespace itp380.Objects
             m_lightingType = eLightingType.Ambient;
         }
 
+        public void ShowGreenReticle()
+        {
+            if (m_ModelName != "greenreticle")
+            {
+                m_ModelName = "greenreticle";
+                Load();
+            }
+        }
+
+        public void ShowRedReticle()
+        {
+            if (m_ModelName != "redreticle")
+            {
+                m_ModelName = "redreticle";
+                Load();
+            }
+        }
+
         public override void Update(float fDeltaTime)
         {
             Position = m_Ship.Position + m_Ship.Forward * m_Camera.Trackpoint*2;

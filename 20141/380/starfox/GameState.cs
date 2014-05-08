@@ -455,8 +455,8 @@ namespace itp380
 
         public void SpawnLockedOn(Models.Player player, Camera camera)
         {
-            player.m_LockedOn = new Objects.LockedOn(m_Game, player, camera);
-            SpawnGameObject(player.m_LockedOn);
+            player.Ship.m_LockedOn = new Objects.LockedOn(m_Game, player, camera);
+            SpawnGameObject(player.Ship.m_LockedOn);
         }
 
         public void updateEngineSound()
