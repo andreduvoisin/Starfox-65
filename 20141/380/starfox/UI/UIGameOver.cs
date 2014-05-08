@@ -68,6 +68,7 @@ namespace itp380.UI
 		{
 			// Draw background
 			GraphicsManager g = GraphicsManager.Get();
+            g.GraphicsDevice.Viewport = GameState.Get().mainViewport;
 			Rectangle rect = new Rectangle(g.Width / 2 - 200, g.Height / 2 - 115,
 				400, 200);
 			g.DrawFilled(DrawBatch, rect, Color.Black, 4.0f, Color.DarkBlue);
