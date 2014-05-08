@@ -91,6 +91,12 @@ namespace itp380.UI
                     new Vector2(135, 100),
                     Color.White);
             }
+
+            DrawBatch.DrawString(
+                    m_FixedFont,
+                    String.Format("Lives: {0}", player.m_Lives),
+                    new Vector2(110, 350),
+                    Color.White);
 		}
 
 		public override void GamepadInput(SortedList<eBindings, BindInfo> binds)
