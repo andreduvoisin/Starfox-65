@@ -82,6 +82,15 @@ namespace itp380.UI
                     new Vector2(0, 50),
                     Color.White);
             }
+
+            if (GameState.Get().m_Timer.GetRemainingTime("RespawnPlayer" + player.m_PlayerIndex) != -1)
+            {
+                DrawBatch.DrawString(
+                    m_FixedFont,
+                    String.Format("RESPAWNING IN {0}", Math.Round(GameState.Get().m_Timer.GetRemainingTime("RespawnPlayer" + player.m_PlayerIndex))),
+                    new Vector2(135, 100),
+                    Color.White);
+            }
 		}
 
 		public override void GamepadInput(SortedList<eBindings, BindInfo> binds)
