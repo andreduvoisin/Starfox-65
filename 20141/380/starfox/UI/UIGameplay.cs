@@ -25,6 +25,7 @@ namespace itp380.UI
 		SpriteFont m_StatusFont;
 
         Texture2D m_HealthBar;
+        Texture2D m_ChargeBar;
 
         Objects.Radar m_Radar;
 
@@ -37,6 +38,8 @@ namespace itp380.UI
 
             //Healthbar
             m_HealthBar = Content.Load<Texture2D>("HealthBar_border") as Texture2D;
+            //Chargebar
+            m_ChargeBar = Content.Load<Texture2D>("HealthBar_border") as Texture2D;
 
             m_Radar = new Objects.Radar(Content);
 		}
@@ -53,6 +56,20 @@ namespace itp380.UI
             DrawBatch.Draw(m_HealthBar, new Rectangle(130, 30, m_HealthBar.Width/2, 20), new Rectangle(0, 45, m_HealthBar.Width/2, 20), Color.Gray);
             DrawBatch.Draw(m_HealthBar, new Rectangle(130, 30, (int)(m_HealthBar.Width/2 * ((double)player.Health / 100)), 20), new Rectangle(0, 45, m_HealthBar.Width/2, 20), Color.Red);
             //DrawBatch.Draw(m_HealthBar, new Rectangle(130, 30, m_HealthBar.Width/2, 20), new Rectangle(0, 0, m_HealthBar.Width/2, 20), Color.White);
+
+            //Draw ChargeBar
+            DrawBatch.Draw(m_ChargeBar, new Rectangle(130, 60, m_ChargeBar.Width / 2, 20), new Rectangle(0, 45, m_ChargeBar.Width / 2, 20), Color.Gray);
+            if (player.Ship.homingTimerActive)
+            {
+                if (player.Ship.m_Timer.GetRemainingTime("EnableHomingFire") != -1)
+                {
+                    DrawBatch.Draw(m_ChargeBar, new Rectangle(130, 60, (int)(m_ChargeBar.Width / 2 * (1 - (player.Ship.m_Timer.GetRemainingTime("EnableHomingFire") / player.Ship.HomingFireDelay))), 20), new Rectangle(0, 45, m_ChargeBar.Width / 2, 20), Color.Blue);
+                }
+            }
+            if (player.Ship.fireHoming)
+            {
+                DrawBatch.Draw(m_ChargeBar, new Rectangle(130, 60, (int)(m_ChargeBar.Width / 2), 20), new Rectangle(0, 45, m_ChargeBar.Width / 2, 20), Color.Blue);
+            }
 
             m_Radar.Draw(fDeltaTime, DrawBatch, player);
 

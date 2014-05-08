@@ -38,7 +38,7 @@ namespace itp380.Models
 
         float[] rots;
         public int m_Lives;
-        public float respawnTime = 0.5f;
+        public float respawnTime = 10.0f;
         public bool respawnTimerRunning = false;
 
         public Player(Game game, int playerIndex, Viewport viewport)
