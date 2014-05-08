@@ -69,6 +69,8 @@ namespace itp380.UI
 
 		public override void Draw(float fDeltaTime, SpriteBatch DrawBatch, Models.Player player)
 		{
+            GraphicsManager.Get().GraphicsDevice.Viewport = GameState.Get().mainViewport;
+
 			Vector2 vOffset = Vector2.Zero;
 			vOffset.Y = -1.0f * GraphicsManager.Get().Height / 4.0f;
 			DrawCenteredString(DrawBatch, m_Title, m_TitleFont, Color.DarkBlue, vOffset);
