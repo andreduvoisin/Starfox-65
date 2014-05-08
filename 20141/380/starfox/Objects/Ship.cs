@@ -24,6 +24,8 @@ namespace itp380.Objects
         public const float SHIP_Z_MIN      = -375f;
         public const float SHIP_Z_MAX      = 475f;
 
+        const float MAX_RETICLE_LOCK_DIST = 1f;
+
         const uint BROLL_ROTS       = 2;
         const float BROLL_TIME      = 1f;
         const float BROLL_TVAL      = (float)BROLL_ROTS / BROLL_TIME;
@@ -124,9 +126,15 @@ namespace itp380.Objects
 
         public override void Update(float fDeltaTime)
         {
+            Ship ShipUnderReticle;
+
             base.Update(fDeltaTime);
             UpdatePhysics(fDeltaTime);
             ApplyPhysics();
+
+            // Reticle cover
+            ShipUnderReticle = ClosestShipUnderReticle();
+
             // Sound
             GameState.Get().updateEngineSound();
         }
@@ -194,6 +202,37 @@ namespace itp380.Objects
                 0,
                 m_Pitch);
             Rotation = Quaternion.Concatenate(Rotation, Quaternion.CreateFromAxisAngle(Forward, Roll));
+        }
+
+        float CheckReticleCover(Ship Other)
+        {
+            return Vector3.Cross(Forward, Other.Position - Position).Length();
+        }
+
+        Ship ClosestShipUnderReticle()
+        {
+            float best = float.PositiveInfinity;
+            float current;
+            Ship rv = null;
+
+            foreach (Models.Player player in GameState.Get().m_Players)
+            {
+                if (this.m_Player == player)
+                    continue;
+
+                current = CheckReticleCover(player.Ship);
+
+                if (current < best)
+                {
+                    best = current;
+                    rv = player.Ship;
+                }
+            }
+
+            if (best < MAX_RETICLE_LOCK_DIST)
+                return rv;
+            else
+                return null;
         }
 
         public void Boost()
