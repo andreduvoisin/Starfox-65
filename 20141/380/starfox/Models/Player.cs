@@ -9,6 +9,8 @@ namespace itp380.Models
 {
     public class Player
     {
+        public Game m_Game;
+
         uint m_Health;
         public uint Health
         {
@@ -35,6 +37,9 @@ namespace itp380.Models
         public int m_PlayerIndex;
 
         float[] rots;
+        public int m_Lives;
+        public float respawnTime = 0.5f;
+        public bool respawnTimerRunning = false;
 
         public Player(Game game, int playerIndex, Viewport viewport)
         {
@@ -68,6 +73,38 @@ namespace itp380.Models
             GameState.Get().SpawnGameObject(m_Ship);
             m_Viewport = viewport;
             m_PlayerIndex = playerIndex;
+            m_Lives = 3;
+            m_Game = game;
+        }
+
+        public void SetRespawnTimer()
+        {
+            respawnTimerRunning = true;
+            GameState.Get().m_Timer.AddTimer("RespawnPlayer" + m_PlayerIndex, respawnTime, Respawn, false);
+        }
+
+        public void Respawn()
+        {
+            int pi = m_PlayerIndex - 1;
+            bool a, b;
+            float x, z;
+
+            a = (pi + 1) % 2 == 0;
+            b = pi == 2 || pi == 3;
+
+            x = a ? Objects.Ship.SHIP_X_MIN + 20 : Objects.Ship.SHIP_X_MAX - 20;
+            z = b ? Objects.Ship.SHIP_Z_MIN + 20 : Objects.Ship.SHIP_Z_MAX - 20;
+
+            m_Health = 100;
+            m_Ship = new Objects.Ship(m_Game, this);
+            m_Ship.Position = new Vector3(x, 25, z);
+            m_Ship.Yaw = rots[pi];
+            m_Camera.m_ShipTarget = m_Ship;
+            GameState.Get().SpawnReticle(this, m_Camera);
+            GameState.Get().SpawnLockedOn(this, m_Camera);
+            GameState.Get().SpawnGameObject(m_Ship);
+
+            respawnTimerRunning = false;
         }
     }
 }

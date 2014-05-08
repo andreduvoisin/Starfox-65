@@ -63,7 +63,7 @@ namespace itp380
         Objects.grassfloor m_Terrain;
 
 		// Timer class for the global GameState
-		Utils.Timer m_Timer = new Utils.Timer();
+		public Utils.Timer m_Timer = new Utils.Timer();
 
 		UI.UIGameplay m_UIGameplay;
 
@@ -272,8 +272,7 @@ namespace itp380
                     player.Health -= 10;
                     if (player.Health <= 0)
                     {
-                        RemoveGameObject(player.Ship);
-                        SoundManager.Get().PlaySoundCue("Snared");
+                        DestroyPlayerShip(player);
                     }
                     break;
                 }
@@ -295,7 +294,7 @@ namespace itp380
                 {
                     if (player.Ship.m_WorldBounds.Intersects(building.m_WorldBounds))
                     {
-                        RemoveGameObject(player.Ship);
+                        DestroyPlayerShip(player);
                     }
                 }   
             }
@@ -330,11 +329,59 @@ namespace itp380
                 {
                     if (!(mainPlayer.Equals(otherPlayer)) && mainPlayer.Ship.WorldBounds.Intersects(otherPlayer.Ship.WorldBounds))
                     {
-                        RemoveGameObject(mainPlayer.Ship);
-                        RemoveGameObject(otherPlayer.Ship);
+                        DestroyPlayerShip(mainPlayer);
+                        DestroyPlayerShip(otherPlayer);
                     }
                 }
             }
+        }
+
+        public void DestroyPlayerShip(Models.Player player)
+        {
+            if (!player.respawnTimerRunning)
+            {
+                RemoveGameObject(player.Ship.m_Reticle);
+                RemoveGameObject(player.Ship.m_LockedOn);
+                RemoveGameObject(player.Ship);
+                player.m_Lives--;
+                SoundManager.Get().PlaySoundCue("Snared");
+                if (player.m_Lives > 0)
+                {
+                    player.SetRespawnTimer();
+                }
+                CheckGameOver();
+            }
+        }
+
+        public void CheckGameOver()
+        {
+            int numAlive = 0;
+
+            if (m_Players.Count == 1)
+            {
+                if (m_Players[0].m_Lives <= 0)
+                {
+                    GameOver(false);
+                }
+            }
+
+            foreach (Models.Player p in m_Players)
+            {
+                if (p.m_Lives > 0)
+                {
+                    numAlive++;
+                }
+            }
+
+            if (numAlive <= 1)
+            {
+                GameOver(true);
+            }
+        }
+
+        public void RespawnPlayer()
+        {
+
         }
 
 		public void SpawnGameObject(GameObject o)
