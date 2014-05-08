@@ -34,8 +34,6 @@ namespace itp380.Models
         // helps with input management and stuff
         public int m_PlayerIndex;
 
-        public Objects.LockedOn m_LockedOn;
-
         float[] rots;
 
         public Player(Game game, int playerIndex, Viewport viewport)
