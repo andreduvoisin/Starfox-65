@@ -109,7 +109,7 @@ namespace itp380
 
             // Register the particle system components.
             m_Game.Components.Add(projectileTrailParticles);
-            m_Game.Components.Add(smokePlumeParticles);
+            //m_Game.Components.Add(smokePlumeParticles);
 		}
 
 		public void LoadContent()
@@ -240,8 +240,8 @@ namespace itp380
                     // Particle Effects
                     if (GameState.Get().IsPaused == false)
                     {
-                        smokePlumeParticles.AddParticle(new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z), new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z));
-                        smokePlumeParticles.SetCamera(player.Camera.CameraMatrix, Projection);
+                        //smokePlumeParticles.AddParticle(new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z), new Vector3(player.Ship.Position.X, player.Ship.Position.Y, player.Ship.Position.Z));
+                        //smokePlumeParticles.SetCamera(player.Camera.CameraMatrix, Projection);
                     }
 
                     // Now draw all 2D components

@@ -36,11 +36,34 @@ namespace itp380.Models
 
         public Objects.LockedOn m_LockedOn;
 
+        float[] rots;
+
         public Player(Game game, int playerIndex, Viewport viewport)
         {
+            int pi = playerIndex - 1;
+            bool a, b;
+            float x, z;
+
+            if (rots == null)
+            {
+                rots = new float[4];
+
+                rots[0] = 3 * MathHelper.PiOver4;
+                rots[1] = 1 * MathHelper.PiOver4;
+                rots[2] = 5 * MathHelper.PiOver4;
+                rots[3] = 7 * MathHelper.PiOver4;
+            }
+
+            a = (pi+1) % 2 == 0;
+            b = pi == 2 || pi == 3;
+
+            x = a ? Objects.Ship.SHIP_X_MIN + 20 : Objects.Ship.SHIP_X_MAX - 20;
+            z = b ? Objects.Ship.SHIP_Z_MIN + 20 : Objects.Ship.SHIP_Z_MAX - 20;
+
             m_Health = 100;
             m_Ship = new Objects.Ship(game, this);
-            m_Ship.Position = new Vector3(0, 20 * playerIndex, 50 * playerIndex);
+            m_Ship.Position = new Vector3(x, 25, z);
+            m_Ship.Yaw = rots[pi];
             m_Camera = new Camera(game, m_Ship);
             GameState.Get().SpawnReticle(this, m_Camera);
             GameState.Get().SpawnLockedOn(this, m_Camera);
